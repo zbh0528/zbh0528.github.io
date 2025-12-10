@@ -4,542 +4,400 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Baohang Zhang | Ph.D. Candidate</title>
-    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            --bg-dark: #0a0a0a;
-            --text-gold: #d4af37; /* 香槟金 */
-            --text-white: #f3f3f3;
-            --text-grey: #c0c0c0; /* 稍微调亮一点，适应背景图 */
-            --card-dark: rgba(24, 24, 27, 0.85); /* 半透明卡片 */
-            --border-light: rgba(255, 255, 255, 0.15);
+            --primary-blue: #003366; /* 经典的学院深蓝 */
+            --link-blue: #2a7ae2;    /* 链接蓝 */
+            --text-dark: #333333;
+            --text-gray: #666666;
+            --bg-gray: #f5f5f5;
+            --border-color: #eeeeee;
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Lato', sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-white);
-            overflow-x: hidden;
-            line-height: 1.7;
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-gray);
+            color: var(--text-dark);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
         }
 
-        h1, h2, h3 { font-family: 'Playfair Display', serif; }
-
-        /* --- 背景设置：富山立山连峰 + 粒子特效 --- */
-        .background-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-        }
-        
-        .bg-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            /* 这里使用了一张类似富山立山连峰的雪山图片 */
-            background-image: url('https://images.unsplash.com/photo-1518030990187-3d1882857e74?q=80&w=1974&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
-            filter: brightness(0.3) contrast(1.1); /* 压暗背景，突出文字 */
-        }
-
-        #canvas-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            opacity: 0.3; /* 粒子稍微淡一点 */
-        }
-
-        /* --- 顶部导航 --- */
-        nav {
-            padding: 20px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 100;
-            background: rgba(10, 10, 10, 0.6); /* 更加通透 */
-            backdrop-filter: blur(15px);
-            border-bottom: 1px solid var(--border-light);
-        }
-        .logo { font-weight: 700; font-size: 1.2rem; letter-spacing: 1px; color: var(--text-white); text-decoration: none; }
-        .logo span { color: var(--text-gold); }
-        .nav-location { font-size: 0.85rem; color: var(--text-grey); display: flex; align-items: center; gap: 8px; }
-        .nav-location i { color: var(--text-gold); }
-
-        /* --- 主视觉区 (Hero) --- */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 120px 20px 80px;
-            position: relative;
-        }
-
-        .hero-content {
+        /* --- 布局容器 --- */
+        .container {
             max-width: 1100px;
-            width: 100%;
+            margin: 40px auto;
+            background: white;
             display: grid;
-            grid-template-columns: 1.1fr 0.9fr;
-            gap: 80px;
-            align-items: center;
+            grid-template-columns: 280px 1fr; /* 左侧栏固定，右侧自适应 */
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border-top: 5px solid var(--primary-blue); /* 顶部装饰条 */
         }
 
-        /* 头像区域 */
-        .avatar-wrapper {
-            position: relative;
-            width: 320px;
-            height: 420px;
-            margin: 0 auto;
-        }
-        
-        .avatar-frame {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            width: 100%;
-            height: 100%;
-            border: 2px solid var(--text-gold);
-            z-index: 1;
-            transition: transform 0.3s ease;
+        /* --- 左侧个人信息栏 --- */
+        .sidebar {
+            background-color: #fafafa;
+            padding: 40px 30px;
+            border-right: 1px solid var(--border-color);
+            text-align: center;
         }
 
-        .avatar-img {
-            position: relative;
+        .avatar-box {
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .avatar-box img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            z-index: 2;
-            filter: grayscale(10%);
-            transition: all 0.3s ease;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5); /* 加深阴影 */
         }
 
-        .avatar-wrapper:hover .avatar-frame { transform: translate(15px, 15px); }
-        .avatar-wrapper:hover .avatar-img { filter: grayscale(0%); transform: translate(-5px, -5px); }
-
-        .hero-text h2 {
-            font-size: 1.1rem;
-            color: var(--text-gold);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 10px;
+        .my-name {
+            font-family: 'Merriweather', serif;
+            font-size: 1.6rem;
             font-weight: 700;
-        }
-
-        .hero-text h1 {
-            font-size: 3.8rem;
-            line-height: 1.1;
-            margin-bottom: 25px;
-            color: var(--text-white);
-            text-shadow: 0 4px 10px rgba(0,0,0,0.5); /* 增加文字阴影，防止背景干扰 */
-        }
-
-        .location-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(255,255,255,0.1);
-            padding: 6px 12px;
-            border-radius: 4px;
-            font-size: 0.9rem;
-            margin-bottom: 25px;
-            border: 1px solid rgba(255,255,255,0.2);
-            backdrop-filter: blur(5px);
-        }
-
-        .hero-bio {
-            font-size: 1.1rem;
-            color: #ddd; /* 更亮一点 */
-            margin-bottom: 40px;
-            border-left: 3px solid var(--text-gold);
-            padding-left: 20px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-        }
-
-        .stats-row {
-            display: flex;
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-        .stat-box .num { font-size: 2rem; font-weight: 700; color: var(--text-white); font-family: 'Lato', sans-serif; }
-        .stat-box .label { font-size: 0.8rem; color: var(--text-gold); text-transform: uppercase; letter-spacing: 1px; }
-
-        .cta-group { display: flex; gap: 20px; }
-        .btn {
-            padding: 12px 30px;
-            font-size: 0.9rem;
-            text-decoration: none;
-            letter-spacing: 1px;
-            transition: all 0.3s;
-            border: 1px solid var(--text-gold);
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-        }
-        .btn-primary { background: var(--text-gold); color: #000; font-weight: 700; }
-        .btn-primary:hover { background: #fff; border-color: #fff; }
-        .btn-ghost { color: var(--text-gold); background: rgba(0,0,0,0.3); backdrop-filter: blur(5px); }
-        .btn-ghost:hover { background: rgba(212, 175, 55, 0.2); }
-
-        /* --- 技能矩阵 (半透明卡片) --- */
-        .section-padding { padding: 100px 20px; max-width: 1000px; margin: 0 auto; }
-        .section-header { margin-bottom: 60px; text-align: center; }
-        .section-header h3 { font-size: 2.5rem; color: var(--text-white); margin-bottom: 10px; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
-        .section-header p { color: var(--text-gold); font-family: 'Lato'; font-size: 1rem; letter-spacing: 1px; text-transform: uppercase; }
-
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-        }
-        .skill-card {
-            background: var(--card-dark);
-            padding: 30px;
-            border: 1px solid var(--border-light);
-            transition: 0.3s;
-            backdrop-filter: blur(10px); /* 磨砂玻璃感 */
-        }
-        .skill-card:hover { border-color: var(--text-gold); transform: translateY(-5px); background: rgba(24, 24, 27, 0.95); }
-        .skill-icon { font-size: 2rem; color: var(--text-gold); margin-bottom: 20px; }
-        .skill-title { font-size: 1.2rem; margin-bottom: 10px; font-weight: 700; }
-        .skill-desc { color: var(--text-grey); font-size: 0.9rem; }
-        
-        .tags { margin-top: 15px; display: flex; flex-wrap: wrap; gap: 8px; }
-        .tag { font-size: 0.75rem; background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 2px; color: #eee; }
-
-        /* --- 论文列表 (Timeline Style) --- */
-        .timeline {
-            position: relative;
-            border-left: 2px solid rgba(212, 175, 55, 0.3); /* 金色半透明线 */
-            margin-left: 20px;
-            padding-left: 40px;
-        }
-        .pub-item {
-            position: relative;
-            margin-bottom: 50px;
-            background: var(--card-dark); /* 给论文加个背景底，更好看 */
-            padding: 25px;
-            border: 1px solid var(--border-light);
-            backdrop-filter: blur(5px);
-        }
-        .pub-item:hover { border-color: var(--text-grey); }
-
-        .pub-item::before {
-            content: '';
-            position: absolute;
-            left: -49px;
-            top: 25px; /* 调整圆点位置 */
-            width: 16px;
-            height: 16px;
-            background: var(--bg-dark);
-            border: 2px solid var(--text-gold);
-            border-radius: 50%;
-            z-index: 10;
-        }
-        .pub-year {
-            font-size: 0.9rem;
-            color: var(--text-gold);
             margin-bottom: 5px;
+            color: var(--text-dark);
+        }
+
+        .my-title {
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+
+        .my-uni {
+            font-size: 0.9rem;
+            color: var(--text-gray);
+            margin-bottom: 20px;
+        }
+
+        .contact-info {
+            text-align: left;
+            font-size: 0.9rem;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+        }
+
+        .contact-item {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #555;
+        }
+        
+        .contact-item i { color: var(--primary-blue); width: 20px; text-align: center; }
+        .contact-item a { color: #555; text-decoration: none; transition: 0.2s; }
+        .contact-item a:hover { color: var(--link-blue); text-decoration: underline; }
+
+        .scholar-btn {
+            display: block;
+            margin-top: 30px;
+            padding: 10px 0;
+            background: white;
+            border: 1px solid var(--primary-blue);
+            color: var(--primary-blue);
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: 0.2s;
+        }
+        .scholar-btn:hover {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        /* --- 右侧主要内容 --- */
+        .main-content {
+            padding: 50px 60px;
+        }
+
+        .section { margin-bottom: 50px; }
+        
+        .section-header {
+            font-family: 'Merriweather', serif;
+            font-size: 1.5rem;
+            color: var(--primary-blue);
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+        }
+
+        p.bio-text {
+            font-size: 1.05rem;
+            color: #444;
+            text-align: justify;
+        }
+
+        /* --- 论文列表 (标准学术格式) --- */
+        .paper-list {
+            list-style: none;
+        }
+
+        .paper-item {
+            margin-bottom: 20px;
+            padding-left: 20px;
+            border-left: 3px solid transparent;
+            transition: 0.2s;
+        }
+
+        .paper-item:hover {
+            border-left-color: var(--primary-blue);
+            background: #fdfdfd;
+        }
+
+        .paper-title {
             font-weight: 700;
+            font-size: 1.05rem;
+            color: #222;
+            display: block;
+            margin-bottom: 4px;
+            text-decoration: none;
         }
-        .pub-title {
-            font-size: 1.3rem;
-            color: var(--text-white);
-            margin-bottom: 10px;
-            line-height: 1.3;
-            font-family: 'Playfair Display', serif;
+        .paper-title:hover { color: var(--link-blue); }
+
+        .paper-authors {
+            font-size: 0.95rem;
+            color: #444;
+            margin-bottom: 4px;
         }
-        .pub-authors { color: var(--text-grey); font-size: 0.95rem; margin-bottom: 15px; }
-        .pub-venue {
+
+        .paper-venue {
+            font-size: 0.9rem;
+            color: #666;
+            font-style: italic;
+        }
+        
+        .tag {
             display: inline-block;
-            border: 1px solid var(--border-light);
-            padding: 4px 12px;
-            font-size: 0.8rem;
-            color: #eee;
-            letter-spacing: 0.5px;
-            background: rgba(255,255,255,0.05);
+            font-size: 0.75rem;
+            padding: 1px 6px;
+            border-radius: 3px;
+            margin-left: 8px;
+            font-style: normal;
+            vertical-align: middle;
         }
-        .pub-venue.journal { border-color: var(--text-gold); color: var(--text-gold); background: rgba(212, 175, 55, 0.05); }
+        .tag-journal { background: #e3f2fd; color: #0d47a1; border: 1px solid #bbdefb; }
+        .tag-conf { background: #f3e5f5; color: #4a148c; border: 1px solid #e1bee7; }
 
-        /* --- 响应式 --- */
-        @media (max-width: 900px) {
-            .hero-content { grid-template-columns: 1fr; text-align: center; gap: 40px; }
-            .hero { padding-top: 100px; }
-            .hero-text h1 { font-size: 2.8rem; }
-            .hero-bio { border-left: none; padding-left: 0; border-top: 3px solid var(--text-gold); padding-top: 20px; }
-            .stats-row { justify-content: center; }
-            .cta-group { justify-content: center; flex-direction: column; }
-            .avatar-wrapper { width: 260px; height: 340px; order: -1; } /* 手机上头像在上面 */
-            .timeline { margin-left: 0; padding-left: 20px; border-left: 2px solid var(--border-light); }
-            .pub-item::before { left: -29px; top: 25px; }
+        /* 手机端适配 */
+        @media (max-width: 800px) {
+            .container { grid-template-columns: 1fr; margin: 0; box-shadow: none; }
+            .sidebar { border-right: none; border-bottom: 1px solid #eee; }
+            .main-content { padding: 30px 20px; }
         }
-
     </style>
 </head>
 <body>
 
-    <div class="background-container">
-        <div class="bg-image"></div>
-    </div>
-    
-    <canvas id="canvas-bg"></canvas>
-
-    <nav>
-        <a href="#" class="logo">BAOHANG<span>.ZHANG</span></a>
+    <div class="container">
         
-        <div class="nav-location">
-            <i class="fa-solid fa-location-dot"></i>
-            <span>Toyama, Japan</span>
-        </div>
-    </nav>
-
-    <section class="hero">
-        <div class="hero-content">
-            <div class="hero-text">
-                <h2>Artificial Intelligence Researcher</h2>
-                <h1>Ph.D. Candidate (D3)<br>@ University of Toyama</h1>
-                
-                <div class="location-tag">
-                    <i class="fa-solid fa-map-pin" style="color: var(--text-gold);"></i>
-                    Gofuku Campus, Toyama, Japan
-                </div>
-
-                <div class="hero-bio">
-                    Exploring the complexity of optimization problems through <strong>Swarm Intelligence</strong> and <strong>Multi-objective Evolutionary Algorithms</strong>. Merging the tranquility of Toyama's nature with the precision of AI.
-                </div>
-
-                <div class="stats-row">
-                    <div class="stat-box">
-                        <div class="num">21</div>
-                        <div class="label">Papers</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="num">150+</div>
-                        <div class="label">Citations</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="num">5</div>
-                        <div class="label">Yrs Exp</div>
-                    </div>
-                </div>
-
-                <div class="cta-group">
-                    <a href="#publications" class="btn btn-primary">SELECTED WORKS</a>
-                    <a href="mailto:zbhsyx@163.com" class="btn btn-ghost">
-                        <i class="fa-regular fa-envelope"></i> EMAIL ME
-                    </a>
-                </div>
-            </div>
-
-            <div class="hero-image">
-                <div class="avatar-wrapper">
-                    <div class="avatar-frame"></div>
-                    <img src="photo.jpg" 
-                         alt="Baohang Zhang" 
-                         class="avatar-img"
-                         onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80'"> 
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="section-padding">
-        <div class="section-header">
-            <p>What I Do</p>
-            <h3>Core Competencies</h3>
-        </div>
-        <div class="skills-grid">
-            <div class="skill-card">
-                <div class="skill-icon"><i class="fa-solid fa-microchip"></i></div>
-                <div class="skill-title">Algorithm Design</div>
-                <div class="skill-desc">Expertise in designing novel meta-heuristic algorithms for global optimization.</div>
-                <div class="tags">
-                    <span class="tag">Evolutionary Algos</span>
-                    <span class="tag">Swarm Intelligence</span>
-                </div>
-            </div>
-            <div class="skill-card">
-                <div class="skill-icon"><i class="fa-solid fa-code"></i></div>
-                <div class="skill-title">Technical Stack</div>
-                <div class="skill-desc">Proficient in implementing complex models and data analysis pipelines.</div>
-                <div class="tags">
-                    <span class="tag">Python</span>
-                    <span class="tag">PyTorch</span>
-                    <span class="tag">MATLAB</span>
-                    <span class="tag">LaTeX</span>
-                </div>
-            </div>
-            <div class="skill-card">
-                <div class="skill-icon"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
-                <div class="skill-title">Feature Selection</div>
-                <div class="skill-desc">Applying MOEA to solve high-dimensional feature selection problems in ML.</div>
-                <div class="tags">
-                    <span class="tag">Data Mining</span>
-                    <span class="tag">Classification</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="publications" class="section-padding">
-        <div class="section-header">
-            <p>Research Output</p>
-            <h3>Selected Publications</h3>
-        </div>
-        
-        <div class="timeline">
-            <div class="pub-item">
-                <div class="pub-year">2025</div>
-                <div class="pub-title">An Improved Artificial Bee Colony Algorithm with Differential Analysis and Deduplication</div>
-                <div class="pub-authors">Xu, Zhe, <strong>Baohang Zhang</strong>, et al.</div>
-                <div class="pub-venue journal">International Journal of Computational Intelligence Systems</div>
-            </div>
-
-            <div class="pub-item">
-                <div class="pub-year">2025</div>
-                <div class="pub-title">An Enhanced LSHADE with Generalized Pareto Distribution Selection</div>
-                <div class="pub-authors">Xu, Zhe, Yu, Jiatianyi, <strong>Baohang Zhang</strong>, et al.</div>
-                <div class="pub-venue journal">The Journal of Supercomputing</div>
-            </div>
-
-            <div class="pub-item">
-                <div class="pub-year">2024</div>
-                <div class="pub-title">Information Gain-based Multi-objective Evolutionary Algorithm for Feature Selection</div>
-                <div class="pub-authors"><strong>Baohang Zhang</strong>, Wang, Ziqian, et al.</div>
-                <div class="pub-venue journal">Information Sciences</div>
-            </div>
-
-            <div class="pub-item">
-                <div class="pub-year">2024</div>
-                <div class="pub-title">A Novel Adaptive LSHADE Algorithm for Wind Farm Layout Optimization</div>
-                <div class="pub-authors">Yu, Jiatianyi, <strong>Baohang Zhang</strong>, et al.</div>
-                <div class="pub-venue">IEEE PIC 2024</div>
-            </div>
-
-            <div class="pub-item">
-                <div class="pub-year">2023</div>
-                <div class="pub-title">A Clustering Strategy-Based Evolutionary Algorithm for Feature Selection</div>
-                <div class="pub-authors"><strong>Baohang Zhang</strong>, Wang, Ziqian, et al.</div>
-                <div class="pub-venue">IEA/AIE 2023</div>
-            </div>
-
-            <div class="pub-item">
-                <div class="pub-year">2023</div>
-                <div class="pub-title">A Non-revisiting Equilibrium Optimizer Algorithm</div>
-                <div class="pub-authors"><strong>Baohang Zhang</strong>, Yang, Haichuan, et al.</div>
-                <div class="pub-venue journal">IEICE Transactions on Information and Systems</div>
+        <aside class="sidebar">
+            <div class="avatar-box">
+                <img src="photo.jpg" alt="Baohang Zhang" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'">
             </div>
             
-             <div style="margin-top: 40px; text-align: center;">
-                <a href="https://scholar.google.com.hk/citations?user=kKfWIUkAAAAJ&hl=zh-CN" target="_blank" style="color: var(--text-gold); text-decoration: none; font-weight: 700; border-bottom: 1px solid var(--text-gold); padding-bottom: 2px;">
-                    VIEW FULL LIST ON GOOGLE SCHOLAR &rarr;
-                </a>
+            <h1 class="my-name">Baohang Zhang<br><span style="font-size:1.2rem; font-weight:400;">(张宝航)</span></h1>
+            <div class="my-title">Ph.D. Candidate (D3)</div>
+            <div class="my-uni">University of Toyama, Japan</div>
+
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="fa-solid fa-envelope"></i>
+                    <a href="mailto:zbhsyx@163.com">zbhsyx@163.com</a>
+                </div>
+                <div class="contact-item">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <span>Toyama, Japan</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fa-solid fa-building-columns"></i>
+                    <span>AI Laboratory</span>
+                </div>
             </div>
 
-        </div>
-    </section>
-
-    <footer style="text-align: center; padding: 60px 20px; color: var(--text-grey); font-size: 0.9rem; border-top: 1px solid var(--border-light); background: rgba(0,0,0,0.5);">
-        
-        <div style="margin-bottom: 20px;">
-            <a href="mailto:zbhsyx@163.com" style="color: var(--text-white); font-size: 1.5rem; margin: 0 15px; transition: color 0.3s;">
-                <i class="fa-solid fa-envelope"></i>
+            <a href="https://scholar.google.com.hk/citations?user=kKfWIUkAAAAJ&hl=zh-CN" target="_blank" class="scholar-btn">
+                <i class="fa-solid fa-graduation-cap"></i> Google Scholar
             </a>
-            <a href="https://scholar.google.com.hk/citations?user=kKfWIUkAAAAJ&hl=zh-CN" target="_blank" style="color: var(--text-white); font-size: 1.5rem; margin: 0 15px; transition: color 0.3s;">
-                <i class="fa-solid fa-graduation-cap"></i>
-            </a>
-        </div>
+        </aside>
 
-        <p style="margin-bottom: 5px;">Baohang Zhang (张宝航)</p>
-        <p style="color: var(--text-gold);">zbhsyx@163.com</p>
-        <p style="margin-top: 20px; font-size: 0.8rem; opacity: 0.6;">&copy; 2025 Designed in Toyama, Japan.</p>
-    </footer>
+        <main class="main-content">
+            
+            <section class="section">
+                <h2 class="section-header">Biography</h2>
+                <p class="bio-text">
+                    I am a Ph.D. Candidate (D3) at the <strong>University of Toyama</strong>, Japan, specializing in <strong>Artificial Intelligence</strong> and <strong>Evolutionary Computation</strong>. 
+                </p>
+                <p class="bio-text" style="margin-top: 10px;">
+                    My research interests include Swarm Intelligence, Multi-objective Optimization, and Feature Selection. I am dedicated to developing robust algorithms to solve complex, large-scale real-world optimization problems.
+                </p>
+            </section>
 
-    <script>
-        const canvas = document.getElementById('canvas-bg');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+            <section class="section">
+                <h2 class="section-header">Selected Publications</h2>
+                
+                <div class="paper-list">
+                    
+                    <div class="paper-item">
+                        <a href="#" class="paper-title">An Improved Artificial Bee Colony Algorithm with Differential Analysis and Deduplication for Feature Selection</a>
+                        <div class="paper-authors">Xu, Zhe, <strong>Baohang Zhang</strong>, Yu, Jiatianyi, Yang, Lin, Yuan, Fenggang, Gao, Shangce</div>
+                        <div class="paper-venue">
+                            International Journal of Computational Intelligence Systems, 2025
+                            <span class="tag tag-journal">Journal</span>
+                        </div>
+                    </div>
 
-        let particlesArray;
+                    <div class="paper-item">
+                        <a href="#" class="paper-title">An enhanced LSHADE with generalized Pareto distribution selection for escaping local optima</a>
+                        <div class="paper-authors">Xu, Zhe, Yu, Jiatianyi, <strong>Baohang Zhang</strong>, Yang, Lin, Liu, Yanting, Gao, Shangce</div>
+                        <div class="paper-venue">
+                            The Journal of Supercomputing, 2025
+                            <span class="tag tag-journal">Journal</span>
+                        </div>
+                    </div>
 
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 2;
-                this.speedX = (Math.random() * 0.3) - 0.15; // 速度调慢一点，配合雪山
-                this.speedY = (Math.random() * 0.3) - 0.15;
-            }
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                if (this.x > canvas.width || this.x < 0) this.speedX = -this.speedX;
-                if (this.y > canvas.height || this.y < 0) this.speedY = -this.speedY;
-            }
-            draw() {
-                ctx.fillStyle = 'rgba(212, 175, 55, 0.4)'; // 金色粒子，低透明度
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
+                    <div class="paper-item">
+                        <a href="#" class="paper-title">An Improved Whale Optimization Algorithm with Adaptive Fitness‐Distance Balance</a>
+                        <div class="paper-authors">Hou, Chunzhi, Lei, Zhenyu, <strong>Baohang Zhang</strong>, Yuan, Zijing, Wang, Rong‐Long, Gao, Shangce</div>
+                        <div class="paper-venue">
+                            IEEJ Transactions on Electrical and Electronic Engineering, 2025
+                            <span class="tag tag-journal">Journal</span>
+                        </div>
+                    </div>
 
-        function init() {
-            particlesArray = [];
-            for (let i = 0; i < 70; i++) { // 粒子数量适中
-                particlesArray.push(new Particle());
-            }
-        }
+                    <div class="paper-item">
+                        <a href="#" class="paper-title">A Novel Adaptive LSHADE Algorithm for Wind Farm Layout Optimization with Complex Wake Effect</a>
+                        <div class="paper-authors">Yu, Jiatianyi, <strong>Baohang Zhang</strong>, Du, Qianhang, Wang, Wenshui, Lei, Zhenyu, Gao, Shangce</div>
+                        <div class="paper-venue">
+                            IEEE PIC, 2024
+                            <span class="tag tag-conf">Conference</span>
+                        </div>
+                    </div>
 
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let i = 0; i < particlesArray.length; i++) {
-                particlesArray[i].update();
-                particlesArray[i].draw();
-                // 连线
-                for (let j = i; j < particlesArray.length; j++) {
-                    const dx = particlesArray[i].x - particlesArray[j].x;
-                    const dy = particlesArray[i].y - particlesArray[j].y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-                    if (distance < 120) {
-                        ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)'; // 极淡的连线
-                        ctx.lineWidth = 1;
-                        ctx.beginPath();
-                        ctx.moveTo(particlesArray[i].x, particlesArray[i].y);
-                        ctx.lineTo(particlesArray[j].x, particlesArray[j].y);
-                        ctx.stroke();
-                    }
-                }
-            }
-            requestAnimationFrame(animate);
-        }
+                    <div class="paper-item">
+                        <a href="#" class="paper-title">Information gain-based multi-objective evolutionary algorithm for feature selection</a>
+                        <div class="paper-authors"><strong>Baohang Zhang</strong>, Wang, Ziqian, Li, Haotian, Lei, Zhenyu, Cheng, Jiujun, Gao, Shangce</div>
+                        <div class="paper-venue">
+                            Information Sciences, 2024
+                            <span class="tag tag-journal">Journal</span>
+                        </div>
+                    </div>
 
-        init();
-        animate();
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            init();
-        });
-    </script>
+                    <div class="paper-item">
+                        <a href="#" class="paper-title">Chaotic Mapping Genetic Algorithm with Multiple Strategies</a>
+                        <div class="paper-authors">Zhu, Qianyu, Yang, Yifei, Li, Haotian, Yang, Haichuan, <strong>Baohang Zhang</strong>, Gao, Shangce</div>
+                        <div class="paper-venue">IEEE ICACI, 2023 <span class="tag tag-conf">Conference</span></div>
+                    </div>
+
+                    <div class="paper-item">
+                        <a href="#" class="paper-title">Using Manta Ray Foraging Mechanism to Improve Reptile Search Algorithm</a>
+                        <div class="paper-authors">Zheng, Tao, <strong>Baohang Zhang</strong>, Liu, Sicheng, Todo, Yuki, Gao, Shangce</div>
+                        <div class="paper-venue">IEEE ICCR, 2023 <span class="tag tag-conf">Conference</span></div>
+                    </div>
+
+                    <div class="paper-item">
+                        <a href="#" class="paper-title">Memetic Beluga whale optimization for feature selection</a>
+                        <div class="paper-authors">Gao, Jinrui, Wang, Ziqian, <strong>Baohang Zhang</strong>, Lei, Zhenyu, Todo, Yuki, Gao, Shangce</div>
+                        <div class="paper-venue">IEEE IHMSC, 2023 <span class="tag tag-conf">Conference</span></div>
+                    </div>
+
+                    <div class="paper-item">
+                        <a href="#" class="paper-title">A Clustering Strategy-Based Evolutionary Algorithm for Feature Selection in Classification</a>
+                        <div class="paper-authors"><strong>Baohang Zhang</strong>, Wang, Ziqian, Lei, Zhenyu, Yu, Jiatianyi, Jin, Ting, Gao, Shangce</div>
+                        <div class="paper-venue">IEA/AIE, 2023 <span class="tag tag-conf">Conference</span></div>
+                    </div>
+
+                    <div class="paper-item">
+                        <a href="#" class="paper-title">Improved differential evolutionary algorithm based on adaptive scaling factor</a>
+                        <div class="paper-authors">Zhang, Chen, Li, Haotian, Yang, Yifei, <strong>Baohang Zhang</strong>, Zhu, Huisheng, Gao, Shangce</div>
+                        <div class="paper-venue">IEA/AIE, 2023 <span class="tag tag-conf">Conference</span></div>
+                    </div>
+
+                    <div class="paper-item">
+                        <a href="#" class="paper-title">Swarm exploration mechanism-based distributed water wave optimization</a>
+                        <div class="paper-authors">Li, Haotian, Yang, Haichuan, <strong>Baohang Zhang</strong>, Zhang, Han, Gao, Shangce</div>
+                        <div class="paper-venue">International Journal of Computational Intelligence Systems, 2023 <span class="tag tag-journal">Journal</span></div>
+                    </div>
+
+                    <div class="paper-item">
+                        <a href="#" class="paper-title">A non-revisiting equilibrium optimizer algorithm</a>
+                        <div class="paper-authors"><strong>Baohang Zhang</strong>, Yang, Haichuan, Zheng, Tao, Wang, Rong-Long, Gao, Shangce</div>
+                        <div class="paper-venue">IEICE TRANSACTIONS on Information and Systems, 2023 <span class="tag tag-journal">Journal</span></div>
+                    </div>
+
+                    <div class="paper-item">
+                        <a href="#" class="paper-title">Umbrellalike hierarchical artificial bee colony algorithm</a>
+                        <div class="paper-authors">Zheng, Tao, Zhang, Han, <strong>Baohang Zhang</strong>, Cai, Zonghui, Wang, Kaiyu, Todo, Yuki, Gao, Shangce</div>
+                        <div class="paper-venue">IEICE TRANSACTIONS on Information and Systems, 2023 <span class="tag tag-journal">Journal</span></div>
+                    </div>
+
+                    <div class="paper-item">
+                        <a href="#" class="paper-title">An optimal differential vector incorporated whale optimizer</a>
+                        <div class="paper-authors">Yu, Jiatianyi, Yang, Haichuan, <strong>Baohang Zhang</strong>, Dong, Shibo, Gao, Shangce</div>
+                        <div class="paper-venue">ISCID, 2022 <span class="tag tag-conf">Conference</span></div>
+                    </div>
+
+                    <div class="paper-item">
+                        <a href="#" class="paper-title">A novel differential evolution sparrow search algorithm</a>
+                        <div class="paper-authors">Yang, Yifei, Li, Haotian, Yang, Haichuan, <strong>Baohang Zhang</strong>, Gao, Shangce</div>
+                        <div class="paper-venue">ISCID, 2022 <span class="tag tag-conf">Conference</span></div>
+                    </div>
+
+                    <div class="paper-item">
+                        <a href="#" class="paper-title">Hierarchical water wave optimization</a>
+                        <div class="paper-authors">Dong, Shibo, Yang, Haichuan, Li, Haotian, <strong>Baohang Zhang</strong>, Tao, Sichen, Gao, Shangce</div>
+                        <div class="paper-venue">IEEE ICNSC, 2022 <span class="tag tag-conf">Conference</span></div>
+                    </div>
+
+                    <div class="paper-item">
+                        <a href="#" class="paper-title">Evolving dendritic neuron model by equilibrium optimizer algorithm</a>
+                        <div class="paper-authors">Hou, Chunzhi, Shi, Jiarui, <strong>Baohang Zhang</strong></div>
+                        <div class="paper-venue">IEEE PIC, 2021 <span class="tag tag-conf">Conference</span></div>
+                    </div>
+
+                    <div class="paper-item">
+                        <a href="#" class="paper-title">Differential Whale Optimization Algorithm</a>
+                        <div class="paper-authors">Zheng, Tao, <strong>Baohang Zhang</strong>, Yang, Haichuan, Li, Jiayi, Gao, Shangce</div>
+                        <div class="paper-venue">IEEE ICNSC, 2021 <span class="tag tag-conf">Conference</span></div>
+                    </div>
+
+                    <div class="paper-item">
+                        <a href="#" class="paper-title">Using sparrow search hunting mechanism to improve water wave algorithm</a>
+                        <div class="paper-authors">Li, Haotian, <strong>Baohang Zhang</strong>, Li, Jiayi, Zheng, Tao, Yang, Haichuan</div>
+                        <div class="paper-venue">IEEE PIC, 2021 <span class="tag tag-conf">Conference</span></div>
+                    </div>
+
+                    <div class="paper-item">
+                        <a href="#" class="paper-title">A hybrid whale optimization and particle swarm optimization algorithm</a>
+                        <div class="paper-authors">Yuan, Zijing, Li, Jiayi, Yang, Haichuan, <strong>Baohang Zhang</strong></div>
+                        <div class="paper-venue">IEEE PIC, 2021 <span class="tag tag-conf">Conference</span></div>
+                    </div>
+
+                    <div class="paper-item">
+                        <a href="#" class="paper-title">A multi-population water wave optimization algorithm</a>
+                        <div class="paper-authors"><strong>Baohang Zhang</strong>, Yang, Haichuan, Yi, Junyan, Zhang, Zhiming, Gao, Shangce</div>
+                        <div class="paper-venue">ICCIA, 2021 <span class="tag tag-conf">Conference</span></div>
+                    </div>
+
+                </div>
+            </section>
+        </main>
+    </div>
+
 </body>
 </html>
