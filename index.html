@@ -1,403 +1,390 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Baohang Zhang | Ph.D. Candidate</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        :root {
-            --primary-blue: #003366; /* 经典的学院深蓝 */
-            --link-blue: #2a7ae2;    /* 链接蓝 */
-            --text-dark: #333333;
-            --text-gray: #666666;
-            --bg-gray: #f5f5f5;
-            --border-color: #eeeeee;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Baohang Zhang | Evolutionary Computation & Wind Energy Optimization</title>
+  <meta name="description" content="Baohang Zhang is a Ph.D. candidate at the University of Toyama, working on evolutionary computation, expensive optimization, wind farm optimization, and AI-driven optimization systems.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <style>
+    :root {
+      --bg: #0a0f18;
+      --panel: rgba(13, 21, 35, 0.78);
+      --panel-strong: rgba(17, 28, 45, 0.95);
+      --panel-soft: rgba(255, 255, 255, 0.04);
+      --text: #eaf2ff;
+      --muted: #9aabbe;
+      --line: rgba(255, 255, 255, 0.10);
+      --accent: #66d7ff;
+      --accent-2: #9ef3c5;
+      --accent-3: #9db8ff;
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+      --radius-lg: 28px;
+      --radius-md: 18px;
+      --radius-sm: 12px;
+      --maxw: 1240px;
+    }
 
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: var(--bg-gray);
-            color: var(--text-dark);
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-        }
-
-        /* --- 布局容器 --- */
-        .container {
-            max-width: 1100px;
-            margin: 40px auto;
-            background: white;
-            display: grid;
-            grid-template-columns: 280px 1fr; /* 左侧栏固定，右侧自适应 */
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            border-top: 5px solid var(--primary-blue); /* 顶部装饰条 */
-        }
-
-        /* --- 左侧个人信息栏 --- */
-        .sidebar {
-            background-color: #fafafa;
-            padding: 40px 30px;
-            border-right: 1px solid var(--border-color);
-            text-align: center;
-        }
-
-        .avatar-box {
-            width: 180px;
-            height: 180px;
-            margin: 0 auto 20px;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 4px solid white;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        .avatar-box img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .my-name {
-            font-family: 'Merriweather', serif;
-            font-size: 1.6rem;
-            font-weight: 700;
-            margin-bottom: 5px;
-            color: var(--text-dark);
-        }
-
-        .my-title {
-            font-size: 0.95rem;
-            color: var(--text-dark);
-            font-weight: 500;
-            margin-bottom: 2px;
-        }
-
-        .my-uni {
-            font-size: 0.9rem;
-            color: var(--text-gray);
-            margin-bottom: 20px;
-        }
-
-        .contact-info {
-            text-align: left;
-            font-size: 0.9rem;
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid #ddd;
-        }
-
-        .contact-item {
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: #555;
-        }
-        
-        .contact-item i { color: var(--primary-blue); width: 20px; text-align: center; }
-        .contact-item a { color: #555; text-decoration: none; transition: 0.2s; }
-        .contact-item a:hover { color: var(--link-blue); text-decoration: underline; }
-
-        .scholar-btn {
-            display: block;
-            margin-top: 30px;
-            padding: 10px 0;
-            background: white;
-            border: 1px solid var(--primary-blue);
-            color: var(--primary-blue);
-            text-decoration: none;
-            border-radius: 4px;
-            font-weight: 500;
-            font-size: 0.9rem;
-            transition: 0.2s;
-        }
-        .scholar-btn:hover {
-            background: var(--primary-blue);
-            color: white;
-        }
-
-        /* --- 右侧主要内容 --- */
-        .main-content {
-            padding: 50px 60px;
-        }
-
-        .section { margin-bottom: 50px; }
-        
-        .section-header {
-            font-family: 'Merriweather', serif;
-            font-size: 1.5rem;
-            color: var(--primary-blue);
-            border-bottom: 2px solid #eee;
-            padding-bottom: 10px;
-            margin-bottom: 25px;
-        }
-
-        p.bio-text {
-            font-size: 1.05rem;
-            color: #444;
-            text-align: justify;
-        }
-
-        /* --- 论文列表 (标准学术格式) --- */
-        .paper-list {
-            list-style: none;
-        }
-
-        .paper-item {
-            margin-bottom: 20px;
-            padding-left: 20px;
-            border-left: 3px solid transparent;
-            transition: 0.2s;
-        }
-
-        .paper-item:hover {
-            border-left-color: var(--primary-blue);
-            background: #fdfdfd;
-        }
-
-        .paper-title {
-            font-weight: 700;
-            font-size: 1.05rem;
-            color: #222;
-            display: block;
-            margin-bottom: 4px;
-            text-decoration: none;
-        }
-        .paper-title:hover { color: var(--link-blue); }
-
-        .paper-authors {
-            font-size: 0.95rem;
-            color: #444;
-            margin-bottom: 4px;
-        }
-
-        .paper-venue {
-            font-size: 0.9rem;
-            color: #666;
-            font-style: italic;
-        }
-        
-        .tag {
-            display: inline-block;
-            font-size: 0.75rem;
-            padding: 1px 6px;
-            border-radius: 3px;
-            margin-left: 8px;
-            font-style: normal;
-            vertical-align: middle;
-        }
-        .tag-journal { background: #e3f2fd; color: #0d47a1; border: 1px solid #bbdefb; }
-        .tag-conf { background: #f3e5f5; color: #4a148c; border: 1px solid #e1bee7; }
-
-        /* 手机端适配 */
-        @media (max-width: 800px) {
-            .container { grid-template-columns: 1fr; margin: 0; box-shadow: none; }
-            .sidebar { border-right: none; border-bottom: 1px solid #eee; }
-            .main-content { padding: 30px 20px; }
-        }
-    </style>
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; background: var(--bg); }
+    body {
+      margin: 0;
+      font-family: 'Manrope', sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 12% 18%, rgba(102, 215, 255, 0.16), transparent 22%),
+        radial-gradient(circle at 88% 12%, rgba(157, 184, 255, 0.18), transparent 20%),
+        radial-gradient(circle at 76% 82%, rgba(158, 243, 197, 0.12), transparent 18%),
+        linear-gradient(180deg, #07111f 0%, #0a0f18 48%, #0b1220 100%);
+      min-height: 100vh;
+      line-height: 1.75;
+      letter-spacing: 0.01em;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+      background-size: 64px 64px;
+      mask-image: radial-gradient(circle at center, black 42%, transparent 82%);
+      opacity: 0.30;
+    }
+    a { color: inherit; text-decoration: none; }
+    .shell { width: min(calc(100% - 32px), var(--maxw)); margin: 0 auto; position: relative; z-index: 1; }
+    .topbar {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 28px 0 10px; color: var(--muted); font-size: 0.92rem;
+    }
+    .topbar .brand {
+      display: flex; align-items: center; gap: 12px; font-weight: 700; color: var(--text);
+      letter-spacing: 0.08em; text-transform: uppercase; font-size: 0.84rem;
+    }
+    .brand-mark {
+      width: 11px; height: 11px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 0 24px rgba(102, 215, 255, 0.7);
+    }
+    .hero { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 24px; align-items: stretch; padding: 22px 0; }
+    .hero-card, .panel, .paper-item, .metric, .tag-panel {
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    }
+    .hero-card {
+      background: linear-gradient(180deg, rgba(18, 29, 49, 0.92), rgba(10, 17, 28, 0.90));
+      border: 1px solid var(--line); border-radius: var(--radius-lg); box-shadow: var(--shadow);
+      padding: 42px; position: relative; overflow: hidden;
+    }
+    .hero-card::after {
+      content: ""; position: absolute; inset: auto -80px -80px auto; width: 240px; height: 240px;
+      background: radial-gradient(circle, rgba(102, 215, 255, 0.22), transparent 65%); pointer-events: none;
+    }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 10px; padding: 8px 14px; border-radius: 999px;
+      border: 1px solid rgba(102, 215, 255, 0.22); background: rgba(102, 215, 255, 0.08);
+      color: var(--accent); font-size: 0.84rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; margin-bottom: 18px;
+    }
+    .hero h1 {
+      margin: 0; font-family: 'DM Serif Display', serif; font-size: clamp(2.7rem, 5vw, 5rem);
+      line-height: 0.96; letter-spacing: -0.03em; max-width: 760px;
+    }
+    .hero h1 span { display: block; color: #c8d8ef; font-size: 0.72em; margin-top: 10px; }
+    .hero-intro { max-width: 760px; font-size: 1.05rem; color: #c0cede; margin: 22px 0 28px; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 30px; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px; padding: 13px 18px; border-radius: 999px;
+      font-weight: 700; font-size: 0.94rem;
+      transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease, background 0.22s ease;
+      border: 1px solid transparent;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #5f9cff); color: #07111f;
+      box-shadow: 0 16px 40px rgba(102, 215, 255, 0.22);
+    }
+    .btn-secondary { border-color: rgba(255, 255, 255, 0.14); background: rgba(255, 255, 255, 0.03); color: var(--text); }
+    .hero-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+    .metric { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: var(--radius-md); padding: 18px; }
+    .metric .value { display: block; font-size: 1.5rem; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+    .metric .label { color: var(--muted); font-size: 0.88rem; }
+    .side-stack { display: grid; gap: 20px; }
+    .panel {
+      background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius-lg);
+      box-shadow: var(--shadow); padding: 28px; position: relative; overflow: hidden;
+    }
+    .profile-card { text-align: left; }
+    .avatar-wrap { display: flex; align-items: center; gap: 18px; margin-bottom: 24px; }
+    .avatar {
+      width: 112px; height: 112px; border-radius: 24px; overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.12); box-shadow: 0 16px 34px rgba(0,0,0,0.28);
+      background: linear-gradient(135deg, rgba(102,215,255,0.14), rgba(157,184,255,0.10)); flex: 0 0 auto;
+    }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .identity h2 { margin: 0 0 6px; font-size: 1.35rem; line-height: 1.15; }
+    .identity p { margin: 0; color: var(--muted); font-size: 0.92rem; }
+    .contact-list { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
+    .contact-list li { display: flex; align-items: center; gap: 12px; color: #d7e5f6; font-size: 0.94rem; }
+    .contact-list i { width: 18px; color: var(--accent); text-align: center; }
+    .tag-panel {
+      background: linear-gradient(180deg, rgba(13, 25, 42, 0.9), rgba(10, 17, 29, 0.86));
+      border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-md); padding: 20px;
+    }
+    .panel-title {
+      margin: 0 0 14px; font-size: 0.88rem; text-transform: uppercase; letter-spacing: 0.10em;
+      color: var(--accent); font-weight: 800;
+    }
+    .chips { display: flex; flex-wrap: wrap; gap: 10px; }
+    .chip {
+      padding: 8px 12px; border-radius: 999px; background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08); color: #d8e5f8; font-size: 0.84rem; font-weight: 600;
+    }
+    .section { padding: 22px 0; }
+    .section-head {
+      display: flex; justify-content: space-between; align-items: end; gap: 18px; margin-bottom: 22px;
+    }
+    .section-head h3 {
+      margin: 0; font-family: 'DM Serif Display', serif; font-size: 2rem; font-weight: 400; letter-spacing: -0.02em;
+    }
+    .section-head p { margin: 0; max-width: 700px; color: var(--muted); }
+    .research-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+    .research-card {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-md);
+      padding: 24px; position: relative; overflow: hidden;
+    }
+    .research-card::before {
+      content: ""; position: absolute; inset: 0 auto auto 0; width: 100%; height: 4px;
+      background: linear-gradient(90deg, var(--accent), transparent 70%); opacity: 0.8;
+    }
+    .research-card h4 { margin: 0 0 10px; font-size: 1.04rem; }
+    .research-card p { margin: 0; color: var(--muted); font-size: 0.94rem; }
+    .papers { display: grid; gap: 16px; }
+    .paper-item {
+      background: linear-gradient(180deg, rgba(255,255,255,0.028), rgba(255,255,255,0.016));
+      border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 22px 24px;
+      transition: transform 0.22s ease, border-color 0.22s ease, background 0.22s ease;
+    }
+    .paper-item:hover {
+      transform: translateY(-3px); border-color: rgba(102,215,255,0.28);
+      background: linear-gradient(180deg, rgba(102,215,255,0.05), rgba(255,255,255,0.02));
+    }
+    .paper-top { display: flex; justify-content: space-between; align-items: start; gap: 18px; margin-bottom: 8px; }
+    .paper-title { font-size: 1.04rem; font-weight: 800; line-height: 1.5; margin: 0; color: #f0f6ff; }
+    .paper-authors, .paper-venue { margin: 0; color: var(--muted); font-size: 0.93rem; }
+    .paper-venue { margin-top: 5px; }
+    .paper-tags { display: flex; flex-wrap: wrap; gap: 8px; flex-shrink: 0; }
+    .paper-tag {
+      display: inline-flex; align-items: center; justify-content: center; padding: 7px 11px; border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04); color: #d8e6f8;
+      font-size: 0.76rem; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase;
+    }
+    .paper-tag.journal {
+      border-color: rgba(102,215,255,0.22); color: var(--accent); background: rgba(102,215,255,0.08);
+    }
+    .paper-tag.conference {
+      border-color: rgba(158,243,197,0.24); color: var(--accent-2); background: rgba(158,243,197,0.08);
+    }
+    .footer { padding: 36px 0 48px; color: var(--muted); font-size: 0.9rem; }
+    @media (max-width: 1080px) {
+      .hero { grid-template-columns: 1fr; }
+      .research-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 760px) {
+      .shell { width: min(calc(100% - 20px), var(--maxw)); }
+      .hero-card, .panel { padding: 22px; }
+      .hero h1 { font-size: clamp(2.2rem, 11vw, 3.5rem); }
+      .hero-grid { grid-template-columns: 1fr; }
+      .paper-top, .section-head, .topbar, .avatar-wrap { display: block; }
+      .paper-tags { margin-top: 12px; }
+      .topbar { padding-top: 20px; }
+      .avatar-wrap { display: flex; }
+    }
+  </style>
 </head>
 <body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark"></span>
+        <span>Baohang Zhang</span>
+      </div>
+      <div>Evolutionary Computation · Expensive Optimization · Wind Energy AI</div>
+    </header>
 
-    <div class="container">
-        
-        <aside class="sidebar">
-            <div class="avatar-box">
-                <img src="photo.jpg" alt="Baohang Zhang" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'">
+    <section class="hero">
+      <div class="hero-card">
+        <div class="eyebrow">
+          <i class="fa-solid fa-sparkles"></i>
+          Academic Profile
+        </div>
+        <h1>
+          Baohang Zhang
+          <span>Ph.D. Candidate in AI and Evolutionary Optimization</span>
+        </h1>
+        <p class="hero-intro">
+          I work on evolutionary computation, expensive optimization, and wind energy optimization systems. My current focus is building robust optimization methods for high-dimensional real-world problems, especially offshore wind farm layout and yaw control.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="https://scholar.google.com.hk/citations?user=kKfWIUkAAAAJ&hl=zh-CN" target="_blank" rel="noopener noreferrer">
+            <i class="fa-solid fa-graduation-cap"></i>
+            Google Scholar
+          </a>
+          <a class="btn btn-secondary" href="https://github.com/zbh0528" target="_blank" rel="noopener noreferrer">
+            <i class="fa-brands fa-github"></i>
+            GitHub
+          </a>
+        </div>
+        <div class="hero-grid">
+          <div class="metric">
+            <span class="value">Ph.D.</span>
+            <span class="label">University of Toyama, Japan</span>
+          </div>
+          <div class="metric">
+            <span class="value">EC + AI</span>
+            <span class="label">Optimization-driven research agenda</span>
+          </div>
+          <div class="metric">
+            <span class="value">WFLO / Yaw</span>
+            <span class="label">Wind farm layout and control optimization</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="side-stack">
+        <aside class="panel profile-card">
+          <div class="avatar-wrap">
+            <div class="avatar">
+              <img src="photo.jpg" alt="Baohang Zhang" onerror="this.src='https://avatars.githubusercontent.com/u/52562369?v=4'">
             </div>
-            
-            <h1 class="my-name">Baohang Zhang<br><span style="font-size:1.2rem; font-weight:400;">(张宝航)</span></h1>
-            <div class="my-title">Ph.D. Candidate (D3)</div>
-            <div class="my-uni">University of Toyama, Japan</div>
-
-            <div class="contact-info">
-                <div class="contact-item">
-                    <i class="fa-solid fa-envelope"></i>
-                    <a href="mailto:zbhsyx@163.com">zbhsyx@163.com</a>
-                </div>
-                <div class="contact-item">
-                    <i class="fa-solid fa-location-dot"></i>
-                    <span>Toyama, Japan</span>
-                </div>
-                <div class="contact-item">
-                    <i class="fa-solid fa-building-columns"></i>
-                    <span>AI Laboratory</span>
-                </div>
+            <div class="identity">
+              <h2>Baohang Zhang</h2>
+              <p>Ph.D. Candidate (D3)</p>
+              <p>University of Toyama</p>
             </div>
-
-            <a href="https://scholar.google.com.hk/citations?user=kKfWIUkAAAAJ&hl=zh-CN" target="_blank" class="scholar-btn">
-                <i class="fa-solid fa-graduation-cap"></i> Google Scholar
-            </a>
+          </div>
+          <ul class="contact-list">
+            <li><i class="fa-solid fa-envelope"></i><a href="mailto:zbhsyx@163.com">zbhsyx@163.com</a></li>
+            <li><i class="fa-solid fa-location-dot"></i><span>Toyama, Japan</span></li>
+            <li><i class="fa-solid fa-building-columns"></i><span>Artificial Intelligence Laboratory</span></li>
+          </ul>
         </aside>
 
-        <main class="main-content">
-            
-            <section class="section">
-                <h2 class="section-header">Biography</h2>
-                <p class="bio-text">
-                    I am a Ph.D. Candidate (D3) at the <strong>University of Toyama</strong>, Japan, specializing in <strong>Artificial Intelligence</strong> and <strong>Evolutionary Computation</strong>. 
-                </p>
-                <p class="bio-text" style="margin-top: 10px;">
-                    My research interests include Swarm Intelligence, Multi-objective Optimization, and Feature Selection. I am dedicated to developing robust algorithms to solve complex, large-scale real-world optimization problems.
-                </p>
-            </section>
+        <div class="tag-panel">
+          <p class="panel-title">Research Keywords</p>
+          <div class="chips">
+            <span class="chip">Evolutionary Computation</span>
+            <span class="chip">Differential Evolution</span>
+            <span class="chip">Expensive Optimization</span>
+            <span class="chip">Wind Farm Layout Optimization</span>
+            <span class="chip">Yaw Optimization</span>
+            <span class="chip">Feature Selection</span>
+          </div>
+        </div>
+      </div>
+    </section>
 
-            <section class="section">
-                <h2 class="section-header">Selected Publications</h2>
-                
-                <div class="paper-list">
-                    
-                    <div class="paper-item">
-                        <a href="#" class="paper-title">An Improved Artificial Bee Colony Algorithm with Differential Analysis and Deduplication for Feature Selection</a>
-                        <div class="paper-authors">Xu, Zhe, <strong>Baohang Zhang</strong>, Yu, Jiatianyi, Yang, Lin, Yuan, Fenggang, Gao, Shangce</div>
-                        <div class="paper-venue">
-                            International Journal of Computational Intelligence Systems, 2025
-                            <span class="tag tag-journal">Journal</span>
-                        </div>
-                    </div>
+    <section class="section">
+      <div class="section-head">
+        <h3>Research Directions</h3>
+        <p>A cleaner academic structure with stronger visual focus: methods, application domain, and optimization systems are separated so the page reads like a research profile rather than a plain CV dump.</p>
+      </div>
+      <div class="research-grid">
+        <article class="research-card">
+          <h4>Evolutionary Computation</h4>
+          <p>Adaptive differential evolution, swarm intelligence, and population-based search for complex nonconvex problems.</p>
+        </article>
+        <article class="research-card">
+          <h4>Expensive Real-World Optimization</h4>
+          <p>Algorithm design for high-cost objective evaluation, structure-aware search, and scalable optimization workflows.</p>
+        </article>
+        <article class="research-card">
+          <h4>Wind Energy Optimization</h4>
+          <p>Integrated offshore wind farm layout, cable routing, wake-aware yaw optimization, and optimization under realistic engineering constraints.</p>
+        </article>
+      </div>
+    </section>
 
-                    <div class="paper-item">
-                        <a href="#" class="paper-title">An enhanced LSHADE with generalized Pareto distribution selection for escaping local optima</a>
-                        <div class="paper-authors">Xu, Zhe, Yu, Jiatianyi, <strong>Baohang Zhang</strong>, Yang, Lin, Liu, Yanting, Gao, Shangce</div>
-                        <div class="paper-venue">
-                            The Journal of Supercomputing, 2025
-                            <span class="tag tag-journal">Journal</span>
-                        </div>
-                    </div>
+    <section class="section">
+      <div class="section-head">
+        <h3>Selected Publications</h3>
+        <p>The publication list keeps the academic density of your current page, but with better hierarchy, stronger title emphasis, and clearer journal/conference cues.</p>
+      </div>
+      <div class="papers">
+        <article class="paper-item">
+          <div class="paper-top">
+            <div>
+              <p class="paper-title">A Geometry-guided Genetic Algorithm for Integrated Offshore Wind Farm Layout and Electrical Cable Routing Optimization</p>
+              <p class="paper-authors"><strong>Baohang Zhang</strong>, Yixin Shao, Zhenyu Lei, Chao Zhang, Yirui Wang, and Shangce Gao</p>
+              <p class="paper-venue"><em>Applied Energy</em>, accepted for publication.</p>
+            </div>
+            <div class="paper-tags"><span class="paper-tag journal">Journal</span></div>
+          </div>
+        </article>
 
-                    <div class="paper-item">
-                        <a href="#" class="paper-title">An Improved Whale Optimization Algorithm with Adaptive Fitness‐Distance Balance</a>
-                        <div class="paper-authors">Hou, Chunzhi, Lei, Zhenyu, <strong>Baohang Zhang</strong>, Yuan, Zijing, Wang, Rong‐Long, Gao, Shangce</div>
-                        <div class="paper-venue">
-                            IEEJ Transactions on Electrical and Electronic Engineering, 2025
-                            <span class="tag tag-journal">Journal</span>
-                        </div>
-                    </div>
+        <article class="paper-item">
+          <div class="paper-top">
+            <div>
+              <p class="paper-title">Dendritic Learning Empowered by Diversity-Aware Differential Evolution</p>
+              <p class="paper-authors">Zhe Xu, Lin Yang, Fenggang Yuan, <strong>Baohang Zhang</strong>, Jiatianyi Yu, and Xiaosha Qi</p>
+              <p class="paper-venue"><em>IEEE Access</em>, 2026.</p>
+            </div>
+            <div class="paper-tags"><span class="paper-tag journal">Journal</span></div>
+          </div>
+        </article>
 
-                    <div class="paper-item">
-                        <a href="#" class="paper-title">A Novel Adaptive LSHADE Algorithm for Wind Farm Layout Optimization with Complex Wake Effect</a>
-                        <div class="paper-authors">Yu, Jiatianyi, <strong>Baohang Zhang</strong>, Du, Qianhang, Wang, Wenshui, Lei, Zhenyu, Gao, Shangce</div>
-                        <div class="paper-venue">
-                            IEEE PIC, 2024
-                            <span class="tag tag-conf">Conference</span>
-                        </div>
-                    </div>
+        <article class="paper-item">
+          <div class="paper-top">
+            <div>
+              <p class="paper-title">A Non-Revisiting Equilibrium Optimizer Algorithm</p>
+              <p class="paper-authors"><strong>Baohang Zhang</strong>, Haichuan Yang, Tao Zheng, Rong-Long Wang, and Shangce Gao</p>
+              <p class="paper-venue"><em>IEICE Transactions on Information and Systems</em>, 2023.</p>
+            </div>
+            <div class="paper-tags"><span class="paper-tag journal">Journal</span></div>
+          </div>
+        </article>
 
-                    <div class="paper-item">
-                        <a href="#" class="paper-title">Information gain-based multi-objective evolutionary algorithm for feature selection</a>
-                        <div class="paper-authors"><strong>Baohang Zhang</strong>, Wang, Ziqian, Li, Haotian, Lei, Zhenyu, Cheng, Jiujun, Gao, Shangce</div>
-                        <div class="paper-venue">
-                            Information Sciences, 2024
-                            <span class="tag tag-journal">Journal</span>
-                        </div>
-                    </div>
+        <article class="paper-item">
+          <div class="paper-top">
+            <div>
+              <p class="paper-title">A Compact Evolutionary Algorithm for Layout Optimization</p>
+              <p class="paper-authors">Tao Zheng, Zhiwei Yu, Kefan Ni, <strong>Baohang Zhang</strong>, Zhenyu Lei, and Shangce Gao</p>
+              <p class="paper-venue"><em>EITCE 2025</em>, Best Paper Award.</p>
+            </div>
+            <div class="paper-tags"><span class="paper-tag conference">Conference</span></div>
+          </div>
+        </article>
 
-                    <div class="paper-item">
-                        <a href="#" class="paper-title">Chaotic Mapping Genetic Algorithm with Multiple Strategies</a>
-                        <div class="paper-authors">Zhu, Qianyu, Yang, Yifei, Li, Haotian, Yang, Haichuan, <strong>Baohang Zhang</strong>, Gao, Shangce</div>
-                        <div class="paper-venue">IEEE ICACI, 2023 <span class="tag tag-conf">Conference</span></div>
-                    </div>
+        <article class="paper-item">
+          <div class="paper-top">
+            <div>
+              <p class="paper-title">A Novel Adaptive LSHADE Algorithm for Wind Farm Layout Optimization with Complex Wake Effect</p>
+              <p class="paper-authors">Jiatianyi Yu, <strong>Baohang Zhang</strong>, Qianhang Du, Wenshui Wang, Zhenyu Lei, and Shangce Gao</p>
+              <p class="paper-venue"><em>IEEE PIC</em>, 2024.</p>
+            </div>
+            <div class="paper-tags"><span class="paper-tag conference">Conference</span></div>
+          </div>
+        </article>
 
-                    <div class="paper-item">
-                        <a href="#" class="paper-title">Using Manta Ray Foraging Mechanism to Improve Reptile Search Algorithm</a>
-                        <div class="paper-authors">Zheng, Tao, <strong>Baohang Zhang</strong>, Liu, Sicheng, Todo, Yuki, Gao, Shangce</div>
-                        <div class="paper-venue">IEEE ICCR, 2023 <span class="tag tag-conf">Conference</span></div>
-                    </div>
+        <article class="paper-item">
+          <div class="paper-top">
+            <div>
+              <p class="paper-title">Information Gain-Based Multi-Objective Evolutionary Algorithm for Feature Selection</p>
+              <p class="paper-authors"><strong>Baohang Zhang</strong>, Ziqian Wang, Haotian Li, Zhenyu Lei, Jiujun Cheng, and Shangce Gao</p>
+              <p class="paper-venue"><em>Information Sciences</em>, 2024.</p>
+            </div>
+            <div class="paper-tags"><span class="paper-tag journal">Journal</span></div>
+          </div>
+        </article>
+      </div>
+    </section>
 
-                    <div class="paper-item">
-                        <a href="#" class="paper-title">Memetic Beluga whale optimization for feature selection</a>
-                        <div class="paper-authors">Gao, Jinrui, Wang, Ziqian, <strong>Baohang Zhang</strong>, Lei, Zhenyu, Todo, Yuki, Gao, Shangce</div>
-                        <div class="paper-venue">IEEE IHMSC, 2023 <span class="tag tag-conf">Conference</span></div>
-                    </div>
-
-                    <div class="paper-item">
-                        <a href="#" class="paper-title">A Clustering Strategy-Based Evolutionary Algorithm for Feature Selection in Classification</a>
-                        <div class="paper-authors"><strong>Baohang Zhang</strong>, Wang, Ziqian, Lei, Zhenyu, Yu, Jiatianyi, Jin, Ting, Gao, Shangce</div>
-                        <div class="paper-venue">IEA/AIE, 2023 <span class="tag tag-conf">Conference</span></div>
-                    </div>
-
-                    <div class="paper-item">
-                        <a href="#" class="paper-title">Improved differential evolutionary algorithm based on adaptive scaling factor</a>
-                        <div class="paper-authors">Zhang, Chen, Li, Haotian, Yang, Yifei, <strong>Baohang Zhang</strong>, Zhu, Huisheng, Gao, Shangce</div>
-                        <div class="paper-venue">IEA/AIE, 2023 <span class="tag tag-conf">Conference</span></div>
-                    </div>
-
-                    <div class="paper-item">
-                        <a href="#" class="paper-title">Swarm exploration mechanism-based distributed water wave optimization</a>
-                        <div class="paper-authors">Li, Haotian, Yang, Haichuan, <strong>Baohang Zhang</strong>, Zhang, Han, Gao, Shangce</div>
-                        <div class="paper-venue">International Journal of Computational Intelligence Systems, 2023 <span class="tag tag-journal">Journal</span></div>
-                    </div>
-
-                    <div class="paper-item">
-                        <a href="#" class="paper-title">A non-revisiting equilibrium optimizer algorithm</a>
-                        <div class="paper-authors"><strong>Baohang Zhang</strong>, Yang, Haichuan, Zheng, Tao, Wang, Rong-Long, Gao, Shangce</div>
-                        <div class="paper-venue">IEICE TRANSACTIONS on Information and Systems, 2023 <span class="tag tag-journal">Journal</span></div>
-                    </div>
-
-                    <div class="paper-item">
-                        <a href="#" class="paper-title">Umbrellalike hierarchical artificial bee colony algorithm</a>
-                        <div class="paper-authors">Zheng, Tao, Zhang, Han, <strong>Baohang Zhang</strong>, Cai, Zonghui, Wang, Kaiyu, Todo, Yuki, Gao, Shangce</div>
-                        <div class="paper-venue">IEICE TRANSACTIONS on Information and Systems, 2023 <span class="tag tag-journal">Journal</span></div>
-                    </div>
-
-                    <div class="paper-item">
-                        <a href="#" class="paper-title">An optimal differential vector incorporated whale optimizer</a>
-                        <div class="paper-authors">Yu, Jiatianyi, Yang, Haichuan, <strong>Baohang Zhang</strong>, Dong, Shibo, Gao, Shangce</div>
-                        <div class="paper-venue">ISCID, 2022 <span class="tag tag-conf">Conference</span></div>
-                    </div>
-
-                    <div class="paper-item">
-                        <a href="#" class="paper-title">A novel differential evolution sparrow search algorithm</a>
-                        <div class="paper-authors">Yang, Yifei, Li, Haotian, Yang, Haichuan, <strong>Baohang Zhang</strong>, Gao, Shangce</div>
-                        <div class="paper-venue">ISCID, 2022 <span class="tag tag-conf">Conference</span></div>
-                    </div>
-
-                    <div class="paper-item">
-                        <a href="#" class="paper-title">Hierarchical water wave optimization</a>
-                        <div class="paper-authors">Dong, Shibo, Yang, Haichuan, Li, Haotian, <strong>Baohang Zhang</strong>, Tao, Sichen, Gao, Shangce</div>
-                        <div class="paper-venue">IEEE ICNSC, 2022 <span class="tag tag-conf">Conference</span></div>
-                    </div>
-
-                    <div class="paper-item">
-                        <a href="#" class="paper-title">Evolving dendritic neuron model by equilibrium optimizer algorithm</a>
-                        <div class="paper-authors">Hou, Chunzhi, Shi, Jiarui, <strong>Baohang Zhang</strong></div>
-                        <div class="paper-venue">IEEE PIC, 2021 <span class="tag tag-conf">Conference</span></div>
-                    </div>
-
-                    <div class="paper-item">
-                        <a href="#" class="paper-title">Differential Whale Optimization Algorithm</a>
-                        <div class="paper-authors">Zheng, Tao, <strong>Baohang Zhang</strong>, Yang, Haichuan, Li, Jiayi, Gao, Shangce</div>
-                        <div class="paper-venue">IEEE ICNSC, 2021 <span class="tag tag-conf">Conference</span></div>
-                    </div>
-
-                    <div class="paper-item">
-                        <a href="#" class="paper-title">Using sparrow search hunting mechanism to improve water wave algorithm</a>
-                        <div class="paper-authors">Li, Haotian, <strong>Baohang Zhang</strong>, Li, Jiayi, Zheng, Tao, Yang, Haichuan</div>
-                        <div class="paper-venue">IEEE PIC, 2021 <span class="tag tag-conf">Conference</span></div>
-                    </div>
-
-                    <div class="paper-item">
-                        <a href="#" class="paper-title">A hybrid whale optimization and particle swarm optimization algorithm</a>
-                        <div class="paper-authors">Yuan, Zijing, Li, Jiayi, Yang, Haichuan, <strong>Baohang Zhang</strong></div>
-                        <div class="paper-venue">IEEE PIC, 2021 <span class="tag tag-conf">Conference</span></div>
-                    </div>
-
-                    <div class="paper-item">
-                        <a href="#" class="paper-title">A multi-population water wave optimization algorithm</a>
-                        <div class="paper-authors"><strong>Baohang Zhang</strong>, Yang, Haichuan, Yi, Junyan, Zhang, Zhiming, Gao, Shangce</div>
-                        <div class="paper-venue">ICCIA, 2021 <span class="tag tag-conf">Conference</span></div>
-                    </div>
-
-                </div>
-            </section>
-        </main>
-    </div>
-
+    <footer class="footer">
+      <div>Designed as a research-focused academic homepage with a restrained visual system, high information density, and a sharper identity for optimization and wind energy research.</div>
+    </footer>
+  </div>
 </body>
 </html>
