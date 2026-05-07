@@ -1,0 +1,2654 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K-means 聚类可视化</title>
+    <style>
+        :root {
+            color-scheme: light;
+            --bg: #f5f5f7;
+            --stage: #fbfbfd;
+            --panel: rgba(255, 255, 255, 0.72);
+            --panel-strong: rgba(255, 255, 255, 0.88);
+            --line: rgba(29, 29, 31, 0.10);
+            --line-strong: rgba(29, 29, 31, 0.16);
+            --text: #1d1d1f;
+            --sub: #515154;
+            --dim: #86868b;
+            --cyan: #0071e3;
+            --blue: #0071e3;
+            --green: #34c759;
+            --gold: #ff9f0a;
+            --rose: #ff2d55;
+            --violet: #af52de;
+            --point: #b8c0ca;
+            --shadow: 0 24px 80px rgba(0, 0, 0, 0.09);
+            --radius: 16px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 30cm;
+            height: 16cm;
+            margin: 0;
+        }
+
+        body {
+            overflow: hidden;
+            display: block;
+            background: #050506;
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
+            letter-spacing: 0;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: geometricPrecision;
+        }
+
+        button {
+            font: inherit;
+        }
+
+        .stage {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(246, 247, 250, 0.98)),
+                var(--stage);
+            box-shadow: var(--shadow);
+            isolation: isolate;
+        }
+
+        .stage::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background:
+                linear-gradient(rgba(255, 255, 255, 0.026) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px);
+            background-size: 96px 96px;
+        }
+
+        .stage::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            background:
+                linear-gradient(90deg, rgba(251, 251, 253, 0.92), transparent 20%, transparent 88%, rgba(251, 251, 253, 0.92)),
+                linear-gradient(180deg, rgba(251, 251, 253, 0.84), transparent 24%, transparent 76%, rgba(251, 251, 253, 0.92));
+        }
+
+        .top {
+            position: absolute;
+            z-index: 5;
+            left: 48px;
+            right: 44px;
+            top: 34px;
+            display: grid;
+            grid-template-columns: 455px minmax(620px, 1fr);
+            gap: 34px;
+            align-items: start;
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            height: 26px;
+            padding: 0 11px;
+            color: var(--cyan);
+            background: rgba(0, 113, 227, 0.08);
+            border: 1px solid rgba(0, 113, 227, 0.13);
+            border-radius: var(--radius);
+            font-size: 12px;
+            font-weight: 650;
+        }
+
+        .tag::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--cyan);
+            box-shadow: 0 0 16px rgba(0, 113, 227, 0.35);
+        }
+
+        h1 {
+            margin: 14px 0 0;
+            color: var(--text);
+            font-size: 60px;
+            line-height: 0.96;
+            font-weight: 720;
+            letter-spacing: 0;
+        }
+
+        .params {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 22px;
+        }
+
+        .param-field {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            height: 34px;
+            padding: 0 11px;
+            color: rgba(245, 245, 247, 0.56);
+            border: 1px solid rgba(245, 245, 247, 0.15);
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 540;
+        }
+
+        .param-field input {
+            width: 58px;
+            color: #f5f5f7;
+            background: transparent;
+            border: 0;
+            outline: 0;
+            font: inherit;
+            font-size: 13px;
+            font-weight: 650;
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .param-field input::-webkit-outer-spin-button,
+        .param-field input::-webkit-inner-spin-button {
+            margin: 0;
+            appearance: none;
+        }
+
+        .param-apply {
+            height: 34px;
+            padding: 0 16px;
+            color: #050506;
+            background: #f5f5f7;
+            border: 0;
+            border-radius: 999px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 650;
+        }
+
+        .param-apply.secondary {
+            color: rgba(245, 245, 247, 0.72);
+            background: transparent;
+            border: 1px solid rgba(245, 245, 247, 0.15);
+        }
+
+        .metrics {
+            justify-self: end;
+            display: grid;
+            grid-template-columns: repeat(6, max-content);
+            gap: 0;
+            align-items: center;
+            min-height: 64px;
+            padding: 9px 6px;
+            background: rgba(255, 255, 255, 0.50);
+            border: 1px solid rgba(29, 29, 31, 0.07);
+            border-radius: 22px;
+            backdrop-filter: blur(22px);
+        }
+
+        .metric {
+            min-width: 106px;
+            min-height: 46px;
+            padding: 3px 18px 2px;
+            background: transparent;
+            border: 0;
+            border-left: 1px solid rgba(29, 29, 31, 0.09);
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        .metric:first-child {
+            border-left: 0;
+        }
+
+        .metric-name {
+            color: var(--dim);
+            font-size: 11px;
+            font-weight: 560;
+            line-height: 1.2;
+        }
+
+        .metric-value {
+            margin-top: 6px;
+            color: var(--text);
+            font-size: 26px;
+            line-height: 1;
+            font-weight: 680;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .viz-wrap {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+        }
+
+        #viz {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .plot-frame {
+            fill: rgba(255, 255, 255, 0.56);
+            stroke: rgba(29, 29, 31, 0.075);
+            stroke-width: 1.2;
+        }
+
+        .plot-grid line {
+            stroke: rgba(29, 29, 31, 0.030);
+            stroke-width: 1;
+        }
+
+        .surface {
+            opacity: 0;
+            transition: opacity 420ms ease;
+        }
+
+        .point {
+            opacity: 0;
+            filter: drop-shadow(0 4px 7px rgba(0, 0, 0, 0.09));
+            transition:
+                opacity 620ms ease,
+                fill 520ms ease,
+                r 360ms ease,
+                transform 360ms ease;
+            transform-box: fill-box;
+            transform-origin: center;
+        }
+
+        .point.show {
+            opacity: 0.92;
+        }
+
+        .point.pending {
+            opacity: 0.34;
+        }
+
+        .point.scanning {
+            opacity: 1;
+            transform: scale(1.36);
+        }
+
+        .point.assigned {
+            opacity: 0.94;
+        }
+
+        .point.changed {
+            transform: scale(1.22);
+        }
+
+        .ray {
+            opacity: 0;
+            stroke-width: 3.1;
+            stroke-linecap: round;
+            filter: drop-shadow(0 0 10px rgba(0, 113, 227, 0.16));
+            transition: opacity 350ms ease, stroke-width 300ms ease;
+        }
+
+        .ray.show {
+            opacity: 0.16;
+        }
+
+        .ray.best {
+            opacity: 0.82;
+            stroke-width: 4.2;
+        }
+
+        .centroid {
+            opacity: 0;
+            filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.13));
+            transition: opacity 520ms ease;
+        }
+
+        .centroid.show {
+            opacity: 1;
+        }
+
+        .halo {
+            opacity: 0;
+            transition: opacity 520ms ease, r 520ms ease;
+        }
+
+        .halo.show {
+            opacity: 0.20;
+        }
+
+        .label {
+            opacity: 0;
+            fill: rgba(29, 29, 31, 0.72);
+            font-size: 20px;
+            font-weight: 650;
+            pointer-events: none;
+            transition: opacity 420ms ease;
+        }
+
+        .label.show {
+            opacity: 1;
+        }
+
+        .mean {
+            opacity: 0;
+            fill: none;
+            stroke-width: 2.8;
+            transition: opacity 360ms ease;
+        }
+
+        .mean.show {
+            opacity: 0.58;
+        }
+
+        .spotlight {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 320ms ease, rx 420ms ease, ry 420ms ease, cx 420ms ease, cy 420ms ease;
+        }
+
+        .spotlight.show {
+            opacity: 1;
+        }
+
+        .point.region-focus {
+            opacity: 1;
+            filter: drop-shadow(0 0 14px rgba(255, 255, 255, 0.22));
+        }
+
+        .focus-ring {
+            opacity: 0;
+            fill: none;
+            stroke: #1d1d1f;
+            stroke-width: 2.6;
+            transition: opacity 300ms ease;
+        }
+
+        .focus-dot {
+            opacity: 0;
+            stroke: #ffffff;
+            stroke-width: 4;
+            transition: opacity 300ms ease;
+        }
+
+        .focus-ring.show,
+        .focus-dot.show {
+            opacity: 1;
+        }
+
+        .panel {
+            position: absolute;
+            z-index: 5;
+            background: rgba(255, 255, 255, 0.44);
+            border: 1px solid rgba(29, 29, 31, 0.055);
+            border-radius: 22px;
+            box-shadow: 0 18px 42px rgba(0, 0, 0, 0.045);
+            backdrop-filter: blur(22px);
+        }
+
+        .detail {
+            left: 42px;
+            top: 474px;
+            width: 252px;
+            padding: 15px 16px 15px;
+        }
+
+        .panel-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            margin-bottom: 14px;
+        }
+
+        .panel-title span {
+            color: var(--sub);
+            font-size: 12px;
+            font-weight: 560;
+        }
+
+        .panel-title strong {
+            color: var(--text);
+            font-size: 14px;
+            font-weight: 680;
+        }
+
+        .distance-row {
+            display: grid;
+            grid-template-columns: 10px 34px minmax(0, 1fr) 50px;
+            align-items: center;
+            gap: 9px;
+            min-height: 25px;
+            margin-top: 8px;
+            color: var(--sub);
+            font-size: 12px;
+            font-weight: 540;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .distance-row.best {
+            color: var(--text);
+        }
+
+        .distance-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .distance-bar {
+            height: 5px;
+            overflow: hidden;
+            background: rgba(29, 29, 31, 0.08);
+            border-radius: 999px;
+        }
+
+        .distance-fill {
+            display: block;
+            width: 0%;
+            height: 100%;
+            border-radius: inherit;
+            transition: width 500ms ease;
+        }
+
+        .phase {
+            left: 42px;
+            top: 174px;
+            width: 252px;
+            padding: 17px 16px 18px;
+        }
+
+        .phase-list {
+            display: grid;
+            gap: 14px;
+        }
+
+        .phase-item {
+            display: grid;
+            grid-template-columns: 28px 1fr;
+            gap: 10px;
+            align-items: center;
+            color: var(--dim);
+            font-size: 16px;
+            line-height: 1.12;
+            font-weight: 600;
+        }
+
+        .phase-index {
+            display: grid;
+            place-items: center;
+            width: 28px;
+            height: 28px;
+            color: var(--dim);
+            border: 1px solid var(--line);
+            border-radius: 50%;
+            font-size: 12px;
+            font-weight: 680;
+        }
+
+        .phase-item.active {
+            color: var(--text);
+        }
+
+        .phase-item.active .phase-index {
+            color: #ffffff;
+            background: var(--cyan);
+            border-color: var(--cyan);
+            box-shadow: none;
+        }
+
+        .caption {
+            position: absolute;
+            z-index: 5;
+            left: 50%;
+            bottom: 92px;
+            width: auto;
+            min-width: 206px;
+            padding: 10px 17px;
+            transform: translateX(-50%);
+            display: inline-flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 10px;
+            text-align: center;
+            white-space: nowrap;
+            background: rgba(255, 255, 255, 0.80);
+            border: 1px solid rgba(29, 29, 31, 0.07);
+            border-radius: 999px;
+            backdrop-filter: blur(20px);
+        }
+
+        .caption-stage {
+            color: var(--cyan);
+            font-size: 14px;
+            font-weight: 680;
+        }
+
+        .caption-main {
+            margin-top: 0;
+            color: var(--text);
+            font-size: 18px;
+            line-height: 1;
+            font-weight: 660;
+        }
+
+        .caption.flash {
+            animation: flash 520ms ease;
+        }
+
+        @keyframes flash {
+            from {
+                opacity: 0;
+                transform: translate(-50%, 8px);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+        }
+
+        .controls {
+            position: absolute;
+            z-index: 6;
+            left: 48px;
+            right: 44px;
+            bottom: 30px;
+            display: grid;
+            grid-template-columns: 184px minmax(240px, 1fr) 262px;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .transport {
+            display: flex;
+            gap: 8px;
+        }
+
+        .control-btn {
+            min-width: 78px;
+            height: 40px;
+            padding: 0 14px;
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.64);
+            border: 1px solid rgba(29, 29, 31, 0.09);
+            border-radius: 999px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: border-color 180ms ease, background 180ms ease, transform 180ms ease;
+        }
+
+        .control-btn:hover {
+            transform: translateY(-1px);
+            border-color: rgba(76, 201, 240, 0.48);
+        }
+
+        .control-btn.primary {
+            color: #ffffff;
+            background: var(--cyan);
+            border-color: var(--cyan);
+        }
+
+        .progress {
+            min-width: 0;
+        }
+
+        .bar {
+            position: relative;
+            height: 5px;
+            overflow: hidden;
+            background: rgba(29, 29, 31, 0.10);
+            border-radius: 999px;
+        }
+
+        .bar-fill {
+            position: absolute;
+            inset: 0 auto 0 0;
+            width: 0%;
+            background: var(--cyan);
+            border-radius: inherit;
+            transition: width 520ms ease;
+        }
+
+        .progress-labels {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            margin-top: 10px;
+            color: var(--dim);
+            font-size: 12px;
+            font-weight: 540;
+        }
+
+        .progress-labels span.active {
+            color: var(--text);
+        }
+
+        .speed {
+            justify-self: end;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+            padding: 5px;
+            background: rgba(255, 255, 255, 0.58);
+            border: 1px solid var(--line);
+            border-radius: 999px;
+        }
+
+        .speed button {
+            min-width: 76px;
+            height: 32px;
+            color: var(--sub);
+            background: transparent;
+            border: 0;
+            border-radius: 999px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 560;
+        }
+
+        .speed button.active {
+            color: #ffffff;
+            background: var(--cyan);
+        }
+
+        .pause-mask {
+            position: absolute;
+            inset: 0;
+            z-index: 8;
+            display: none;
+            place-items: center;
+            background: rgba(245, 245, 247, 0.42);
+            backdrop-filter: blur(7px);
+        }
+
+        .pause-mask.show {
+            display: grid;
+        }
+
+        .pause-card {
+            padding: 18px 22px;
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.92);
+            border: 1px solid var(--line-strong);
+            border-radius: var(--radius);
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        /* Keynote-grade visual pass: remove dashboard styling and make the plot the product. */
+        .stage {
+            background:
+                linear-gradient(135deg, #030304 0%, #111216 48%, #050506 100%),
+                #050506;
+            box-shadow: none;
+        }
+
+        .stage::before {
+            background:
+                linear-gradient(rgba(255, 255, 255, 0.026) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px);
+            background-size: 96px 96px;
+            mask-image: linear-gradient(90deg, transparent 0%, #000 24%, #000 100%);
+        }
+
+        .stage::after {
+            background:
+                linear-gradient(90deg, rgba(3, 3, 4, 0.94) 0%, rgba(3, 3, 4, 0.86) 17%, transparent 36%),
+                linear-gradient(180deg, rgba(3, 3, 4, 0.78) 0%, transparent 18%, transparent 78%, rgba(3, 3, 4, 0.86) 100%);
+        }
+
+        .top {
+            left: 64px;
+            right: 64px;
+            top: 54px;
+            grid-template-columns: 390px minmax(600px, 1fr);
+            gap: 44px;
+        }
+
+        .tag {
+            height: auto;
+            padding: 0;
+            color: rgba(245, 245, 247, 0.58);
+            background: transparent;
+            border: 0;
+            border-radius: 0;
+            font-size: 13px;
+            font-weight: 560;
+        }
+
+        .tag::before {
+            width: 6px;
+            height: 6px;
+            background: var(--cyan);
+            box-shadow: 0 0 18px rgba(0, 113, 227, 0.82);
+        }
+
+        h1 {
+            margin-top: 16px;
+            color: #f5f5f7;
+            font-size: 58px;
+            line-height: 1;
+            font-weight: 680;
+            letter-spacing: 0;
+        }
+
+        .metrics {
+            justify-self: end;
+            min-height: 0;
+            padding: 0;
+            gap: 0;
+            background: transparent;
+            border: 0;
+            border-radius: 0;
+            backdrop-filter: none;
+        }
+
+        .metric {
+            min-width: 104px;
+            min-height: 42px;
+            padding: 0 22px;
+            border-left: 1px solid rgba(245, 245, 247, 0.13);
+        }
+
+        .metric:first-child {
+            border-left: 0;
+        }
+
+        .metric-name {
+            color: rgba(245, 245, 247, 0.42);
+            font-size: 12px;
+            font-weight: 520;
+        }
+
+        .metric-value {
+            margin-top: 8px;
+            color: #f5f5f7;
+            font-size: 25px;
+            font-weight: 650;
+        }
+
+        .plot-frame {
+            fill: transparent;
+            stroke: rgba(245, 245, 247, 0.045);
+            stroke-width: 1;
+        }
+
+        .plot-grid line {
+            stroke: rgba(245, 245, 247, 0.035);
+        }
+
+        .surface {
+            filter: none;
+            stroke-width: 1.1;
+            vector-effect: non-scaling-stroke;
+        }
+
+        .point {
+            filter: drop-shadow(0 0 7px rgba(255, 255, 255, 0.10));
+        }
+
+        .point.pending {
+            opacity: 0.22;
+        }
+
+        .ray {
+            stroke-width: 2.2;
+            filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.18));
+        }
+
+        .ray.show {
+            opacity: 0.11;
+        }
+
+        .ray.best {
+            opacity: 0.78;
+            stroke-width: 3.4;
+        }
+
+        .centroid {
+            filter: drop-shadow(0 0 18px rgba(255, 255, 255, 0.20));
+        }
+
+        .halo.show {
+            opacity: 0.12;
+        }
+
+        .label {
+            fill: rgba(245, 245, 247, 0.70);
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .mean.show {
+            opacity: 0.46;
+        }
+
+        .spotlight {
+            fill-opacity: 0.12;
+            stroke-opacity: 0.62;
+            stroke-width: 2.2;
+            filter: drop-shadow(0 0 28px rgba(255, 255, 255, 0.14));
+        }
+
+        .focus-ring {
+            stroke: rgba(245, 245, 247, 0.86);
+            stroke-width: 2.2;
+        }
+
+        .focus-dot {
+            stroke: #050506;
+            stroke-width: 4;
+        }
+
+        .panel {
+            background: transparent;
+            border: 0;
+            border-radius: 0;
+            box-shadow: none;
+            backdrop-filter: none;
+        }
+
+        .phase {
+            left: 64px;
+            top: 250px;
+            width: 292px;
+            padding: 0;
+        }
+
+        .detail {
+            left: 64px;
+            top: 594px;
+            width: 292px;
+            padding: 22px 0 0;
+            border-top: 1px solid rgba(245, 245, 247, 0.13);
+        }
+
+        .panel-title {
+            margin-bottom: 22px;
+        }
+
+        .panel-title span {
+            color: rgba(245, 245, 247, 0.42);
+            font-size: 12px;
+            font-weight: 520;
+        }
+
+        .panel-title strong {
+            color: #f5f5f7;
+            font-size: 15px;
+            font-weight: 650;
+        }
+
+        .phase-list {
+            gap: 19px;
+        }
+
+        .phase-item {
+            grid-template-columns: 32px 1fr;
+            gap: 13px;
+            color: rgba(245, 245, 247, 0.36);
+            font-size: 18px;
+            line-height: 1.1;
+            font-weight: 560;
+        }
+
+        .phase-index {
+            width: 32px;
+            height: 32px;
+            color: rgba(245, 245, 247, 0.46);
+            border-color: rgba(245, 245, 247, 0.16);
+            font-size: 13px;
+            font-weight: 620;
+        }
+
+        .phase-item.active {
+            color: #f5f5f7;
+        }
+
+        .phase-item.active .phase-index {
+            color: #050506;
+            background: #f5f5f7;
+            border-color: #f5f5f7;
+        }
+
+        .distance-row {
+            grid-template-columns: 9px 34px minmax(0, 1fr) 54px;
+            gap: 10px;
+            min-height: 28px;
+            margin-top: 8px;
+            color: rgba(245, 245, 247, 0.50);
+            font-size: 12px;
+            font-weight: 520;
+        }
+
+        .distance-row.best {
+            color: #f5f5f7;
+        }
+
+        .distance-bar {
+            height: 4px;
+            background: rgba(245, 245, 247, 0.12);
+        }
+
+        .caption {
+            left: 64px;
+            bottom: 126px;
+            z-index: 10;
+            min-width: 0;
+            padding: 0;
+            transform: none;
+            justify-content: flex-start;
+            background: transparent;
+            border: 0;
+            border-radius: 0;
+            backdrop-filter: none;
+            opacity: 1;
+        }
+
+        .caption.flash {
+            animation: none;
+        }
+
+        .caption-stage {
+            color: rgba(245, 245, 247, 0.72);
+            font-size: 16px;
+            font-weight: 560;
+        }
+
+        .caption-main {
+            color: #ffffff;
+            font-size: 26px;
+            font-weight: 680;
+        }
+
+        .controls {
+            left: 374px;
+            right: 64px;
+            bottom: 44px;
+            grid-template-columns: minmax(460px, 840px) 220px 154px;
+            gap: 24px;
+            opacity: 0;
+            transition: opacity 220ms ease;
+        }
+
+        .transport {
+            order: 3;
+            justify-self: end;
+        }
+
+        .progress {
+            order: 1;
+            width: min(840px, 100%);
+            justify-self: start;
+        }
+
+        .speed {
+            order: 2;
+        }
+
+        .stage:hover .controls,
+        .stage:focus-within .controls {
+            opacity: 0.78;
+        }
+
+        .control-btn {
+            min-width: 70px;
+            height: 34px;
+            color: rgba(245, 245, 247, 0.82);
+            background: transparent;
+            border: 1px solid rgba(245, 245, 247, 0.16);
+            font-size: 12px;
+            font-weight: 560;
+        }
+
+        .control-btn.primary {
+            color: #050506;
+            background: #f5f5f7;
+            border-color: #f5f5f7;
+        }
+
+        .control-btn:hover {
+            border-color: rgba(245, 245, 247, 0.38);
+        }
+
+        .bar {
+            height: 2px;
+            background: rgba(245, 245, 247, 0.14);
+        }
+
+        .bar-fill {
+            background: #f5f5f7;
+        }
+
+        .progress-labels {
+            margin-top: 10px;
+            color: rgba(245, 245, 247, 0.35);
+            font-size: 11px;
+            font-weight: 520;
+        }
+
+        .progress-labels span.active {
+            color: rgba(245, 245, 247, 0.88);
+        }
+
+        .speed {
+            padding: 0;
+            background: transparent;
+            border: 1px solid rgba(245, 245, 247, 0.16);
+        }
+
+        .speed button {
+            min-width: 70px;
+            color: rgba(245, 245, 247, 0.58);
+            font-size: 12px;
+        }
+
+        .speed button.active {
+            color: #050506;
+            background: #f5f5f7;
+        }
+
+        .pause-mask {
+            background: rgba(3, 3, 4, 0.56);
+        }
+
+        .pause-card {
+            color: #f5f5f7;
+            background: rgba(20, 20, 24, 0.86);
+            border-color: rgba(245, 245, 247, 0.16);
+        }
+
+        @keyframes flash {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Lecture-slide layout: 30cm x 16cm, white ground, plot-first composition. */
+        body {
+            background: #ffffff;
+        }
+
+        .stage {
+            width: 30cm;
+            height: 16cm;
+            background:
+                radial-gradient(circle at 52% 46%, rgba(0, 113, 227, 0.065), transparent 34%),
+                linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+            box-shadow: none;
+        }
+
+        .stage::before {
+            background:
+                linear-gradient(rgba(15, 23, 42, 0.035) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(15, 23, 42, 0.030) 1px, transparent 1px);
+            background-size: 58px 58px;
+            mask-image: none;
+            opacity: 0.75;
+        }
+
+        .stage::after {
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.86) 0%, transparent 18%, transparent 84%, rgba(255, 255, 255, 0.92) 100%);
+        }
+
+        .top {
+            left: 42px;
+            right: 42px;
+            top: 24px;
+            display: block;
+        }
+
+        .tag {
+            display: none;
+        }
+
+        .tag::before {
+            background: #0b4a8f;
+            box-shadow: none;
+        }
+
+        h1 {
+            display: none;
+        }
+
+        .params,
+        .metrics,
+        .phase,
+        .detail {
+            display: none;
+        }
+
+        .controls {
+            position: absolute;
+            z-index: 18;
+            left: auto;
+            right: 44px;
+            bottom: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+            opacity: 0.88;
+            transition: opacity 180ms ease;
+        }
+
+        .controls:hover {
+            opacity: 1;
+        }
+
+        .transport {
+            display: flex;
+            gap: 10px;
+        }
+
+        .progress,
+        .speed {
+            display: none;
+        }
+
+        .control-btn {
+            min-width: 76px;
+            height: 34px;
+            padding: 0 16px;
+            color: #111827;
+            background: rgba(255, 255, 255, 0.82);
+            border: 1px solid rgba(15, 23, 42, 0.14);
+            border-radius: 999px;
+            box-shadow: 0 8px 18px rgba(15, 23, 42, 0.10);
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 720;
+        }
+
+        .control-btn.primary {
+            color: #ffffff;
+            background: #0b4a8f;
+            border-color: #0b4a8f;
+        }
+
+        .control-btn:hover {
+            transform: translateY(-1px);
+            border-color: rgba(11, 74, 143, 0.38);
+        }
+
+        .plot-frame {
+            fill: rgba(255, 255, 255, 0.82);
+            stroke: rgba(15, 23, 42, 0.13);
+            stroke-width: 1.3;
+        }
+
+        .plot-grid line {
+            stroke: rgba(15, 23, 42, 0.052);
+        }
+
+        .surface {
+            stroke-width: 1.4;
+        }
+
+        .point {
+            filter: drop-shadow(0 4px 8px rgba(15, 23, 42, 0.12));
+        }
+
+        .point.pending {
+            opacity: 0.26;
+        }
+
+        .ray {
+            stroke-width: 2.4;
+            filter: none;
+        }
+
+        .ray.show {
+            opacity: 0.16;
+        }
+
+        .ray.best {
+            opacity: 0.78;
+            stroke-width: 3.6;
+        }
+
+        .centroid {
+            filter: drop-shadow(0 8px 16px rgba(15, 23, 42, 0.20));
+        }
+
+        .halo.show {
+            opacity: 0.16;
+        }
+
+        .label {
+            fill: rgba(17, 24, 39, 0.76);
+            font-size: 20px;
+            font-weight: 720;
+        }
+
+        .mean.show {
+            opacity: 0.56;
+        }
+
+        .spotlight {
+            fill-opacity: 0.09;
+            stroke-opacity: 0.46;
+            stroke-width: 2.2;
+            filter: none;
+        }
+
+        .focus-ring {
+            stroke: rgba(17, 24, 39, 0.82);
+            stroke-width: 2.4;
+        }
+
+        .focus-dot {
+            stroke: #ffffff;
+            stroke-width: 4;
+        }
+
+        .step-toast {
+            position: absolute;
+            z-index: 20;
+            left: 50%;
+            top: 26px;
+            width: min(740px, calc(100% - 150px));
+            padding: 13px 26px 15px;
+            color: #111827;
+            text-align: center;
+            pointer-events: none;
+            opacity: 0;
+            transform: translate(-50%, -10px) scale(0.98);
+            background: rgba(255, 255, 255, 0.94);
+            border: 1px solid rgba(15, 23, 42, 0.12);
+            border-radius: 999px;
+            box-shadow: 0 18px 42px rgba(15, 23, 42, 0.13);
+            backdrop-filter: blur(18px);
+        }
+
+        .step-toast.show {
+            animation: stepToast 3200ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        .step-toast.run-start .step-kicker {
+            background: #0f766e;
+            box-shadow: 0 8px 18px rgba(15, 118, 110, 0.22);
+        }
+
+        .step-toast.run-stop .step-kicker {
+            background: #111827;
+            box-shadow: 0 8px 18px rgba(17, 24, 39, 0.22);
+        }
+
+        .step-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            min-height: 30px;
+            padding: 0 16px;
+            color: #ffffff;
+            background: #0b4a8f;
+            border-radius: 999px;
+            box-shadow: 0 8px 18px rgba(11, 74, 143, 0.24);
+            font-size: 18px;
+            line-height: 1;
+            font-weight: 840;
+            letter-spacing: 0.04em;
+        }
+
+        .step-kicker::before {
+            content: "";
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: #ffffff;
+            opacity: 0.92;
+        }
+
+        .step-title {
+            margin-top: 8px;
+            font-size: 25px;
+            line-height: 1.08;
+            font-weight: 780;
+        }
+
+        .step-sub {
+            margin-top: 5px;
+            color: #4b5563;
+            font-size: 15px;
+            font-weight: 620;
+        }
+
+        @keyframes stepToast {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -13px) scale(0.96);
+            }
+            12%,
+            82% {
+                opacity: 1;
+                transform: translate(-50%, 0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -8px) scale(0.985);
+            }
+        }
+
+        @media (max-width: 1120px) {
+            .stage {
+                min-width: 0;
+                min-height: 0;
+            }
+
+            .top {
+                left: 24px;
+                right: 24px;
+                top: 20px;
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+
+            .metrics {
+                grid-template-columns: repeat(6, 1fr);
+                justify-self: stretch;
+                width: 100%;
+            }
+
+            .metric {
+                min-width: 0;
+                min-height: 58px;
+                padding: 9px 10px;
+            }
+
+            h1 {
+                font-size: 42px;
+                line-height: 1;
+            }
+
+            .metric-value {
+                font-size: 22px;
+            }
+
+            .phase,
+            .detail {
+                display: none;
+            }
+
+            .caption {
+                width: calc(100% - 80px);
+            }
+
+            .controls {
+                left: 24px;
+                right: 24px;
+                bottom: 20px;
+                grid-template-columns: minmax(220px, 1fr) 190px 144px;
+                gap: 12px;
+            }
+
+            .speed button {
+                min-width: 62px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="stage" aria-label="K均值聚类算法可视化演示">
+        <header class="top">
+            <section>
+                <div class="tag">K-means 聚类算法</div>
+                <h1>K-means 聚类算法步骤</h1>
+                <section class="params" aria-label="参数设置">
+                    <label class="param-field">
+                        <span>样本 N</span>
+                        <input id="sampleInput" type="number" min="40" max="320" step="10" value="72">
+                    </label>
+                    <label class="param-field">
+                        <span>簇数 K</span>
+                        <input id="kInput" type="number" min="2" max="8" step="1" value="3">
+                    </label>
+                    <button id="applyParams" class="param-apply secondary" type="button">应用</button>
+                    <button id="startRun" class="param-apply" type="button">播放</button>
+                </section>
+            </section>
+
+            <section class="metrics" aria-label="算法指标">
+                <div class="metric">
+                    <div class="metric-name">样本数</div>
+                    <div id="metricN" class="metric-value">72</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-name">簇数</div>
+                    <div id="metricK" class="metric-value">3</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-name">迭代轮次</div>
+                    <div id="metricIter" class="metric-value">0</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-name">簇内误差</div>
+                    <div id="metricLoss" class="metric-value">-</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-name">质心位移</div>
+                    <div id="metricShift" class="metric-value">-</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-name">状态</div>
+                    <div id="metricStatus" class="metric-value">就绪</div>
+                </div>
+            </section>
+        </header>
+
+        <div class="viz-wrap">
+            <svg id="viz" viewBox="0 0 1200 640" role="img" aria-label="K均值聚类点云与质心动画">
+                <defs>
+                    <filter id="softBlur" x="-30%" y="-30%" width="160%" height="160%">
+                        <feGaussianBlur stdDeviation="13"></feGaussianBlur>
+                    </filter>
+                    <filter id="markerShadow" x="-60%" y="-60%" width="220%" height="220%">
+                        <feDropShadow dx="0" dy="12" stdDeviation="10" flood-color="#000000" flood-opacity="0.18"></feDropShadow>
+                    </filter>
+                </defs>
+                <rect class="plot-frame" x="28" y="28" width="1144" height="584" rx="20"></rect>
+                <g class="plot-grid" id="gridLayer"></g>
+                <g id="surfaceLayer"></g>
+                <g id="rayLayer"></g>
+                <g id="pointLayer"></g>
+                <g id="meanLayer"></g>
+                <g id="haloLayer"></g>
+                <g id="centroidLayer"></g>
+                <g id="labelLayer"></g>
+                <g id="focusLayer"></g>
+            </svg>
+        </div>
+
+        <aside class="panel phase" aria-label="算法阶段">
+            <div class="panel-title">
+                <span>算法阶段</span>
+                <strong id="phaseNow">随机选择初始中心</strong>
+            </div>
+            <div class="phase-list">
+                <div class="phase-item active" data-phase="0"><span class="phase-index">1</span><span>随机选择初始中心</span></div>
+                <div class="phase-item" data-phase="1"><span class="phase-index">2</span><span>分配到最近中心</span></div>
+                <div class="phase-item" data-phase="2"><span class="phase-index">3</span><span>重新计算簇均值</span></div>
+                <div class="phase-item" data-phase="3"><span class="phase-index">4</span><span>重复直到分组稳定</span></div>
+            </div>
+        </aside>
+
+        <aside class="panel detail" aria-label="局部距离解释">
+            <div class="panel-title">
+                <span>argmin 距离</span>
+                <strong id="focusLabel">x_i</strong>
+            </div>
+            <div id="distanceRows"></div>
+        </aside>
+
+        <section class="controls" aria-label="播放控制">
+            <div class="transport">
+                <button id="playPause" class="control-btn primary" type="button">开始</button>
+                <button id="restart" class="control-btn" type="button">重启</button>
+            </div>
+            <div class="progress">
+                <div class="bar"><div id="barFill" class="bar-fill"></div></div>
+                <div class="progress-labels">
+                    <span data-progress="0" class="active">初始中心</span>
+                    <span data-progress="1">最近分配</span>
+                    <span data-progress="2">均值更新</span>
+                    <span data-progress="3">稳定判定</span>
+                </div>
+            </div>
+            <div class="speed">
+                <button type="button" data-speed="0.75">慢速</button>
+                <button type="button" data-speed="1" class="active">常速</button>
+                <button type="button" data-speed="1.55">快速</button>
+            </div>
+        </section>
+
+        <div id="stepToast" class="step-toast" aria-live="polite">
+            <div id="stepToastIndex" class="step-kicker">步骤 1</div>
+            <div id="stepToastTitle" class="step-title">随机选择 K 个对象作为初始中心</div>
+            <div id="stepToastSub" class="step-sub">从数据集 D 中选出 K 个样本点，作为第一轮中心</div>
+        </div>
+
+        <div id="pauseMask" class="pause-mask" aria-hidden="true">
+            <div class="pause-card">已暂停，按空格继续</div>
+        </div>
+    </main>
+
+    <script>
+        const config = {
+            width: 1200,
+            height: 640,
+            bounds: { left: 58, right: 1148, top: 62, bottom: 582 },
+            k: 3,
+            sampleCount: 72,
+            pointRadius: 7.4,
+            centroidRadius: 16,
+            maxIterations: 11,
+            palette: ["#0072CE", "#D55E00", "#009E73", "#CC79A7", "#56B4E9", "#F0E442", "#6F4EBA", "#E53935"],
+            colors: ["#0072CE", "#D55E00", "#009E73", "#CC79A7", "#56B4E9"],
+            names: ["C1", "C2", "C3", "C4", "C5"]
+        };
+
+        const state = {
+            seed: 20260430,
+            points: [],
+            centroids: [],
+            surfaces: [],
+            rays: [],
+            halos: [],
+            means: [],
+            labels: [],
+            focusPoint: null,
+            focusRing: null,
+            focusDot: null,
+            spotlight: null,
+            lossHistory: [],
+            iteration: 0,
+            speed: 1,
+            paused: false,
+            running: false,
+            stop: false,
+            runId: 0
+        };
+
+        const svgNS = "http://www.w3.org/2000/svg";
+        const fmt0 = new Intl.NumberFormat("zh-CN", { maximumFractionDigits: 0 });
+        const fmt1 = new Intl.NumberFormat("zh-CN", { maximumFractionDigits: 1 });
+
+        const el = {
+            grid: document.getElementById("gridLayer"),
+            surfaces: document.getElementById("surfaceLayer"),
+            rays: document.getElementById("rayLayer"),
+            points: document.getElementById("pointLayer"),
+            means: document.getElementById("meanLayer"),
+            halos: document.getElementById("haloLayer"),
+            centroids: document.getElementById("centroidLayer"),
+            labels: document.getElementById("labelLayer"),
+            focus: document.getElementById("focusLayer"),
+            sampleInput: document.getElementById("sampleInput"),
+            kInput: document.getElementById("kInput"),
+            applyParams: document.getElementById("applyParams"),
+            startRun: document.getElementById("startRun"),
+            metricN: document.getElementById("metricN"),
+            metricK: document.getElementById("metricK"),
+            metricIter: document.getElementById("metricIter"),
+            metricLoss: document.getElementById("metricLoss"),
+            metricShift: document.getElementById("metricShift"),
+            metricStatus: document.getElementById("metricStatus"),
+            phaseNow: document.getElementById("phaseNow"),
+            phases: Array.from(document.querySelectorAll(".phase-item")),
+            progressItems: Array.from(document.querySelectorAll(".progress-labels span")),
+            barFill: document.getElementById("barFill"),
+            focusLabel: document.getElementById("focusLabel"),
+            distanceRows: document.getElementById("distanceRows"),
+            playPause: document.getElementById("playPause"),
+            restart: document.getElementById("restart"),
+            pauseMask: document.getElementById("pauseMask"),
+            stepToast: document.getElementById("stepToast"),
+            stepToastIndex: document.getElementById("stepToastIndex"),
+            stepToastTitle: document.getElementById("stepToastTitle"),
+            stepToastSub: document.getElementById("stepToastSub"),
+            speedButtons: Array.from(document.querySelectorAll(".speed button"))
+        };
+
+        const stepCopy = [
+            {
+                index: "步骤 1",
+                title: "随机选择 K 个对象作为初始中心",
+                sub: "从数据集 D 中选出 K 个样本点，作为第一轮中心"
+            },
+            {
+                index: "步骤 2",
+                title: "每个对象分配到最近的中心",
+                sub: "用距离判断样本更靠近哪一个中心"
+            },
+            {
+                index: "步骤 3",
+                title: "重新计算每个簇的均值",
+                sub: "用组内样本的平均位置更新中心点"
+            },
+            {
+                index: "步骤 4",
+                title: "重复分配与更新，直到分组稳定",
+                sub: "如果对象所属的簇不再变化，算法停止"
+            }
+        ];
+
+        let toastTimer = 0;
+
+        function runStartCopy() {
+            return {
+                index: "开始",
+                title: `输入：${config.sampleCount} 个无标签样本，分成 ${config.k} 组`,
+                sub: "每个样本由特征表示；算法根据样本到中心点的距离自动分组"
+            };
+        }
+
+        function runStopCopy(reason) {
+            return {
+                index: "停止",
+                title: "分组结果已经稳定",
+                sub: `停止依据：${reason}；本次共迭代 ${state.iteration} 轮`
+            };
+        }
+
+        function random() {
+            state.seed = (state.seed * 1664525 + 1013904223) >>> 0;
+            return state.seed / 4294967296;
+        }
+
+        function gaussian() {
+            const u = Math.max(random(), 1e-6);
+            const v = Math.max(random(), 1e-6);
+            return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+        }
+
+        function clamp(value, min, max) {
+            return Math.max(min, Math.min(max, value));
+        }
+
+        function randomClusterColors(count) {
+            const pool = [...config.palette];
+            for (let i = pool.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [pool[i], pool[j]] = [pool[j], pool[i]];
+            }
+            const selected = pool.slice(0, count);
+            if (new Set(selected.map(color => color.toLowerCase())).size !== count) {
+                return config.palette.slice(0, count);
+            }
+            return selected;
+        }
+
+        function updateDerivedConfig() {
+            config.k = Math.round(clamp(config.k, 2, Math.min(8, config.palette.length)));
+            config.sampleCount = Math.round(clamp(config.sampleCount, 40, 320));
+            config.colors = randomClusterColors(config.k);
+            config.names = Array.from({ length: config.k }, (_, index) => `C${index + 1}`);
+            config.pointRadius = config.sampleCount > 270 ? 5.8 : config.sampleCount > 210 ? 6.2 : config.sampleCount > 150 ? 6.8 : 7.4;
+        }
+
+        function syncParamInputs() {
+            el.sampleInput.value = String(config.sampleCount);
+            el.kInput.value = String(config.k);
+        }
+
+        function readNumberInput(node, fallback) {
+            const value = Number(node.value);
+            return Number.isFinite(value) ? value : fallback;
+        }
+
+        function dist(a, b) {
+            return Math.hypot(a.x - b.x, a.y - b.y);
+        }
+
+        function svg(tag, attrs = {}) {
+            const node = document.createElementNS(svgNS, tag);
+            Object.entries(attrs).forEach(([key, value]) => node.setAttribute(key, value));
+            return node;
+        }
+
+        function easeOut(t) {
+            return 1 - Math.pow(1 - t, 3);
+        }
+
+        function easeInOut(t) {
+            return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        }
+
+        function wait(ms) {
+            return new Promise(resolve => {
+                let elapsed = 0;
+                let last;
+
+                function frame(now) {
+                    if (state.stop) {
+                        resolve(false);
+                        return;
+                    }
+
+                    if (last === undefined) last = now;
+                    if (!state.paused) elapsed += (now - last) * state.speed;
+                    last = now;
+
+                    if (elapsed >= ms) {
+                        resolve(true);
+                        return;
+                    }
+                    requestAnimationFrame(frame);
+                }
+
+                requestAnimationFrame(frame);
+            });
+        }
+
+        function tween(ms, draw, easing = easeInOut) {
+            return new Promise(resolve => {
+                let elapsed = 0;
+                let last;
+
+                function frame(now) {
+                    if (state.stop) {
+                        resolve(false);
+                        return;
+                    }
+
+                    if (last === undefined) last = now;
+                    if (!state.paused) elapsed += (now - last) * state.speed;
+                    last = now;
+
+                    const t = clamp(elapsed / ms, 0, 1);
+                    draw(easing(t), t);
+
+                    if (t >= 1) {
+                        resolve(true);
+                        return;
+                    }
+                    requestAnimationFrame(frame);
+                }
+
+                requestAnimationFrame(frame);
+            });
+        }
+
+        function setPhase(index, progress, notify = true) {
+            const labels = ["随机选择初始中心", "分配到最近中心", "重新计算簇均值", "重复直到分组稳定"];
+            el.phaseNow.textContent = labels[index];
+            el.phases.forEach(item => item.classList.toggle("active", Number(item.dataset.phase) === index));
+            el.progressItems.forEach(item => item.classList.toggle("active", Number(item.dataset.progress) === index));
+            el.barFill.style.width = `${clamp(progress, 0, 100)}%`;
+            if (notify) showStepToast(index);
+        }
+
+        function setStatus(status) {
+            el.metricStatus.textContent = status;
+        }
+
+        function animateNumber(node, from, to, formatter, duration = 520) {
+            const start = Number.isFinite(from) ? from : 0;
+            const end = Number.isFinite(to) ? to : 0;
+            tween(duration, p => {
+                node.textContent = formatter(start + (end - start) * p);
+            }, easeOut);
+        }
+
+        function showToast(copy, type = "step", duration = 3300) {
+            if (!copy) return;
+
+            el.stepToastIndex.textContent = copy.index;
+            el.stepToastTitle.textContent = copy.title;
+            el.stepToastSub.textContent = copy.sub;
+            el.stepToast.classList.remove("show", "run-start", "run-stop");
+            if (type === "start") el.stepToast.classList.add("run-start");
+            if (type === "stop") el.stepToast.classList.add("run-stop");
+            el.stepToast.style.animationDuration = `${duration}ms`;
+            void el.stepToast.offsetWidth;
+            el.stepToast.classList.add("show");
+
+            window.clearTimeout(toastTimer);
+            toastTimer = window.setTimeout(() => {
+                el.stepToast.classList.remove("show");
+            }, duration + 100);
+        }
+
+        function showStepToast(index) {
+            showToast(stepCopy[index]);
+        }
+
+        function showStartToast() {
+            showToast(runStartCopy(), "start", 4600);
+        }
+
+        function showStopToast(reason) {
+            showToast(runStopCopy(reason), "stop", 4800);
+        }
+
+        function buildGrid() {
+            el.grid.innerHTML = "";
+            const { left, right, top, bottom } = config.bounds;
+            for (let x = left; x <= right; x += 74) {
+                el.grid.appendChild(svg("line", { x1: x, y1: top, x2: x, y2: bottom }));
+            }
+            for (let y = top; y <= bottom; y += 74) {
+                el.grid.appendChild(svg("line", { x1: left, y1: y, x2: right, y2: y }));
+            }
+        }
+
+        function buildDistanceRows() {
+            el.distanceRows.innerHTML = "";
+            config.colors.forEach((color, index) => {
+                const row = document.createElement("div");
+                row.className = "distance-row";
+                row.dataset.index = String(index);
+
+                const dot = document.createElement("span");
+                dot.className = "distance-dot";
+                dot.style.background = color;
+
+                const name = document.createElement("span");
+                name.textContent = config.names[index];
+
+                const bar = document.createElement("span");
+                bar.className = "distance-bar";
+                const fill = document.createElement("span");
+                fill.className = "distance-fill";
+                fill.style.background = color;
+                bar.appendChild(fill);
+
+                const value = document.createElement("span");
+                value.textContent = "-";
+
+                row.appendChild(dot);
+                row.appendChild(name);
+                row.appendChild(bar);
+                row.appendChild(value);
+                el.distanceRows.appendChild(row);
+            });
+        }
+
+        function dataCenters() {
+            const presets = [
+                { x: 245, y: 278, sx: 66, sy: 56 },
+                { x: 935, y: 268, sx: 74, sy: 58 },
+                { x: 610, y: 472, sx: 82, sy: 58 },
+                { x: 635, y: 188, sx: 66, sy: 54 },
+                { x: 940, y: 468, sx: 72, sy: 56 },
+                { x: 255, y: 472, sx: 64, sy: 56 },
+                { x: 760, y: 370, sx: 66, sy: 56 },
+                { x: 1065, y: 382, sx: 58, sy: 54 }
+            ];
+
+            return presets.slice(0, config.k);
+        }
+
+        function generateData() {
+            const centers = dataCenters();
+            const points = [];
+            const baseCount = Math.floor(config.sampleCount / config.k);
+            let remainder = config.sampleCount % config.k;
+
+            centers.forEach((center, cluster) => {
+                const count = baseCount + (remainder-- > 0 ? 1 : 0);
+                for (let i = 0; i < count; i++) {
+                    const next = centers[(cluster + 1) % centers.length];
+                    const isBridge = centers.length > 1 && random() < 0.07;
+                    const mix = isBridge ? 0.30 + random() * 0.28 : 0;
+                    const cx = isBridge ? center.x * (1 - mix) + next.x * mix : center.x;
+                    const cy = isBridge ? center.y * (1 - mix) + next.y * mix : center.y;
+                    points.push({
+                        x: clamp(cx + gaussian() * center.sx + gaussian() * 14, config.bounds.left + 28, config.bounds.right - 28),
+                        y: clamp(cy + gaussian() * center.sy + gaussian() * 12, config.bounds.top + 28, config.bounds.bottom - 28),
+                        cluster: -1,
+                        previousCluster: -1,
+                        nextCluster: -1,
+                        distances: [],
+                        source: cluster,
+                        element: null
+                    });
+                }
+            });
+
+            points.sort((a, b) => a.x - b.x + (a.y - b.y) * 0.04);
+            return points;
+        }
+
+        function initialCentroids() {
+            const used = new Set();
+            const stride = Math.max(1, Math.floor(state.points.length / config.k));
+            const anchor = Math.floor(random() * stride);
+
+            return Array.from({ length: config.k }, (_, index) => {
+                let pointIndex = (anchor + index * stride + Math.floor(random() * stride)) % state.points.length;
+                while (used.has(pointIndex)) pointIndex = (pointIndex + 1) % state.points.length;
+                used.add(pointIndex);
+
+                const position = state.points[pointIndex];
+                return {
+                    x: position.x,
+                    y: position.y,
+                    sourcePoint: pointIndex,
+                    color: config.colors[index],
+                    name: config.names[index]
+                };
+            });
+        }
+
+        function resetLayers() {
+            [el.surfaces, el.rays, el.points, el.means, el.halos, el.centroids, el.labels, el.focus].forEach(layer => {
+                layer.innerHTML = "";
+            });
+        }
+
+        function centroidMarker(color) {
+            const group = svg("g", { class: "centroid" });
+            group.appendChild(svg("circle", {
+                cx: 0,
+                cy: 0,
+                r: config.centroidRadius + 7,
+                fill: "#ffffff",
+                "fill-opacity": 0.98,
+                stroke: "#111827",
+                "stroke-opacity": 0.28,
+                "stroke-width": 1.4,
+                filter: "url(#markerShadow)"
+            }));
+            group.appendChild(svg("path", {
+                d: `M0,-${config.centroidRadius} L${config.centroidRadius},0 L0,${config.centroidRadius} L-${config.centroidRadius},0 Z`,
+                fill: color
+            }));
+            group.appendChild(svg("path", {
+                d: `M0,-${config.centroidRadius - 5} L${config.centroidRadius - 5},0 L0,5 L-${config.centroidRadius - 5},0 Z`,
+                fill: "#ffffff",
+                "fill-opacity": 0.20
+            }));
+            return group;
+        }
+
+        function placeCentroid(index, x, y) {
+            const centroid = state.centroids[index];
+            centroid.x = x;
+            centroid.y = y;
+            centroid.element.setAttribute("transform", `translate(${x} ${y})`);
+            state.halos[index].setAttribute("cx", x);
+            state.halos[index].setAttribute("cy", y);
+            state.means[index].setAttribute("cx", x);
+            state.means[index].setAttribute("cy", y);
+            state.labels[index].setAttribute("x", x + 34);
+            state.labels[index].setAttribute("y", y - 30);
+        }
+
+        function setupScene() {
+            updateDerivedConfig();
+            state.runId += 1;
+            state.seed = 20260430 + config.sampleCount * 31 + config.k * 997;
+            state.points = generateData();
+            state.centroids = initialCentroids();
+            state.surfaces = [];
+            state.rays = [];
+            state.halos = [];
+            state.means = [];
+            state.labels = [];
+            state.focusPoint = null;
+            state.spotlight = null;
+            state.iteration = 0;
+            state.stop = false;
+            state.paused = false;
+
+            resetLayers();
+            buildGrid();
+            buildDistanceRows();
+
+            config.colors.forEach((color, index) => {
+                const surface = svg("path", {
+                    class: "surface",
+                    d: "",
+                    fill: color,
+                    "fill-opacity": 0.075,
+                    stroke: color,
+                    "stroke-opacity": 0.34
+                });
+                el.surfaces.appendChild(surface);
+                state.surfaces.push(surface);
+            });
+
+            state.points.forEach((point, index) => {
+                const circle = svg("circle", {
+                    class: "point show",
+                    cx: point.x,
+                    cy: point.y,
+                    r: config.pointRadius,
+                    fill: "var(--point)"
+                });
+                circle.style.transitionDelay = `${Math.min(index * 6, 700)}ms`;
+                el.points.appendChild(circle);
+                point.element = circle;
+            });
+
+            state.centroids.forEach((centroid, index) => {
+                const ray = svg("line", {
+                    class: "ray",
+                    x1: 0,
+                    y1: 0,
+                    x2: centroid.x,
+                    y2: centroid.y,
+                    stroke: centroid.color
+                });
+                el.rays.appendChild(ray);
+                state.rays.push(ray);
+
+                const halo = svg("circle", {
+                    class: "halo",
+                    cx: centroid.x,
+                    cy: centroid.y,
+                    r: 60,
+                    fill: centroid.color
+                });
+                el.halos.appendChild(halo);
+                state.halos.push(halo);
+
+                const mean = svg("circle", {
+                    class: "mean",
+                    cx: centroid.x,
+                    cy: centroid.y,
+                    r: config.centroidRadius + 15,
+                    stroke: centroid.color
+                });
+                el.means.appendChild(mean);
+                state.means.push(mean);
+
+                const marker = centroidMarker(centroid.color);
+                el.centroids.appendChild(marker);
+                centroid.element = marker;
+
+                const label = svg("text", {
+                    class: "label",
+                    x: centroid.x + 30,
+                    y: centroid.y - 27
+                });
+                label.textContent = centroid.name;
+                el.labels.appendChild(label);
+                state.labels.push(label);
+
+                placeCentroid(index, centroid.x, centroid.y);
+            });
+
+            state.focusRing = svg("circle", {
+                class: "focus-ring",
+                cx: 0,
+                cy: 0,
+                r: 23
+            });
+            state.focusDot = svg("circle", {
+                class: "focus-dot",
+                cx: 0,
+                cy: 0,
+                r: 10,
+                fill: "#ffffff"
+            });
+            state.spotlight = svg("ellipse", {
+                class: "spotlight",
+                cx: 0,
+                cy: 0,
+                rx: 1,
+                ry: 1,
+                fill: "#ffffff",
+                stroke: "#ffffff"
+            });
+            el.focus.appendChild(state.spotlight);
+            el.focus.appendChild(state.focusRing);
+            el.focus.appendChild(state.focusDot);
+
+            el.metricN.textContent = String(config.sampleCount);
+            el.metricK.textContent = String(config.k);
+            el.metricIter.textContent = "0";
+            el.metricLoss.textContent = "-";
+            el.metricShift.textContent = "-";
+            el.focusLabel.textContent = "x_i";
+            setStatus("就绪");
+            setPhase(0, 0, false);
+            syncParamInputs();
+            updatePlayState();
+        }
+
+        function revealPoints(runId) {
+            state.points.forEach((point, index) => {
+                window.setTimeout(() => {
+                    if (state.stop || runId !== state.runId) return;
+                    point.element.setAttribute("r", config.pointRadius);
+                    point.element.classList.add("show");
+                }, Math.min(index * 7, 820));
+            });
+        }
+
+        function revealCentroids(runId) {
+            state.centroids.forEach((centroid, index) => {
+                window.setTimeout(() => {
+                    if (state.stop || runId !== state.runId) return;
+                    centroid.element.classList.add("show");
+                    state.halos[index].classList.add("show");
+                    state.labels[index].classList.add("show");
+                }, index * 180);
+            });
+        }
+
+        function computeAssignments() {
+            let changed = 0;
+            let stable = 0;
+
+            state.points.forEach(point => {
+                point.previousCluster = point.cluster;
+                point.distances = [];
+
+                let bestIndex = 0;
+                let bestDistance = Infinity;
+                state.centroids.forEach((centroid, index) => {
+                    const d = dist(point, centroid);
+                    point.distances.push(d);
+                    if (d < bestDistance) {
+                        bestDistance = d;
+                        bestIndex = index;
+                    }
+                });
+
+                point.nextCluster = bestIndex;
+                if (point.previousCluster !== -1 && point.previousCluster === point.nextCluster) stable++;
+                if (point.previousCluster !== point.nextCluster) changed++;
+            });
+
+            if (state.iteration === 1) stable = 0;
+            return { changed, stable };
+        }
+
+        function neutralizePointsForAssignment() {
+            state.points.forEach(point => {
+                point.cluster = -1;
+                point.element.style.transitionDelay = "0ms";
+                point.element.setAttribute("fill", "var(--point)");
+                point.element.setAttribute("r", config.pointRadius);
+                point.element.setAttribute("stroke", "transparent");
+                point.element.setAttribute("stroke-width", "0");
+                point.element.classList.remove("changed", "scanning", "assigned");
+                point.element.classList.add("pending");
+            });
+            clearComparisonLines();
+            el.focusLabel.textContent = "x_i";
+        }
+
+        function chooseFocusPoint() {
+            let best = null;
+            let bestMargin = Infinity;
+            state.points.forEach(point => {
+                if (!point.distances.length) return;
+                const sorted = [...point.distances].sort((a, b) => a - b);
+                const margin = sorted[1] - sorted[0];
+                if (margin < bestMargin) {
+                    bestMargin = margin;
+                    best = point;
+                }
+            });
+            return best || state.points[0];
+        }
+
+        function hilbertIndex(point) {
+            const bits = 8;
+            const size = 1 << bits;
+            const { left, right, top, bottom } = config.bounds;
+            let x = Math.round(clamp((point.x - left) / (right - left), 0, 1) * (size - 1));
+            let y = Math.round(clamp((point.y - top) / (bottom - top), 0, 1) * (size - 1));
+            let d = 0;
+
+            for (let s = size >> 1; s > 0; s >>= 1) {
+                const rx = (x & s) > 0 ? 1 : 0;
+                const ry = (y & s) > 0 ? 1 : 0;
+                d += s * s * ((3 * rx) ^ ry);
+
+                if (ry === 0) {
+                    if (rx === 1) {
+                        x = size - 1 - x;
+                        y = size - 1 - y;
+                    }
+                    [x, y] = [y, x];
+                }
+            }
+
+            return d;
+        }
+
+        function assignmentQueue() {
+            return [...state.points].sort((a, b) => {
+                const order = hilbertIndex(a) - hilbertIndex(b);
+                return order || a.x - b.x || a.y - b.y;
+            });
+        }
+
+        function setFocusPoint(point, showAllRays = true) {
+            if (state.focusPoint?.element) {
+                state.focusPoint.element.setAttribute("r", config.pointRadius);
+                state.focusPoint.element.setAttribute("stroke", "transparent");
+                state.focusPoint.element.setAttribute("stroke-width", "0");
+            }
+            state.focusPoint = point;
+            if (point?.element) {
+                point.element.setAttribute("r", config.pointRadius + 3.8);
+                point.element.setAttribute("stroke", "#f7fbff");
+                point.element.setAttribute("stroke-width", "3");
+            }
+            updateFocus(true, showAllRays);
+            updateDistancePanel();
+        }
+
+        function updateFocus(visible = true, showAllRays = false) {
+            const point = state.focusPoint;
+            if (!point) return;
+            state.focusRing.setAttribute("cx", point.x);
+            state.focusRing.setAttribute("cy", point.y);
+            state.focusDot.setAttribute("cx", point.x);
+            state.focusDot.setAttribute("cy", point.y);
+            state.focusDot.setAttribute("fill", config.colors[point.cluster] || "#ffffff");
+            state.focusRing.classList.toggle("show", visible);
+            state.focusDot.classList.toggle("show", visible);
+
+            state.rays.forEach((ray, index) => {
+                const centroid = state.centroids[index];
+                ray.setAttribute("x1", point.x);
+                ray.setAttribute("y1", point.y);
+                ray.setAttribute("x2", centroid.x);
+                ray.setAttribute("y2", centroid.y);
+                const isBest = index === point.cluster;
+                ray.classList.toggle("show", visible && (showAllRays || isBest));
+                ray.classList.toggle("best", visible && isBest);
+            });
+        }
+
+        function clearComparisonLines() {
+            state.focusRing.classList.remove("show");
+            state.focusDot.classList.remove("show");
+            state.rays.forEach(ray => ray.classList.remove("show", "best"));
+        }
+
+        function updateDistancePanel() {
+            const point = state.focusPoint;
+            if (!point) return;
+            const max = Math.max(...point.distances, 1);
+            Array.from(el.distanceRows.children).forEach((row, index) => {
+                const value = point.distances[index];
+                row.classList.toggle("best", index === point.cluster);
+                row.querySelector(".distance-fill").style.width = `${Math.max(6, value / max * 100).toFixed(1)}%`;
+                row.lastElementChild.textContent = fmt1.format(value);
+            });
+
+            el.focusLabel.textContent = `argmin = ${config.names[point.cluster]}`;
+        }
+
+        function commitAssignedPoint(point) {
+            point.element.classList.remove("pending", "scanning");
+            point.element.classList.add("assigned");
+            point.element.setAttribute("fill", config.colors[point.cluster]);
+            point.element.setAttribute("stroke", "transparent");
+            point.element.setAttribute("stroke-width", "0");
+            point.element.setAttribute("r", config.pointRadius);
+            point.element.classList.toggle("changed", point.previousCluster !== -1 && point.previousCluster !== point.cluster);
+        }
+
+        async function animateAssignmentPass(assignment) {
+            neutralizePointsForAssignment();
+            await wait(520);
+
+            const boundaryPoint = chooseFocusPoint();
+            const queue = assignmentQueue();
+            const total = queue.length;
+
+            for (let i = 0; i < total; i++) {
+                const point = queue[i];
+                point.cluster = point.nextCluster;
+                point.element.classList.add("scanning");
+                setFocusPoint(point, true);
+
+                const isBoundaryDemo = point === boundaryPoint;
+                const changed = point.previousCluster !== -1 && point.previousCluster !== point.cluster;
+                await wait(isBoundaryDemo ? 980 : changed ? 42 : 24);
+
+                commitAssignedPoint(point);
+            }
+
+            clearComparisonLines();
+            setFocusPoint(queue[total - 1], false);
+            updateFocus(true, false);
+            window.setTimeout(() => {
+                state.points.forEach(point => point.element.classList.remove("changed"));
+            }, 820 / state.speed);
+            return assignment;
+        }
+
+        function updateFocusVisibility(visible = true, showAllRays = false) {
+            updateFocus(Boolean(state.focusPoint) && visible, showAllRays);
+        }
+
+        function computeMeans() {
+            const means = state.centroids.map(() => ({ x: 0, y: 0, count: 0 }));
+            state.points.forEach(point => {
+                if (point.cluster < 0) return;
+                means[point.cluster].x += point.x;
+                means[point.cluster].y += point.y;
+                means[point.cluster].count += 1;
+            });
+
+            return means.map((mean, index) => {
+                if (!mean.count) return { x: state.centroids[index].x, y: state.centroids[index].y, count: 0 };
+                return { x: mean.x / mean.count, y: mean.y / mean.count, count: mean.count };
+            });
+        }
+
+        function computeLoss() {
+            return state.points.reduce((sum, point) => {
+                const centroid = state.centroids[point.cluster];
+                if (!centroid) return sum;
+                const d = dist(point, centroid);
+                return sum + d * d;
+            }, 0);
+        }
+
+        function clipPolygonByHalfPlane(polygon, a, b, c) {
+            const result = [];
+            const inside = point => a * point.x + b * point.y <= c + 1e-6;
+
+            for (let i = 0; i < polygon.length; i++) {
+                const current = polygon[i];
+                const previous = polygon[(i + polygon.length - 1) % polygon.length];
+                const currentInside = inside(current);
+                const previousInside = inside(previous);
+
+                if (currentInside !== previousInside) {
+                    const dx = current.x - previous.x;
+                    const dy = current.y - previous.y;
+                    const denominator = a * dx + b * dy;
+                    if (Math.abs(denominator) > 1e-9) {
+                        const t = (c - a * previous.x - b * previous.y) / denominator;
+                        result.push({
+                            x: previous.x + dx * t,
+                            y: previous.y + dy * t
+                        });
+                    }
+                }
+
+                if (currentInside) result.push(current);
+            }
+
+            return result;
+        }
+
+        function polygonPath(polygon) {
+            if (!polygon.length) return "";
+            const [first, ...rest] = polygon;
+            return `M${first.x.toFixed(1)} ${first.y.toFixed(1)} ${rest.map(point => `L${point.x.toFixed(1)} ${point.y.toFixed(1)}`).join(" ")} Z`;
+        }
+
+        function computeSurfaces() {
+            const { left, right, top, bottom } = config.bounds;
+            const frame = [
+                { x: left, y: top },
+                { x: right, y: top },
+                { x: right, y: bottom },
+                { x: left, y: bottom }
+            ];
+
+            return state.centroids.map((centroid, index) => {
+                let cell = frame;
+                state.centroids.forEach((other, otherIndex) => {
+                    if (index === otherIndex || !cell.length) return;
+                    const a = 2 * (other.x - centroid.x);
+                    const b = 2 * (other.y - centroid.y);
+                    const c = other.x * other.x + other.y * other.y - centroid.x * centroid.x - centroid.y * centroid.y;
+                    cell = clipPolygonByHalfPlane(cell, a, b, c);
+                });
+                return cell;
+            });
+        }
+
+        async function animateSurfaces(targets) {
+            targets.forEach((target, index) => {
+                const surface = state.surfaces[index];
+                surface.setAttribute("d", polygonPath(target));
+                surface.style.opacity = target.length ? "1" : "0";
+            });
+            await wait(420);
+        }
+
+        function hideMeans() {
+            state.means.forEach(mean => mean.classList.remove("show"));
+            if (state.spotlight) state.spotlight.classList.remove("show");
+            state.points.forEach(point => point.element.classList.remove("region-focus"));
+        }
+
+        function clusterFocusRegion(index, target) {
+            const points = state.points.filter(point => point.cluster === index);
+            if (!points.length) return { cx: target.x, cy: target.y, rx: 96, ry: 72 };
+            const xs = points.map(point => point.x).concat(target.x);
+            const ys = points.map(point => point.y).concat(target.y);
+            const minX = Math.min(...xs);
+            const maxX = Math.max(...xs);
+            const minY = Math.min(...ys);
+            const maxY = Math.max(...ys);
+            return {
+                cx: (minX + maxX) / 2,
+                cy: (minY + maxY) / 2,
+                rx: clamp((maxX - minX) / 2 + 54, 90, 300),
+                ry: clamp((maxY - minY) / 2 + 46, 72, 240)
+            };
+        }
+
+        function showMeanTarget(index, target) {
+            hideMeans();
+            const mean = state.means[index];
+            mean.setAttribute("cx", target.x);
+            mean.setAttribute("cy", target.y);
+            mean.classList.add("show");
+            const region = clusterFocusRegion(index, target);
+            state.spotlight.setAttribute("cx", region.cx);
+            state.spotlight.setAttribute("cy", region.cy);
+            state.spotlight.setAttribute("rx", region.rx);
+            state.spotlight.setAttribute("ry", region.ry);
+            state.spotlight.setAttribute("fill", config.colors[index]);
+            state.spotlight.setAttribute("stroke", config.colors[index]);
+            state.spotlight.classList.add("show");
+            state.points.forEach(point => {
+                point.element.classList.toggle("region-focus", point.cluster === index);
+            });
+        }
+
+        async function moveOneCentroid(index, target) {
+            const start = { x: state.centroids[index].x, y: state.centroids[index].y };
+            const shift = dist(start, target);
+
+            await tween(860, progress => {
+                const x = start.x + (target.x - start.x) * progress;
+                const y = start.y + (target.y - start.y) * progress;
+                placeCentroid(index, x, y);
+            });
+
+            return shift;
+        }
+
+        async function updateCentroidsSequentially(targets) {
+            let totalShift = 0;
+            updateFocusVisibility(false);
+            for (let index = 0; index < targets.length; index++) {
+                const target = targets[index];
+                showMeanTarget(index, target);
+                await wait(360);
+                totalShift += await moveOneCentroid(index, target);
+                await wait(220);
+            }
+            hideMeans();
+
+            return totalShift;
+        }
+
+        function updatePlayState() {
+            const label = !state.running ? "开始" : state.paused ? "继续" : "暂停";
+            el.playPause.textContent = label;
+            el.startRun.textContent = label;
+            el.pauseMask.classList.toggle("show", state.paused && state.running);
+        }
+
+        function startPlayback() {
+            if (!state.running) {
+                state.paused = false;
+                if (state.iteration > 0) {
+                    restart();
+                } else {
+                    run();
+                }
+                return;
+            }
+
+            state.paused = !state.paused;
+            updatePlayState();
+        }
+
+        async function run() {
+            if (state.running) return;
+            state.running = true;
+            state.stop = false;
+            const runId = state.runId;
+            const isCurrent = () => runId === state.runId && !state.stop;
+            updatePlayState();
+
+            setStatus("开始");
+            showStartToast();
+            await wait(4700);
+            if (!isCurrent()) return;
+
+            setPhase(0, 12);
+            setStatus("选中心");
+            revealPoints(runId);
+            revealCentroids(runId);
+            await wait(3600);
+            if (!isCurrent()) return;
+
+            let previousLoss = 0;
+            let converged = false;
+            let stopReason = "达到最大迭代轮次";
+
+            while (state.iteration < config.maxIterations && !converged && isCurrent()) {
+                state.iteration += 1;
+                el.metricIter.textContent = String(state.iteration);
+
+                setPhase(1, 28 + state.iteration * 6);
+                setStatus("分配");
+                const assignment = computeAssignments();
+                await wait(1800);
+                if (!isCurrent()) return;
+                await animateAssignmentPass(assignment);
+                await wait(1200);
+                if (!isCurrent()) return;
+
+                await animateSurfaces(computeSurfaces());
+                if (!isCurrent()) return;
+
+                const lossBefore = computeLoss();
+                animateNumber(el.metricLoss, previousLoss, lossBefore, value => fmt0.format(value), 650);
+                previousLoss = lossBefore;
+                await wait(1200);
+                if (!isCurrent()) return;
+
+                setPhase(2, 42 + state.iteration * 7);
+                setStatus("更新");
+                const means = computeMeans();
+                await wait(1700);
+                if (!isCurrent()) return;
+                const shift = await updateCentroidsSequentially(means);
+                if (!isCurrent()) return;
+                updateFocusVisibility(false);
+                animateNumber(el.metricShift, Number.parseFloat(el.metricShift.textContent) || 0, shift, value => fmt1.format(value), 520);
+
+                const lossAfter = computeLoss();
+                animateNumber(el.metricLoss, lossBefore, lossAfter, value => fmt0.format(value), 620);
+                previousLoss = lossAfter;
+                converged = assignment.changed === 0 || shift < 2.4;
+                stopReason = assignment.changed === 0 ? "样本所属簇不再变化" : shift < 2.4 ? "中心点移动量已很小" : "继续迭代";
+
+                setPhase(3, converged ? 100 : 54 + state.iteration * 7, false);
+                setStatus(converged ? "稳定" : "继续迭代");
+                await wait(converged ? 3200 : 2600);
+                if (!isCurrent()) return;
+            }
+
+            if (!converged && state.iteration >= config.maxIterations) {
+                stopReason = "达到最大迭代轮次";
+            }
+
+            setPhase(3, 100, false);
+            setStatus("稳定");
+            updateFocusVisibility(false);
+            state.rays.forEach(ray => ray.classList.remove("show", "best"));
+            state.halos.forEach(halo => {
+                halo.setAttribute("r", "76");
+                halo.style.opacity = "0.26";
+            });
+            showStopToast(stopReason);
+            await wait(4900);
+            if (!isCurrent()) return;
+            state.running = false;
+            updatePlayState();
+        }
+
+        function restart() {
+            state.stop = true;
+            state.runId += 1;
+            window.setTimeout(() => {
+                state.running = false;
+                setupScene();
+                run();
+            }, 80);
+        }
+
+        function resetSceneOnly() {
+            state.stop = true;
+            state.runId += 1;
+            window.setTimeout(() => {
+                state.running = false;
+                state.paused = false;
+                setupScene();
+            }, 80);
+        }
+
+        function applyParameters() {
+            config.sampleCount = readNumberInput(el.sampleInput, config.sampleCount);
+            config.k = readNumberInput(el.kInput, config.k);
+            updateDerivedConfig();
+            syncParamInputs();
+            resetSceneOnly();
+        }
+
+        el.playPause.addEventListener("click", startPlayback);
+        el.startRun.addEventListener("click", startPlayback);
+
+        el.restart.addEventListener("click", restart);
+        el.applyParams.addEventListener("click", applyParameters);
+
+        [el.sampleInput, el.kInput].forEach(input => {
+            input.addEventListener("keydown", event => {
+                if (event.key === "Enter") applyParameters();
+            });
+        });
+
+        el.speedButtons.forEach(button => {
+            button.addEventListener("click", () => {
+                state.speed = Number(button.dataset.speed);
+                el.speedButtons.forEach(item => item.classList.toggle("active", item === button));
+            });
+        });
+
+        window.addEventListener("keydown", event => {
+            if (event.target instanceof HTMLInputElement) return;
+            if (event.code === "Space") {
+                event.preventDefault();
+                startPlayback();
+            }
+            if (event.key.toLowerCase() === "r") restart();
+        });
+
+        setupScene();
+    </script>
+</body>
+</html>
