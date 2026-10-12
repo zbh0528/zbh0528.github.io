@@ -2,389 +2,144 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Baohang Zhang | Evolutionary Computation & Wind Energy Optimization</title>
-  <meta name="description" content="Baohang Zhang is a Ph.D. candidate at the University of Toyama, working on evolutionary computation, expensive optimization, wind farm optimization, and AI-driven optimization systems.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Baohang Zhang | Changzhou Institute of Technology</title>
+  <meta name="description" content="Baohang Zhang, Lecturer at Changzhou Institute of Technology. Research in evolutionary computation, surrogate modeling, and energy system optimization.">
   <style>
-    :root {
-      --bg: #0a0f18;
-      --panel: rgba(13, 21, 35, 0.78);
-      --panel-strong: rgba(17, 28, 45, 0.95);
-      --panel-soft: rgba(255, 255, 255, 0.04);
-      --text: #eaf2ff;
-      --muted: #9aabbe;
-      --line: rgba(255, 255, 255, 0.10);
-      --accent: #66d7ff;
-      --accent-2: #9ef3c5;
-      --accent-3: #9db8ff;
-      --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
-      --radius-lg: 28px;
-      --radius-md: 18px;
-      --radius-sm: 12px;
-      --maxw: 1240px;
-    }
-
     * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; background: var(--bg); }
-    body {
-      margin: 0;
-      font-family: 'Manrope', sans-serif;
-      color: var(--text);
-      background:
-        radial-gradient(circle at 12% 18%, rgba(102, 215, 255, 0.16), transparent 22%),
-        radial-gradient(circle at 88% 12%, rgba(157, 184, 255, 0.18), transparent 20%),
-        radial-gradient(circle at 76% 82%, rgba(158, 243, 197, 0.12), transparent 18%),
-        linear-gradient(180deg, #07111f 0%, #0a0f18 48%, #0b1220 100%);
-      min-height: 100vh;
-      line-height: 1.75;
-      letter-spacing: 0.01em;
-    }
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      background-image:
-        linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
-      background-size: 64px 64px;
-      mask-image: radial-gradient(circle at center, black 42%, transparent 82%);
-      opacity: 0.30;
-    }
-    a { color: inherit; text-decoration: none; }
-    .shell { width: min(calc(100% - 32px), var(--maxw)); margin: 0 auto; position: relative; z-index: 1; }
-    .topbar {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 28px 0 10px; color: var(--muted); font-size: 0.92rem;
-    }
-    .topbar .brand {
-      display: flex; align-items: center; gap: 12px; font-weight: 700; color: var(--text);
-      letter-spacing: 0.08em; text-transform: uppercase; font-size: 0.84rem;
-    }
-    .brand-mark {
-      width: 11px; height: 11px; border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      box-shadow: 0 0 24px rgba(102, 215, 255, 0.7);
-    }
-    .hero { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 24px; align-items: stretch; padding: 22px 0; }
-    .hero-card, .panel, .paper-item, .metric, .tag-panel {
-      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-    }
-    .hero-card {
-      background: linear-gradient(180deg, rgba(18, 29, 49, 0.92), rgba(10, 17, 28, 0.90));
-      border: 1px solid var(--line); border-radius: var(--radius-lg); box-shadow: var(--shadow);
-      padding: 42px; position: relative; overflow: hidden;
-    }
-    .hero-card::after {
-      content: ""; position: absolute; inset: auto -80px -80px auto; width: 240px; height: 240px;
-      background: radial-gradient(circle, rgba(102, 215, 255, 0.22), transparent 65%); pointer-events: none;
-    }
-    .eyebrow {
-      display: inline-flex; align-items: center; gap: 10px; padding: 8px 14px; border-radius: 999px;
-      border: 1px solid rgba(102, 215, 255, 0.22); background: rgba(102, 215, 255, 0.08);
-      color: var(--accent); font-size: 0.84rem; font-weight: 700; letter-spacing: 0.08em;
-      text-transform: uppercase; margin-bottom: 18px;
-    }
-    .hero h1 {
-      margin: 0; font-family: 'DM Serif Display', serif; font-size: clamp(2.7rem, 5vw, 5rem);
-      line-height: 0.96; letter-spacing: -0.03em; max-width: 760px;
-    }
-    .hero h1 span { display: block; color: #c8d8ef; font-size: 0.72em; margin-top: 10px; }
-    .hero-intro { max-width: 760px; font-size: 1.05rem; color: #c0cede; margin: 22px 0 28px; }
-    .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 30px; }
-    .btn {
-      display: inline-flex; align-items: center; gap: 10px; padding: 13px 18px; border-radius: 999px;
-      font-weight: 700; font-size: 0.94rem;
-      transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease, background 0.22s ease;
-      border: 1px solid transparent;
-    }
-    .btn:hover { transform: translateY(-2px); }
-    .btn-primary {
-      background: linear-gradient(135deg, var(--accent), #5f9cff); color: #07111f;
-      box-shadow: 0 16px 40px rgba(102, 215, 255, 0.22);
-    }
-    .btn-secondary { border-color: rgba(255, 255, 255, 0.14); background: rgba(255, 255, 255, 0.03); color: var(--text); }
-    .hero-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
-    .metric { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: var(--radius-md); padding: 18px; }
-    .metric .value { display: block; font-size: 1.5rem; font-weight: 800; color: var(--text); margin-bottom: 4px; }
-    .metric .label { color: var(--muted); font-size: 0.88rem; }
-    .side-stack { display: grid; gap: 20px; }
-    .panel {
-      background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius-lg);
-      box-shadow: var(--shadow); padding: 28px; position: relative; overflow: hidden;
-    }
-    .profile-card { text-align: left; }
-    .avatar-wrap { display: flex; align-items: center; gap: 18px; margin-bottom: 24px; }
-    .avatar {
-      width: 112px; height: 112px; border-radius: 24px; overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.12); box-shadow: 0 16px 34px rgba(0,0,0,0.28);
-      background: linear-gradient(135deg, rgba(102,215,255,0.14), rgba(157,184,255,0.10)); flex: 0 0 auto;
-    }
-    .avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .identity h2 { margin: 0 0 6px; font-size: 1.35rem; line-height: 1.15; }
-    .identity p { margin: 0; color: var(--muted); font-size: 0.92rem; }
-    .contact-list { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
-    .contact-list li { display: flex; align-items: center; gap: 12px; color: #d7e5f6; font-size: 0.94rem; }
-    .contact-list i { width: 18px; color: var(--accent); text-align: center; }
-    .tag-panel {
-      background: linear-gradient(180deg, rgba(13, 25, 42, 0.9), rgba(10, 17, 29, 0.86));
-      border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-md); padding: 20px;
-    }
-    .panel-title {
-      margin: 0 0 14px; font-size: 0.88rem; text-transform: uppercase; letter-spacing: 0.10em;
-      color: var(--accent); font-weight: 800;
-    }
-    .chips { display: flex; flex-wrap: wrap; gap: 10px; }
-    .chip {
-      padding: 8px 12px; border-radius: 999px; background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.08); color: #d8e5f8; font-size: 0.84rem; font-weight: 600;
-    }
-    .section { padding: 22px 0; }
-    .section-head {
-      display: flex; justify-content: space-between; align-items: end; gap: 18px; margin-bottom: 22px;
-    }
-    .section-head h3 {
-      margin: 0; font-family: 'DM Serif Display', serif; font-size: 2rem; font-weight: 400; letter-spacing: -0.02em;
-    }
-    .section-head p { margin: 0; max-width: 700px; color: var(--muted); }
-    .research-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
-    .research-card {
-      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-md);
-      padding: 24px; position: relative; overflow: hidden;
-    }
-    .research-card::before {
-      content: ""; position: absolute; inset: 0 auto auto 0; width: 100%; height: 4px;
-      background: linear-gradient(90deg, var(--accent), transparent 70%); opacity: 0.8;
-    }
-    .research-card h4 { margin: 0 0 10px; font-size: 1.04rem; }
-    .research-card p { margin: 0; color: var(--muted); font-size: 0.94rem; }
-    .papers { display: grid; gap: 16px; }
-    .paper-item {
-      background: linear-gradient(180deg, rgba(255,255,255,0.028), rgba(255,255,255,0.016));
-      border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 22px 24px;
-      transition: transform 0.22s ease, border-color 0.22s ease, background 0.22s ease;
-    }
-    .paper-item:hover {
-      transform: translateY(-3px); border-color: rgba(102,215,255,0.28);
-      background: linear-gradient(180deg, rgba(102,215,255,0.05), rgba(255,255,255,0.02));
-    }
-    .paper-top { display: flex; justify-content: space-between; align-items: start; gap: 18px; margin-bottom: 8px; }
-    .paper-title { font-size: 1.04rem; font-weight: 800; line-height: 1.5; margin: 0; color: #f0f6ff; }
-    .paper-authors, .paper-venue { margin: 0; color: var(--muted); font-size: 0.93rem; }
-    .paper-venue { margin-top: 5px; }
-    .paper-tags { display: flex; flex-wrap: wrap; gap: 8px; flex-shrink: 0; }
-    .paper-tag {
-      display: inline-flex; align-items: center; justify-content: center; padding: 7px 11px; border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04); color: #d8e6f8;
-      font-size: 0.76rem; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase;
-    }
-    .paper-tag.journal {
-      border-color: rgba(102,215,255,0.22); color: var(--accent); background: rgba(102,215,255,0.08);
-    }
-    .paper-tag.conference {
-      border-color: rgba(158,243,197,0.24); color: var(--accent-2); background: rgba(158,243,197,0.08);
-    }
-    .footer { padding: 36px 0 48px; color: var(--muted); font-size: 0.9rem; }
-    @media (max-width: 1080px) {
-      .hero { grid-template-columns: 1fr; }
-      .research-grid { grid-template-columns: 1fr; }
-    }
+    html { color-scheme: light; scroll-padding-top: 24px; }
+    body { margin: 0; background: #fff; color: #222; font: 16px/1.6 Arial, Helvetica, sans-serif; }
+    a { color: #4c72aa; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    a:focus-visible { outline: 2px solid #4c72aa; outline-offset: 4px; }
+    .skip-link { position: absolute; left: 12px; top: -60px; background: #fff; padding: 8px; }
+    .skip-link:focus { top: 12px; }
+    .layout { display: grid; grid-template-columns: 190px minmax(0, 1fr); max-width: 1280px; margin: 0 auto; min-height: 100vh; }
+    .sidebar { background: #f5f5f5; border-right: 1px solid #ddd; padding: 32px 20px; }
+    .sidebar-inner { position: sticky; top: 32px; }
+    nav { display: flex; flex-direction: column; gap: 10px; }
+    nav a { font-size: 17px; }
+    .updated { margin-top: 48px; color: #666; font-size: 13px; }
+    main { min-width: 0; padding: 28px 36px 48px; overflow-wrap: anywhere; }
+    .profile { display: flex; justify-content: space-between; gap: 28px; align-items: flex-start; margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid #ccc; }
+    h1 { margin: 0 0 12px; color: #527bb6; font-size: 32px; line-height: 1.2; }
+    .affiliation { margin: 0; }
+    .contacts { margin: 16px 0 0; }
+    .portrait { width: 128px; height: 128px; object-fit: cover; flex: 0 0 auto; }
+    section { margin: 0 0 30px; }
+    h2 { margin: 0 0 14px; padding-bottom: 4px; border-bottom: 1px solid #bbb; color: #527bb6; font-size: 21px; line-height: 1.4; font-weight: 600; }
+    p { margin: 0 0 14px; }
+    .publications { padding-left: 2.2em; margin: 0; }
+    .publications li { padding-left: 0.15em; margin-bottom: 18px; }
+    .publications p { margin: 0; }
+    .publications a { white-space: nowrap; }
+    .projects { padding-left: 1.2em; margin: 0; }
+    .projects li { margin-bottom: 12px; }
+    footer { border-top: 1px solid #ddd; padding-top: 12px; color: #666; font-size: 13px; }
     @media (max-width: 760px) {
-      .shell { width: min(calc(100% - 20px), var(--maxw)); }
-      .hero-card, .panel { padding: 22px; }
-      .hero h1 { font-size: clamp(2.2rem, 11vw, 3.5rem); }
-      .hero-grid { grid-template-columns: 1fr; }
-      .paper-top, .section-head, .topbar, .avatar-wrap { display: block; }
-      .paper-tags { margin-top: 12px; }
-      .topbar { padding-top: 20px; }
-      .avatar-wrap { display: flex; }
+      .layout { display: block; }
+      .sidebar { border-right: 0; border-bottom: 1px solid #ddd; padding: 14px 20px; }
+      .sidebar-inner { position: static; }
+      nav { flex-direction: row; flex-wrap: wrap; gap: 8px 20px; }
+      nav a { font-size: 15px; }
+      .updated { display: none; }
+      main { padding: 24px 20px 32px; }
+      .profile { gap: 16px; }
+      h1 { font-size: 28px; }
+      .portrait { width: 88px; height: 88px; }
+    }
+    @media (max-width: 480px) {
+      .profile { flex-direction: column-reverse; }
+      .portrait { width: 96px; height: 96px; }
+      .publications { padding-left: 1.8em; }
+    }
+    @media print {
+      .layout { display: block; }
+      .sidebar, .skip-link { display: none; }
+      main { padding: 0; }
+      a { color: inherit; }
     }
   </style>
 </head>
 <body>
-  <div class="shell">
-    <header class="topbar">
-      <div class="brand">
-        <span class="brand-mark"></span>
-        <span>Baohang Zhang</span>
+  <a class="skip-link" href="#content">Skip to content</a>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <nav aria-label="Main navigation">
+          <a href="#home">Home</a>
+          <a href="#journal-papers">Journal Papers</a>
+          <a href="#conference-papers">Conference Papers</a>
+          <a href="#open-source">Open Source</a>
+        </nav>
+        <p class="updated">Updated: <time datetime="2026-10-12">2026-10-12</time></p>
       </div>
-      <div>Evolutionary Computation · Expensive Optimization · Wind Energy AI</div>
-    </header>
-
-    <section class="hero">
-      <div class="hero-card">
-        <div class="eyebrow">
-          <i class="fa-solid fa-sparkles"></i>
-          Academic Profile
+    </aside>
+    <main id="content">
+      <header class="profile" id="home">
+        <div>
+          <h1>Baohang Zhang</h1>
+          <p class="affiliation"><strong>Lecturer</strong><br>
+            School of Computer and Information Engineering<br>
+            Changzhou Institute of Technology, China</p>
+          <p class="contacts"><a href="mailto:zbhsyx@163.com">Email</a> · <a href="https://scholar.google.com.hk/citations?user=kKfWIUkAAAAJ&amp;hl=zh-CN">Google Scholar</a> · <a href="https://orcid.org/0000-0002-8612-0649">ORCID</a> · <a href="https://github.com/zbh0528">GitHub</a></p>
         </div>
-        <h1>
-          Baohang Zhang
-          <span>Ph.D. Candidate in AI and Evolutionary Optimization</span>
-        </h1>
-        <p class="hero-intro">
-          I work on evolutionary computation, expensive optimization, and wind energy optimization systems. My current focus is building robust optimization methods for high-dimensional real-world problems, especially offshore wind farm layout and yaw control.
-        </p>
-        <div class="hero-actions">
-          <a class="btn btn-primary" href="https://scholar.google.com.hk/citations?user=kKfWIUkAAAAJ&hl=zh-CN" target="_blank" rel="noopener noreferrer">
-            <i class="fa-solid fa-graduation-cap"></i>
-            Google Scholar
-          </a>
-          <a class="btn btn-secondary" href="https://github.com/zbh0528" target="_blank" rel="noopener noreferrer">
-            <i class="fa-brands fa-github"></i>
-            GitHub
-          </a>
-        </div>
-        <div class="hero-grid">
-          <div class="metric">
-            <span class="value">Ph.D.</span>
-            <span class="label">University of Toyama, Japan</span>
-          </div>
-          <div class="metric">
-            <span class="value">EC + AI</span>
-            <span class="label">Optimization-driven research agenda</span>
-          </div>
-          <div class="metric">
-            <span class="value">WFLO / Yaw</span>
-            <span class="label">Wind farm layout and control optimization</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="side-stack">
-        <aside class="panel profile-card">
-          <div class="avatar-wrap">
-            <div class="avatar">
-              <img src="photo.jpg" alt="Baohang Zhang" onerror="this.src='https://avatars.githubusercontent.com/u/52562369?v=4'">
-            </div>
-            <div class="identity">
-              <h2>Baohang Zhang</h2>
-              <p>Ph.D. Candidate (D3)</p>
-              <p>University of Toyama</p>
-            </div>
-          </div>
-          <ul class="contact-list">
-            <li><i class="fa-solid fa-envelope"></i><a href="mailto:zbhsyx@163.com">zbhsyx@163.com</a></li>
-            <li><i class="fa-solid fa-location-dot"></i><span>Toyama, Japan</span></li>
-            <li><i class="fa-solid fa-building-columns"></i><span>Artificial Intelligence Laboratory</span></li>
-          </ul>
-        </aside>
-
-        <div class="tag-panel">
-          <p class="panel-title">Research Keywords</p>
-          <div class="chips">
-            <span class="chip">Evolutionary Computation</span>
-            <span class="chip">Differential Evolution</span>
-            <span class="chip">Expensive Optimization</span>
-            <span class="chip">Wind Farm Layout Optimization</span>
-            <span class="chip">Yaw Optimization</span>
-            <span class="chip">Feature Selection</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="section-head">
-        <h3>Research Directions</h3>
-        <p>A cleaner academic structure with stronger visual focus: methods, application domain, and optimization systems are separated so the page reads like a research profile rather than a plain CV dump.</p>
-      </div>
-      <div class="research-grid">
-        <article class="research-card">
-          <h4>Evolutionary Computation</h4>
-          <p>Adaptive differential evolution, swarm intelligence, and population-based search for complex nonconvex problems.</p>
-        </article>
-        <article class="research-card">
-          <h4>Expensive Real-World Optimization</h4>
-          <p>Algorithm design for high-cost objective evaluation, structure-aware search, and scalable optimization workflows.</p>
-        </article>
-        <article class="research-card">
-          <h4>Wind Energy Optimization</h4>
-          <p>Integrated offshore wind farm layout, cable routing, wake-aware yaw optimization, and optimization under realistic engineering constraints.</p>
-        </article>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="section-head">
-        <h3>Selected Publications</h3>
-        <p>The publication list keeps the academic density of your current page, but with better hierarchy, stronger title emphasis, and clearer journal/conference cues.</p>
-      </div>
-      <div class="papers">
-        <article class="paper-item">
-          <div class="paper-top">
-            <div>
-              <p class="paper-title">A Geometry-guided Genetic Algorithm for Integrated Offshore Wind Farm Layout and Electrical Cable Routing Optimization</p>
-              <p class="paper-authors"><strong>Baohang Zhang</strong>, Yixin Shao, Zhenyu Lei, Chao Zhang, Yirui Wang, and Shangce Gao</p>
-              <p class="paper-venue"><em>Applied Energy</em>, accepted for publication.</p>
-            </div>
-            <div class="paper-tags"><span class="paper-tag journal">Journal</span></div>
-          </div>
-        </article>
-
-        <article class="paper-item">
-          <div class="paper-top">
-            <div>
-              <p class="paper-title">Dendritic Learning Empowered by Diversity-Aware Differential Evolution</p>
-              <p class="paper-authors">Zhe Xu, Lin Yang, Fenggang Yuan, <strong>Baohang Zhang</strong>, Jiatianyi Yu, and Xiaosha Qi</p>
-              <p class="paper-venue"><em>IEEE Access</em>, 2026.</p>
-            </div>
-            <div class="paper-tags"><span class="paper-tag journal">Journal</span></div>
-          </div>
-        </article>
-
-        <article class="paper-item">
-          <div class="paper-top">
-            <div>
-              <p class="paper-title">A Non-Revisiting Equilibrium Optimizer Algorithm</p>
-              <p class="paper-authors"><strong>Baohang Zhang</strong>, Haichuan Yang, Tao Zheng, Rong-Long Wang, and Shangce Gao</p>
-              <p class="paper-venue"><em>IEICE Transactions on Information and Systems</em>, 2023.</p>
-            </div>
-            <div class="paper-tags"><span class="paper-tag journal">Journal</span></div>
-          </div>
-        </article>
-
-        <article class="paper-item">
-          <div class="paper-top">
-            <div>
-              <p class="paper-title">A Compact Evolutionary Algorithm for Layout Optimization</p>
-              <p class="paper-authors">Tao Zheng, Zhiwei Yu, Kefan Ni, <strong>Baohang Zhang</strong>, Zhenyu Lei, and Shangce Gao</p>
-              <p class="paper-venue"><em>EITCE 2025</em>, Best Paper Award.</p>
-            </div>
-            <div class="paper-tags"><span class="paper-tag conference">Conference</span></div>
-          </div>
-        </article>
-
-        <article class="paper-item">
-          <div class="paper-top">
-            <div>
-              <p class="paper-title">A Novel Adaptive LSHADE Algorithm for Wind Farm Layout Optimization with Complex Wake Effect</p>
-              <p class="paper-authors">Jiatianyi Yu, <strong>Baohang Zhang</strong>, Qianhang Du, Wenshui Wang, Zhenyu Lei, and Shangce Gao</p>
-              <p class="paper-venue"><em>IEEE PIC</em>, 2024.</p>
-            </div>
-            <div class="paper-tags"><span class="paper-tag conference">Conference</span></div>
-          </div>
-        </article>
-
-        <article class="paper-item">
-          <div class="paper-top">
-            <div>
-              <p class="paper-title">Information Gain-Based Multi-Objective Evolutionary Algorithm for Feature Selection</p>
-              <p class="paper-authors"><strong>Baohang Zhang</strong>, Ziqian Wang, Haotian Li, Zhenyu Lei, Jiujun Cheng, and Shangce Gao</p>
-              <p class="paper-venue"><em>Information Sciences</em>, 2024.</p>
-            </div>
-            <div class="paper-tags"><span class="paper-tag journal">Journal</span></div>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <footer class="footer">
-      <div>Designed as a research-focused academic homepage with a restrained visual system, high information density, and a sharper identity for optimization and wind energy research.</div>
-    </footer>
+        <img class="portrait" src="https://avatars.githubusercontent.com/u/52562369?v=4" alt="Baohang Zhang" width="128" height="128">
+      </header>
+      <section aria-labelledby="about-heading">
+        <h2 id="about-heading">About</h2>
+        <p>My research focuses on <strong>evolutionary computation</strong>, <strong>surrogate modeling</strong>, and <strong>energy system optimization</strong>. I study offshore wind farm layout and electrical cable routing, wake-aware yaw control, and evolutionary feature selection, with an emphasis on costly evaluations and coupled design variables.</p>
+        <p>I received my <strong>Ph.D. in Engineering (March 2026)</strong> and <strong>M.S. in Artificial Intelligence (March 2023)</strong> from the <strong>University of Toyama, Japan</strong>. I am currently a <strong>Lecturer</strong> with the <strong>School of Computer and Information Engineering, Changzhou Institute of Technology, China</strong>.</p>
+      </section>
+      <section id="journal-papers" aria-labelledby="journal-heading">
+        <h2 id="journal-heading">JOURNAL PAPERS</h2>
+<ol class="publications" start="11">
+  <li value="11"><p><strong>Baohang Zhang</strong>, Yixin Shao, Zhe Xu, Zhenyu Lei, Xin Luo, Jiujun Cheng, and Shangce Gao*, "An Incremental Surrogate-Assisted Differential Evolution for Offshore Wind Farm Layout Optimization," <strong><em>IEEE Transactions on Systems, Man, and Cybernetics: Systems</em></strong>, 2026. DOI: 10.1109/TSMC.2026.3742716.</p></li>
+  <li value="10"><p>Ziqian Wang, Lei Ding, Xugang Wang, and <strong>Baohang Zhang</strong>, "A balance-aware geometric multi-objective evolutionary algorithm for offshore wind farm layout optimization with capacity dependent cable cost evaluation," <strong><em>Energy</em></strong>, vol. 360, Article 141798, September 2026. DOI: 10.1016/j.energy.2026.141798, <a href="https://www.sciencedirect.com/science/article/pii/S0360544226019055">[PDF]</a></p></li>
+  <li value="9"><p><strong>Baohang Zhang</strong>, Yixin Shao, Zhenyu Lei, Chao Zhang, Yirui Wang, and Shangce Gao, "A geometry-guided genetic algorithm for integrated offshore wind farm layout and electrical cable routing optimization," <strong><em>Applied Energy</em></strong>, vol. 415, Article 127895, July 2026. DOI: 10.1016/j.apenergy.2026.127895, <a href="https://www.sciencedirect.com/science/article/pii/S0306261926005477">[PDF]</a></p></li>
+  <li value="8"><p>Zhe Xu, Lin Yang, Fenggang Yuan, <strong>Baohang Zhang</strong>, Jiatianyi Yu, and Xiaosha Qi, "Dendritic Learning Empowered by Diversity-Aware Differential Evolution," <strong><em>IEEE Access</em></strong>, vol. 14, pp. 34879-34893, 2026. DOI: 10.1109/ACCESS.2026.3669958, <a href="https://ieeexplore.ieee.org/document/11418914/">[PDF]</a></p></li>
+  <li value="7"><p>Zhe Xu, <strong>Baohang Zhang</strong>, Jiatianyi Yu, Lin Yang, Fenggang Yuan, and Shangce Gao*, "An Improved Artificial Bee Colony Algorithm with Differential Analysis and Deduplication for Feature Selection," <strong><em>International Journal of Computational Intelligence Systems</em></strong>, vol. 19, Article 6, 2026. DOI: 10.1007/s44196-025-01022-z, <a href="https://link.springer.com/content/pdf/10.1007/s44196-025-01022-z.pdf">[PDF]</a></p></li>
+  <li value="6"><p>Zhe Xu, Jiatianyi Yu, <strong>Baohang Zhang</strong>, Lin Yang, Yanting Liu, and Shangce Gao*, "An enhanced LSHADE with generalized Pareto distribution selection for escaping local optima," <strong><em>The Journal of Supercomputing</em></strong>, vol. 81, no. 4, Article 551, March 2025. DOI: 10.1007/s11227-025-07054-8, <a href="https://link.springer.com/article/10.1007/s11227-025-07054-8">[PDF]</a></p></li>
+  <li value="5"><p>Chunzhi Hou, Zhenyu Lei, <strong>Baohang Zhang</strong>, Zijing Yuan, Rong-Long Wang, and Shangce Gao*, "An Improved Whale Optimization Algorithm with Adaptive Fitness-Distance Balance," <strong><em>IEEJ Transactions on Electrical and Electronic Engineering</em></strong>, vol. 20, no. 2, pp. 232-243, February 2025. DOI: 10.1002/tee.24205, <a href="https://onlinelibrary.wiley.com/doi/10.1002/tee.24205">[PDF]</a></p></li>
+  <li value="4"><p><strong>Baohang Zhang</strong>, Ziqian Wang, Haotian Li, Zhenyu Lei, Jiujun Cheng, and Shangce Gao, "Information gain-based multi-objective evolutionary algorithm for feature selection," <strong><em>Information Sciences</em></strong>, vol. 677, Article 120901, August 2024. DOI: 10.1016/j.ins.2024.120901, <a href="https://www.sciencedirect.com/science/article/pii/S0020025524008156">[PDF]</a></p></li>
+  <li value="3"><p>Haotian Li, Haichuan Yang, <strong>Baohang Zhang</strong>, Han Zhang, and Shangce Gao*, "Swarm Exploration Mechanism-Based Distributed Water Wave Optimization," <strong><em>International Journal of Computational Intelligence Systems</em></strong>, vol. 16, no. 1, Article 76, May 2023. DOI: 10.1007/s44196-023-00248-z, <a href="https://link.springer.com/article/10.1007/s44196-023-00248-z">[PDF]</a></p></li>
+  <li value="2"><p>Tao Zheng, Han Zhang, <strong>Baohang Zhang</strong>, Zonghui Cai, Kaiyu Wang, Yuki Todo, and Shangce Gao*, "Umbrellalike Hierarchical Artificial Bee Colony Algorithm," <strong><em>IEICE Transactions on Information and Systems</em></strong>, vol. E106-D, no. 3, pp. 410-418, March 2023. DOI: 10.1587/transinf.2022EDP7130, <a href="https://www.jstage.jst.go.jp/article/transinf/E106.D/3/E106.D_2022EDP7130/_article/">[PDF]</a></p></li>
+  <li value="1"><p><strong>Baohang Zhang</strong>, Haichuan Yang, Tao Zheng, Rong-Long Wang, and Shangce Gao, "A Non-Revisiting Equilibrium Optimizer Algorithm," <strong><em>IEICE Transactions on Information and Systems</em></strong>, vol. E106-D, no. 3, pp. 365-373, 2023. DOI: 10.1587/transinf.2022EDP7119, <a href="https://www.jstage.jst.go.jp/article/transinf/E106.D/3/E106.D_2022EDP7119/_pdf/-char/en">[PDF]</a></p></li>
+</ol>
+      </section>
+      <section id="conference-papers" aria-labelledby="conference-heading">
+        <h2 id="conference-heading">CONFERENCE PAPERS</h2>
+<ol class="publications" start="17">
+  <li value="17"><p>Yixin Shao, <strong>Baohang Zhang</strong>, Wenzhu Gu, Zhenyu Lei, and Shangce Gao, "A Topology-Driven Multi-Objective Evolutionary Algorithm for Offshore Wind Farm Layout Optimization," in <strong><em>2026 16th International Conference on Power, Energy, and Electrical Engineering (CPEEE)</em></strong>, pp. 494-498, March 2026. DOI: 10.1109/CPEEE69412.2026.11521465, <a href="https://ieeexplore.ieee.org/document/11521465/">[PDF]</a></p></li>
+  <li value="16"><p><strong>Baohang Zhang</strong>, Yixin Shao, Tao Zheng, Runqun Xiong, Jiake Wang, Xiangmei Li, and Shangce Gao, "A Geometric Mutation-Based Genetic Algorithm for Irregular Large-Scale Offshore Wind Farm Layout Optimization," in <strong><em>2025 Thirteenth International Conference on Advanced Cloud and Big Data (CBD)</em></strong>, pp. 294-299, November 2025. DOI: 10.1109/CBD69312.2025.00059, <a href="https://ieeexplore.ieee.org/document/11366704/">[PDF]</a></p></li>
+  <li value="15"><p>Tao Zheng, Zhiwei Yu, Kefan Ni, <strong>Baohang Zhang</strong>, Zhenyu Lei, and Shangce Gao, "Revolutionizing Wind Energy: A Compact Evolutionary Algorithm for Layout Optimization," in <strong><em>Proceedings of the 9th International Conference on Electronic Information Technology and Computer Engineering (EITCE 2025)</em></strong>, pp. 667-672, 2025. DOI: 10.1145/3766671.3766786, <a href="https://dl.acm.org/doi/pdf/10.1145/3766671.3766786">[PDF]</a></p></li>
+  <li value="14"><p>Jiatianyi Yu, <strong>Baohang Zhang</strong>, Qianhang Du, Wenshui Wang, Zhenyu Lei, and Shangce Gao, "A Novel Adaptive LSHADE Algorithm for Wind Farm Layout Optimization with Complex Wake Effect," in <strong><em>2024 IEEE International Conference on Progress in Informatics and Computing (PIC)</em></strong>, pp. 162-165, December 2024. DOI: 10.1109/PIC62406.2024.10892732, <a href="https://ieeexplore.ieee.org/document/10892732/">[PDF]</a></p></li>
+  <li value="13"><p>Tao Zheng, <strong>Baohang Zhang</strong>, Sicheng Liu, Yuki Todo, and Shangce Gao, "Using Manta Ray Foraging Mechanism to Improve Reptile Search Algorithm," in <strong><em>2023 5th International Conference on Control and Robotics (ICCR)</em></strong>, pp. 267-271, November 2023. DOI: 10.1109/ICCR60000.2023.10444824, <a href="https://ieeexplore.ieee.org/document/10444824/">[PDF]</a></p></li>
+  <li value="12"><p>Jinrui Gao, Ziqian Wang, <strong>Baohang Zhang</strong>, Zhenyu Lei, Yuki Todo, and Shangce Gao, "Memetic Beluga Whale Optimization for Feature Selection," in <strong><em>2023 15th International Conference on Intelligent Human-Machine Systems and Cybernetics (IHMSC)</em></strong>, pp. 1-5, August 2023. DOI: 10.1109/IHMSC58761.2023.00009, <a href="https://ieeexplore.ieee.org/document/10261613/">[PDF]</a></p></li>
+  <li value="11"><p><strong>Baohang Zhang</strong>, Ziqian Wang, Zhenyu Lei, Jiatianyi Yu, Ting Jin, and Shangce Gao, "A Clustering Strategy-Based Evolutionary Algorithm for Feature Selection in Classification," in <strong><em>IEA/AIE 2023</em></strong>, Lecture Notes in Artificial Intelligence, vol. 13925, pp. 49-59, July 2023. DOI: 10.1007/978-3-031-36819-6_5, <a href="https://link.springer.com/chapter/10.1007/978-3-031-36819-6_5">[PDF]</a></p></li>
+  <li value="10"><p>Chen Zhang, Haotian Li, Yifei Yang, <strong>Baohang Zhang</strong>, Huisheng Zhu, and Shangce Gao, "Improved Differential Evolutionary Algorithm Based on Adaptive Scaling Factor," in <strong><em>IEA/AIE 2023</em></strong>, Lecture Notes in Artificial Intelligence, vol. 13926, pp. 171-176, July 2023. DOI: 10.1007/978-3-031-36822-6_15, <a href="https://link.springer.com/chapter/10.1007/978-3-031-36822-6_15">[PDF]</a></p></li>
+  <li value="9"><p>Qianyu Zhu, Yifei Yang, Haotian Li, Haichuan Yang, <strong>Baohang Zhang</strong>, and Shangce Gao, "Chaotic Mapping Genetic Algorithm with Multiple Strategies," in <strong><em>2023 15th International Conference on Advanced Computational Intelligence (ICACI)</em></strong>, pp. 1-4, May 2023. DOI: 10.1109/ICACI58115.2023.10146188, <a href="https://ieeexplore.ieee.org/document/10146188/">[PDF]</a></p></li>
+  <li value="8"><p>Shibo Dong, Haichuan Yang, Haotian Li, <strong>Baohang Zhang</strong>, Sichen Tao, and Shangce Gao, "Hierarchical Water Wave Optimization," in <strong><em>2022 IEEE International Conference on Networking, Sensing and Control (ICNSC)</em></strong>, pp. 1-5, December 2022. DOI: 10.1109/ICNSC55942.2022.10004174, <a href="https://ieeexplore.ieee.org/document/10004174">[PDF]</a></p></li>
+  <li value="7"><p>Jiatianyi Yu, Haichuan Yang, <strong>Baohang Zhang</strong>, Shibo Dong, and Shangce Gao, "An Optimal Differential Vector Incorporated Whale Optimizer," in <strong><em>2022 15th International Symposium on Computational Intelligence and Design (ISCID)</em></strong>, pp. 6-10, December 2022. DOI: 10.1109/ISCID56505.2022.00009, <a href="https://ieeexplore.ieee.org/document/10029423">[PDF]</a></p></li>
+  <li value="6"><p>Yifei Yang, Haotian Li, Haichuan Yang, <strong>Baohang Zhang</strong>, and Shangce Gao, "A Novel Differential Evolution Sparrow Search Algorithm," in <strong><em>2022 15th International Symposium on Computational Intelligence and Design (ISCID)</em></strong>, pp. 1-5, December 2022. DOI: 10.1109/ISCID56505.2022.00008, <a href="https://ieeexplore.ieee.org/document/10029418">[PDF]</a></p></li>
+  <li value="5"><p>Chunzhi Hou, Jiarui Shi, and <strong>Baohang Zhang</strong>, "Evolving Dendritic Neuron Model by Equilibrium Optimizer Algorithm," in <strong><em>2021 IEEE International Conference on Progress in Informatics and Computing (PIC)</em></strong>, pp. 14-18, December 2021. DOI: 10.1109/PIC53636.2021.9687084, <a href="https://ieeexplore.ieee.org/document/9687084">[PDF]</a></p></li>
+  <li value="4"><p>Zijing Yuan, Jiayi Li, Haichuan Yang, and <strong>Baohang Zhang</strong>, "A Hybrid Whale Optimization and Particle Swarm Optimization Algorithm," in <strong><em>2021 IEEE International Conference on Progress in Informatics and Computing (PIC)</em></strong>, pp. 260-264, December 2021. DOI: 10.1109/PIC53636.2021.9687017, <a href="https://ieeexplore.ieee.org/document/9687017">[PDF]</a></p></li>
+  <li value="3"><p>Haotian Li, <strong>Baohang Zhang</strong>, Jiayi Li, Tao Zheng, and Haichuan Yang, "Using Sparrow Search Hunting Mechanism to Improve Water Wave Algorithm," in <strong><em>2021 IEEE International Conference on Progress in Informatics and Computing (PIC)</em></strong>, pp. 19-23, December 2021. DOI: 10.1109/PIC53636.2021.9687028, <a href="https://ieeexplore.ieee.org/document/9687028">[PDF]</a></p></li>
+  <li value="2"><p>Tao Zheng, <strong>Baohang Zhang</strong>, Haichuan Yang, Jiayi Li, and Shangce Gao, "Differential Whale Optimization Algorithm," in <strong><em>2021 IEEE International Conference on Networking, Sensing and Control (ICNSC)</em></strong>, pp. 1-6, December 2021. DOI: 10.1109/ICNSC52481.2021.9702171, <a href="https://ieeexplore.ieee.org/document/9702171">[PDF]</a></p></li>
+  <li value="1"><p><strong>Baohang Zhang</strong>, Haichuan Yang, Junyan Yi, Zhiming Zhang, and Shangce Gao, "A Multi-population Water Wave Optimization Algorithm," in <strong><em>2021 6th International Conference on Computational Intelligence and Applications (ICCIA)</em></strong>, pp. 64-67, June 2021. DOI: 10.1109/ICCIA52886.2021.00020, <a href="https://ieeexplore.ieee.org/document/9644035">[PDF]</a></p></li>
+</ol>
+      </section>
+      <section id="open-source" aria-labelledby="source-heading">
+        <h2 id="source-heading">OPEN SOURCE</h2>
+        <ul class="projects">
+          <li><a href="https://github.com/zbh0528/WFLO-GGA"><strong>WFLO-GGA</strong></a><br>
+            Geometry-guided optimization for integrated offshore wind farm layout and cable routing.</li>
+          <li><a href="https://github.com/zbh0528/Mass--and-momentum-conserving-analytical-wake-model"><strong>Analytical Wake Model</strong></a><br>
+            Mass- and momentum-conserving analytical wake modeling for wind farm analysis and optimization.</li>
+        </ul>
+      </section>
+      <footer>Baohang Zhang · Updated <time datetime="2026-10-12">October 12, 2026</time></footer>
+    </main>
   </div>
 </body>
 </html>
