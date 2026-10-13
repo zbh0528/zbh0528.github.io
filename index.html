@@ -8,83 +8,62 @@
   <style>
     * { box-sizing: border-box; }
     html { color-scheme: light; scroll-padding-top: 20px; }
-    body { margin: 0; background: #fff; color: #111; font: 16px/1.4 Arial, "PingFang SC", Helvetica, sans-serif; }
-    a { color: #224b8d; text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    a:focus-visible { outline: 2px solid #224b8d; outline-offset: 4px; }
+    body { margin: 0; background: #fff; color: #222; font: 16px/1.5 Arial, "PingFang SC", Helvetica, sans-serif; }
+    a, h1, h2, summary { color: #315b94; }
+    a { text-decoration: none; }
+    a:hover, button:hover { text-decoration: underline; }
+    a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px solid #315b94; outline-offset: 4px; }
     .skip-link { position: absolute; left: 12px; top: -60px; background: #fff; padding: 8px; z-index: 2; }
     .skip-link:focus { top: 12px; }
-    .layout { display: grid; grid-template-columns: 185px minmax(0, 1fr); max-width: 1440px; min-height: 100vh; margin: 0 auto; }
-    .site-nav { background: #fafafa; border-right: 1px solid #e1e1e1; padding: 24px 18px; }
+    .layout { display: grid; grid-template-columns: 170px minmax(0, 1fr); max-width: 1280px; min-height: 100vh; margin: 0 auto; }
+    .site-nav { background: #fafafa; border-right: 1px solid #ddd; padding: 24px 18px; }
     .nav-inner { position: sticky; top: 24px; }
     nav { display: flex; flex-direction: column; gap: 12px; }
-    nav a { font-size: 17px; }
-    .updated { margin: 32px 0 0; color: #666; font-size: 12px; }
-    .visitor-stats { margin: 12px 0 16px; color: #444; font-size: 14px; line-height: 1.8; }
-    .visitor-stats p { margin: 0; }
-    .print-link { padding: 0; border: 0; background: none; color: #224b8d; font: inherit; font-size: 14px; cursor: pointer; }
-    .print-link:hover { text-decoration: underline; }
-    .print-link:focus-visible { outline: 2px solid #224b8d; outline-offset: 4px; }
-    main { min-width: 0; padding: 20px 28px 36px; overflow-wrap: anywhere; }
-    h1 { margin: 0 0 20px; padding-bottom: 7px; border-bottom: 1px solid #bbb; color: #527bbd; font-size: 29px; line-height: 1.2; }
+    .site-tools { margin-top: 32px; }
+    .site-tools > summary { margin-bottom: 12px; }
+    .visitor-stats p { margin: 0 0 6px; }
+    button { padding: 0; border: 0; background: none; color: #315b94; font: inherit; cursor: pointer; }
+    button:disabled { cursor: wait; }
+    main { min-width: 0; padding: 24px 30px 36px; overflow-wrap: anywhere; }
+    h1 { margin: 0 0 20px; padding-bottom: 8px; border-bottom: 1px solid #ddd; font-size: 26px; line-height: 1.25; }
+    h2 { margin: 0 0 14px; padding-bottom: 5px; border-bottom: 1px solid #ddd; font-size: 20px; line-height: 1.25; }
+    h3 { margin: 24px 0 12px; font-size: 16px; line-height: inherit; }
+    p { margin: 0 0 14px; }
     .profile-row { display: flex; gap: 24px; align-items: center; }
     .portrait { display: block; width: 132px; height: 132px; object-fit: cover; flex: 0 0 auto; }
-    .affiliation { margin: 0 0 10px; }
-    .role { margin: 0 0 12px; }
+    .affiliation, .role { margin-bottom: 12px; }
     .email { margin: 0; }
-    .profile-links { display: flex; flex-wrap: wrap; gap: 8px 26px; list-style: square; margin: 16px 0 0; padding-left: 20px; }
-    .profile-links li { margin-left: 16px; }
-    .banban { display: grid; justify-items: center; gap: 6px; margin: 14px 0 22px; padding: 0; text-align: center; }
+    .profile-links { display: flex; flex-wrap: wrap; gap: 8px 20px; list-style: none; margin: 16px 0 0; padding: 0; }
+    .banban { display: grid; justify-items: center; gap: 6px; margin: 14px 0 28px; text-align: center; }
     .banban img { display: block; width: 190px; height: auto; }
-    .banban figcaption { color: #444; font-size: 14px; }
     .banban p { margin: 0 0 4px; }
-    section { margin: 0 0 26px; }
-    h2 { margin: 0 0 10px; padding-bottom: 4px; border-bottom: 1px solid #bbb; color: #527bbd; font-size: 20px; line-height: 1.25; font-weight: 600; }
-    p { margin: 0 0 12px; }
+    section { margin-bottom: 30px; }
     .biography strong { font-weight: normal; }
-    .research-directions { list-style: square; margin: 0; padding-left: 24px; }
+    .research-directions { list-style: square; padding-left: 24px; margin: 0; }
     .research-directions li { margin: 6px 0; }
+    .publication-summary { margin-bottom: 12px; }
+    .if-details { margin: 0 0 22px; }
+    .if-details > summary { cursor: pointer; margin-bottom: 12px; }
+    .table-wrap { overflow-x: auto; }
+    .if-table { width: 100%; min-width: 580px; border-collapse: collapse; text-align: left; }
+    .if-table caption { text-align: left; margin-bottom: 10px; }
+    .if-table th, .if-table td { padding: 8px; border-bottom: 1px solid #ddd; vertical-align: top; }
     .publications { padding-left: 2.2em; margin: 0; }
     .publications li { padding-left: 0.1em; margin-bottom: 18px; }
     .publications p { margin: 0; }
     .publications a { white-space: nowrap; }
-    .snapshot { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0 0 10px; gap: 12px; }
-    .snapshot > div { display: flex; flex-direction: column; justify-content: space-between; border-left: 1px solid #ddd; padding-left: 12px; }
-    .snapshot dt { color: #555; font-size: 13px; }
-    .snapshot dd { margin: 4px 0 0; color: #224b8d; font-size: 24px; font-weight: 600; }
-    .snapshot-note, .work-meta, .repo-meta { color: #555; font-size: 13px; }
-    .if-details { margin: 10px 0; font-size: 13px; }
-    .if-details summary { color: #224b8d; cursor: pointer; margin-bottom: 8px; }
-    .table-wrap { overflow-x: auto; }
-    .if-table { width: 100%; border-collapse: collapse; text-align: left; min-width: 580px; }
-    .if-table caption { text-align: left; margin-bottom: 8px; color: #555; }
-    .if-table th, .if-table td { padding: 7px 8px; border-bottom: 1px solid #ddd; vertical-align: top; }
-    .if-table th { background: #fafafa; }
-    .selected-work { padding-left: 22px; list-style: square; margin: 0; }
-    .selected-work li { margin-bottom: 14px; }
-    .projects { padding-left: 1.2em; margin: 0; }
-    .projects li { margin-bottom: 12px; }
-    footer { border-top: 1px solid #ddd; padding-top: 12px; color: #666; font-size: 12px; }
+    .selected-work, .projects { padding-left: 22px; margin: 0; list-style: square; }
+    .selected-work li, .projects li { margin-bottom: 14px; }
+    footer { border-top: 1px solid #ddd; padding-top: 14px; }
     @media (max-width: 760px) {
       .layout { display: block; }
-      .snapshot { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .site-nav { border-right: 0; border-bottom: 1px solid #ddd; padding: 12px 18px; }
+      .site-nav { border-right: 0; border-bottom: 1px solid #ddd; padding: 14px 18px; }
       .nav-inner { position: static; }
       nav { flex-direction: row; flex-wrap: wrap; gap: 8px 20px; }
-      nav a { font-size: 15px; }
-      .updated { display: none; }
-      .visitor-stats { display: flex; flex-wrap: wrap; gap: 6px 16px; margin: 10px 0 4px; font-size: 12px; }
-      .print-link { font-size: 12px; }
-      main { padding: 20px 18px 30px; }
-      h1 { font-size: 27px; }
-      .profile-row { gap: 18px; align-items: flex-start; }
-      .portrait { width: 96px; height: 96px; }
-    }
-    @media (max-width: 480px) {
-      .profile-row { gap: 14px; }
-      .portrait { width: 82px; height: 82px; }
-      .profile-links { gap: 8px 18px; }
-      .profile-links li { margin-left: 10px; }
+      .site-tools { margin-top: 10px; }
+      main { padding: 22px 18px 30px; }
+      .profile-row { gap: 16px; align-items: flex-start; }
+      .portrait { width: 90px; height: 90px; }
       .publications { padding-left: 1.8em; }
     }
     @media print {
@@ -104,20 +83,18 @@
       <div class="nav-inner">
         <nav aria-label="Main navigation">
           <a href="#home">Home</a>
-          <a href="#snapshot">Overview</a>
-          <a href="#research">Research Interests</a>
-          <a href="#biography">Biography</a>
-          <a href="#selected-work">Selected Work</a>
-          <a href="#journal-papers">Journal Papers</a>
-          <a href="#conference-papers">Conference Papers</a>
-          <a href="#open-source">Open Source</a>
+          <a href="#about">About</a>
+          <a href="#publications">Publications</a>
+          <a href="#open-source">Resources</a>
         </nav>
-        <p class="updated">Updated: <time datetime="2026-10-13">2026-10-13</time></p>
-        <div class="visitor-stats" aria-label="Site visits">
-          <p><span id="busuanzi_container_site_pv" style="display:none">Page views: <span id="busuanzi_value_site_pv"></span></span></p>
-          <p><span id="busuanzi_container_site_uv" style="display:none">Visitors: <span id="busuanzi_value_site_uv"></span></span></p>
-        </div>
-        <button class="print-link" type="button" onclick="window.print()">Print / Save PDF</button>
+        <details class="site-tools">
+          <summary>Page tools</summary>
+          <div class="visitor-stats" aria-label="Site visits">
+            <p><span id="busuanzi_container_site_pv" style="display:none">Page views: <span id="busuanzi_value_site_pv"></span></span></p>
+            <p><span id="busuanzi_container_site_uv" style="display:none">Visitors: <span id="busuanzi_value_site_uv"></span></span></p>
+          </div>
+          <button class="print-link" type="button" onclick="window.print()">Print / Save PDF</button>
+        </details>
       </div>
     </aside>
     <main id="content">
@@ -145,17 +122,27 @@
           <p lang="zh-CN">虽然他去了鼠星，但我很想他。</p>
         </figcaption>
       </figure>
-      <section id="snapshot" aria-labelledby="snapshot-heading">
-        <h2 id="snapshot-heading">Research Snapshot</h2>
-        <dl class="snapshot">
-          <div><dt>Journal papers</dt><dd id="snapshot-journals">11</dd></div>
-          <div><dt>Conference papers</dt><dd id="snapshot-conferences">17</dd></div>
-          <div><dt>First / second-author journal papers</dt><dd id="snapshot-primary">5</dd></div>
-          <div><dt>Cumulative journal IF</dt><dd id="snapshot-if">47.0</dd></div>
-        </dl>
-        <p class="snapshot-note"><span id="authorship-note">4 first-author and 1 second-author journal papers</span> · <span id="if-coverage">10 assigned IF values · 1 not reported</span></p>
+      <section id="about" aria-labelledby="about-heading">
+        <h2 id="about-heading">About</h2>
+        <div id="biography" class="biography">
+        <p>I received my <strong>Ph.D. in Engineering (March 2026)</strong> and <strong>M.S. in Artificial Intelligence (March 2023)</strong> from the <strong>University of Toyama, Japan</strong>. I am currently a <strong>Lecturer</strong> with the <strong>School of Computer and Information Engineering, Changzhou Institute of Technology, China</strong>.</p>
+        </div>
+        <div id="research">
+        <p>My research focuses on evolutionary computation and optimization for energy systems.</p>
+        <ul class="research-directions">
+          <li>Evolutionary computation and surrogate modeling for costly evaluations and coupled design variables.</li>
+          <li>Integrated offshore wind farm layout and electrical cable routing optimization.</li>
+          <li>Wake-aware yaw control.</li>
+          <li>Evolutionary feature selection.</li>
+        </ul>
+        </div>
+      </section>
+      <section id="publications" aria-labelledby="publications-heading">
+        <h2 id="publications-heading">Publications</h2>
+        <p id="snapshot" class="publication-summary"><span id="snapshot-journals">11</span> journal papers · <span id="snapshot-conferences">17</span> conference papers · <span id="snapshot-primary">5</span> first / second-author journal papers · cumulative IF <span id="snapshot-if">47.0</span></p>
         <details class="if-details">
-          <summary>IF calculation and sources</summary>
+          <summary>Publication details and selected work</summary>
+          <p><span id="authorship-note">4 first-author and 1 second-author journal papers</span> · <span id="if-coverage">10 assigned IF values · 1 not reported</span></p>
           <p>Each journal paper uses the JCR edition released in its publication year; for example, a 2026 paper uses the 2025 IF released in 2026. Conference papers are excluded. Journal papers include the in-press record. Records without a reported IF are shown separately and excluded from the sum.</p>
           <p id="metrics-status" role="status">IF sources verified: 2026-10-13.</p>
           <div class="table-wrap" tabindex="0" aria-label="Scrollable IF table">
@@ -165,25 +152,7 @@
               <tbody id="if-table-body"></tbody>
             </table>
           </div>
-        </details>
-        <button id="refresh-metrics" class="print-link" type="button">Refresh metrics</button>
-      </section>
-      <section id="research" aria-labelledby="research-heading">
-        <h2 id="research-heading">Research Interests</h2>
-        <p>My research focuses on evolutionary computation and optimization for energy systems.</p>
-        <ul class="research-directions">
-          <li>Evolutionary computation and surrogate modeling for costly evaluations and coupled design variables.</li>
-          <li>Integrated offshore wind farm layout and electrical cable routing optimization.</li>
-          <li>Wake-aware yaw control.</li>
-          <li>Evolutionary feature selection.</li>
-        </ul>
-      </section>
-      <section id="biography" class="biography" aria-labelledby="biography-heading">
-        <h2 id="biography-heading">Biography</h2>
-        <p>I received my <strong>Ph.D. in Engineering (March 2026)</strong> and <strong>M.S. in Artificial Intelligence (March 2023)</strong> from the <strong>University of Toyama, Japan</strong>. I am currently a <strong>Lecturer</strong> with the <strong>School of Computer and Information Engineering, Changzhou Institute of Technology, China</strong>.</p>
-      </section>
-      <section id="selected-work" aria-labelledby="selected-heading">
-        <h2 id="selected-heading">Selected Work</h2>
+          <h3 id="selected-work">Selected Work</h3>
         <ul class="selected-work">
           <li><strong>Surrogate-assisted wind farm optimization.</strong> Incremental surrogate-assisted differential evolution for offshore wind farm layout design.<br>
             <span class="work-meta">First author · IEEE TSMC: Systems, 2026 (in press) · <a href="#journal-papers">Publication details</a></span></li>
@@ -194,9 +163,10 @@
           <li><strong>Best Paper Award, EITCE 2025.</strong> Coauthor of “Revolutionizing Wind Energy: A Compact Evolutionary Algorithm for Layout Optimization.”<br>
             <span class="work-meta"><a href="https://toyamaailab.github.io/publications.html">Award record</a> · <a href="https://dl.acm.org/doi/pdf/10.1145/3766671.3766786">Paper</a></span></li>
         </ul>
-      </section>
+          <button id="refresh-metrics" class="print-link" type="button">Refresh metrics</button>
+        </details>
       <section id="journal-papers" aria-labelledby="journal-heading">
-        <h2 id="journal-heading">Journal Papers</h2>
+        <h3 id="journal-heading">Journal Papers</h3>
 <ol class="publications" start="11">
   <li value="11"><p><strong>Baohang Zhang</strong>, Yixin Shao, Zhe Xu, Zhenyu Lei, Xin Luo, Jiujun Cheng, and Shangce Gao*, "An Incremental Surrogate-Assisted Differential Evolution for Offshore Wind Farm Layout Optimization," <strong><em>IEEE Transactions on Systems, Man, and Cybernetics: Systems</em></strong>, 2026. DOI: 10.1109/TSMC.2026.3742716.</p></li>
   <li value="10"><p>Ziqian Wang, Lei Ding, Xugang Wang, and <strong>Baohang Zhang</strong>, "A balance-aware geometric multi-objective evolutionary algorithm for offshore wind farm layout optimization with capacity dependent cable cost evaluation," <strong><em>Energy</em></strong>, vol. 360, Article 141798, September 2026. DOI: 10.1016/j.energy.2026.141798, <a href="https://www.sciencedirect.com/science/article/pii/S0360544226019055">[PDF]</a></p></li>
@@ -212,7 +182,7 @@
 </ol>
       </section>
       <section id="conference-papers" aria-labelledby="conference-heading">
-        <h2 id="conference-heading">Conference Papers</h2>
+        <h3 id="conference-heading">Conference Papers</h3>
 <ol class="publications" start="17">
   <li value="17"><p>Yixin Shao, <strong>Baohang Zhang</strong>, Wenzhu Gu, Zhenyu Lei, and Shangce Gao, "A Topology-Driven Multi-Objective Evolutionary Algorithm for Offshore Wind Farm Layout Optimization," in <strong><em>2026 16th International Conference on Power, Energy, and Electrical Engineering (CPEEE)</em></strong>, pp. 494-498, March 2026. DOI: 10.1109/CPEEE69412.2026.11521465, <a href="https://ieeexplore.ieee.org/document/11521465/">[PDF]</a></p></li>
   <li value="16"><p><strong>Baohang Zhang</strong>, Yixin Shao, Tao Zheng, Runqun Xiong, Jiake Wang, Xiangmei Li, and Shangce Gao, "A Geometric Mutation-Based Genetic Algorithm for Irregular Large-Scale Offshore Wind Farm Layout Optimization," in <strong><em>2025 Thirteenth International Conference on Advanced Cloud and Big Data (CBD)</em></strong>, pp. 294-299, November 2025. DOI: 10.1109/CBD69312.2025.00059, <a href="https://ieeexplore.ieee.org/document/11366704/">[PDF]</a></p></li>
@@ -233,18 +203,16 @@
   <li value="1"><p><strong>Baohang Zhang</strong>, Haichuan Yang, Junyan Yi, Zhiming Zhang, and Shangce Gao, "A Multi-population Water Wave Optimization Algorithm," in <strong><em>2021 6th International Conference on Computational Intelligence and Applications (ICCIA)</em></strong>, pp. 64-67, June 2021. DOI: 10.1109/ICCIA52886.2021.00020, <a href="https://ieeexplore.ieee.org/document/9644035">[PDF]</a></p></li>
 </ol>
       </section>
+      </section>
       <section id="open-source" aria-labelledby="source-heading">
-        <h2 id="source-heading">Open Source</h2>
+        <h2 id="source-heading">Resources</h2>
         <ul class="projects">
-          <li><a href="https://github.com/zbh0528/WFLO-GGA"><strong>WFLO-GGA</strong></a><br>
-            An evaluation platform for integrated offshore wind farm layout and cable routing: eight benchmark sites and ten optimization algorithms.<br>
-            <span class="repo-meta" data-repo="WFLO-GGA"></span></li>
-          <li><a href="https://github.com/zbh0528/Mass--and-momentum-conserving-analytical-wake-model"><strong>Analytical Wake Model</strong></a><br>
-            An implementation of a published analytical wake model, provided for research and technical discussion.<br>
-            <span class="repo-meta" data-repo="Mass--and-momentum-conserving-analytical-wake-model"></span></li>
-          <li><a href="https://github.com/zbh0528/research-codex-skills"><strong>Research Codex Skills</strong></a><br>
-            Reusable workflows for scientific writing, reviewer responses, and research communication.<br>
-            <span class="repo-meta" data-repo="research-codex-skills"></span></li>
+          <li><a href="https://github.com/zbh0528/WFLO-GGA"><strong>WFLO-GGA</strong></a> —
+            An evaluation platform for integrated offshore wind farm layout and cable routing: eight benchmark sites and ten optimization algorithms.</li>
+          <li><a href="https://github.com/zbh0528/Mass--and-momentum-conserving-analytical-wake-model"><strong>Analytical Wake Model</strong></a> —
+            An implementation of a published analytical wake model, provided for research and technical discussion.</li>
+          <li><a href="https://github.com/zbh0528/research-codex-skills"><strong>Research Codex Skills</strong></a> —
+            Reusable workflows for scientific writing, reviewer responses, and research communication.</li>
         </ul>
       </section>
       <footer>Baohang Zhang · Updated <time datetime="2026-10-13">October 13, 2026</time> · <a href="#home">Back to top</a></footer>
