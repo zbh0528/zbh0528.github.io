@@ -7,55 +7,64 @@
   <meta name="description" content="Baohang Zhang, Lecturer at Changzhou Institute of Technology. Research in evolutionary computation, surrogate modeling, and energy system optimization.">
   <style>
     * { box-sizing: border-box; }
-    html { color-scheme: light; scroll-padding-top: 24px; }
-    body { margin: 0; background: #fcfcfa; color: #28332f; font: 16px/1.65 Arial, Helvetica, sans-serif; }
-    a { color: #24675d; text-decoration: none; }
+    html { color-scheme: light; scroll-padding-top: 20px; }
+    body { margin: 0; background: #fff; color: #111; font: 16px/1.4 Arial, "PingFang SC", Helvetica, sans-serif; }
+    a { color: #224b8d; text-decoration: none; }
     a:hover { text-decoration: underline; }
-    a:focus-visible { outline: 2px solid #24675d; outline-offset: 4px; }
-    .skip-link { position: absolute; left: 12px; top: -60px; background: #fcfcfa; padding: 8px; }
+    a:focus-visible { outline: 2px solid #224b8d; outline-offset: 4px; }
+    .skip-link { position: absolute; left: 12px; top: -60px; background: #fff; padding: 8px; z-index: 2; }
     .skip-link:focus { top: 12px; }
-    .layout { max-width: 1100px; margin: 0 auto; padding: 0 36px; }
-    .site-nav { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 22px 0; border-bottom: 1px solid #e1e6e2; }
-    nav { display: flex; flex-wrap: wrap; gap: 12px 26px; }
-    nav a { font-size: 15px; }
-    .updated { margin: 0; color: #66716b; font-size: 12px; white-space: nowrap; }
-    main { min-width: 0; padding: 32px 0 40px; overflow-wrap: anywhere; }
-    .profile { display: flex; justify-content: space-between; gap: 28px; align-items: flex-start; margin-bottom: 20px; }
-    h1 { margin: 0 0 14px; color: #243c35; font: 600 40px/1.2 Georgia, "Times New Roman", serif; }
-    .affiliation { margin: 0; }
-    .contacts { margin: 16px 0 0; }
-    .portrait { width: 120px; height: 120px; object-fit: cover; border-radius: 6px; flex: 0 0 auto; }
-    .banban { display: grid; justify-items: center; gap: 10px; margin: 0 0 34px; padding: 8px 0 26px; border-bottom: 1px solid #e1e6e2; text-align: center; }
+    .layout { display: grid; grid-template-columns: 185px minmax(0, 1fr); max-width: 1440px; min-height: 100vh; margin: 0 auto; }
+    .site-nav { background: #fafafa; border-right: 1px solid #e1e1e1; padding: 24px 18px; }
+    .nav-inner { position: sticky; top: 24px; }
+    nav { display: flex; flex-direction: column; gap: 12px; }
+    nav a { font-size: 17px; }
+    .updated { margin: 40px 0 0; color: #666; font-size: 12px; }
+    main { min-width: 0; padding: 20px 28px 36px; overflow-wrap: anywhere; }
+    h1 { margin: 0 0 20px; padding-bottom: 7px; border-bottom: 1px solid #bbb; color: #527bbd; font-size: 29px; line-height: 1.2; }
+    .profile-row { display: flex; gap: 24px; align-items: center; }
+    .portrait { display: block; width: 132px; height: 132px; object-fit: cover; flex: 0 0 auto; }
+    .affiliation { margin: 0 0 10px; }
+    .role { margin: 0 0 12px; }
+    .email { margin: 0; }
+    .profile-links { display: flex; flex-wrap: wrap; gap: 8px 26px; list-style: square; margin: 16px 0 0; padding-left: 20px; }
+    .profile-links li { margin-left: 16px; }
+    .banban { display: grid; justify-items: center; gap: 6px; margin: 14px 0 22px; padding: 0; text-align: center; }
     .banban img { display: block; width: 190px; height: auto; }
-    .banban figcaption { color: #5c6962; font-size: 14px; }
+    .banban figcaption { color: #444; font-size: 14px; }
     .banban p { margin: 0 0 4px; }
-    section { margin: 0 0 36px; }
-    h2 { margin: 0 0 18px; padding-left: 12px; border-left: 3px solid #6f9689; color: #243c35; font-size: 22px; line-height: 1.4; font-weight: 600; }
-    p { margin: 0 0 14px; }
+    section { margin: 0 0 26px; }
+    h2 { margin: 0 0 10px; padding-bottom: 4px; border-bottom: 1px solid #bbb; color: #527bbd; font-size: 20px; line-height: 1.25; font-weight: 600; }
+    p { margin: 0 0 12px; }
+    .biography strong { font-weight: normal; }
     .publications { padding-left: 2.2em; margin: 0; }
-    .publications li { padding-left: 0.15em; margin-bottom: 20px; }
+    .publications li { padding-left: 0.1em; margin-bottom: 18px; }
     .publications p { margin: 0; }
     .publications a { white-space: nowrap; }
     .projects { padding-left: 1.2em; margin: 0; }
     .projects li { margin-bottom: 12px; }
-    footer { border-top: 1px solid #e1e6e2; padding-top: 14px; color: #66716b; font-size: 12px; }
+    footer { border-top: 1px solid #ddd; padding-top: 12px; color: #666; font-size: 12px; }
     @media (max-width: 760px) {
-      .layout { padding: 0 20px; }
-      .site-nav { padding: 16px 0; }
-      nav { gap: 8px 20px; }
+      .layout { display: block; }
+      .site-nav { border-right: 0; border-bottom: 1px solid #ddd; padding: 12px 18px; }
+      .nav-inner { position: static; }
+      nav { flex-direction: row; flex-wrap: wrap; gap: 8px 20px; }
+      nav a { font-size: 15px; }
       .updated { display: none; }
-      main { padding-top: 26px; }
-      .profile { gap: 16px; }
-      h1 { font-size: 34px; }
-      .portrait { width: 88px; height: 88px; }
+      main { padding: 20px 18px 30px; }
+      h1 { font-size: 27px; }
+      .profile-row { gap: 18px; align-items: flex-start; }
+      .portrait { width: 96px; height: 96px; }
     }
     @media (max-width: 480px) {
-      .profile { flex-direction: column-reverse; }
-      .portrait { width: 96px; height: 96px; }
+      .profile-row { gap: 14px; }
+      .portrait { width: 82px; height: 82px; }
+      .profile-links { gap: 8px 18px; }
+      .profile-links li { margin-left: 10px; }
       .publications { padding-left: 1.8em; }
     }
     @media print {
-      .layout { max-width: none; padding: 0; }
+      .layout { display: block; max-width: none; }
       .site-nav, .skip-link { display: none; }
       main { padding: 0; }
       a { color: inherit; }
@@ -65,25 +74,34 @@
 <body>
   <a class="skip-link" href="#content">Skip to content</a>
   <div class="layout">
-    <header class="site-nav">
-      <nav aria-label="Main navigation">
-        <a href="#home">Home</a>
-        <a href="#journal-papers">Journal Papers</a>
-        <a href="#conference-papers">Conference Papers</a>
-        <a href="#open-source">Open Source</a>
-      </nav>
-      <p class="updated">Updated: <time datetime="2026-10-13">2026-10-13</time></p>
-    </header>
+    <aside class="site-nav">
+      <div class="nav-inner">
+        <nav aria-label="Main navigation">
+          <a href="#home">Home</a>
+          <a href="#journal-papers">Journal Papers</a>
+          <a href="#conference-papers">Conference Papers</a>
+          <a href="#open-source">Open Source</a>
+        </nav>
+        <p class="updated">Updated: <time datetime="2026-10-13">2026-10-13</time></p>
+      </div>
+    </aside>
     <main id="content">
       <header class="profile" id="home">
-        <div>
-          <h1>Baohang Zhang</h1>
-          <p class="affiliation"><strong>Lecturer</strong><br>
-            School of Computer and Information Engineering<br>
-            Changzhou Institute of Technology, China</p>
-          <p class="contacts"><a href="mailto:zbhsyx@163.com">Email</a> · <a href="https://scholar.google.com.hk/citations?user=kKfWIUkAAAAJ&amp;hl=zh-CN">Google Scholar</a> · <a href="https://orcid.org/0000-0002-8612-0649">ORCID</a> · <a href="https://github.com/zbh0528">GitHub</a></p>
+        <h1>Baohang Zhang</h1>
+        <div class="profile-row">
+          <img class="portrait" src="https://avatars.githubusercontent.com/u/52562369?v=4" alt="Baohang Zhang" width="132" height="132">
+          <div>
+            <p class="role"><strong>Lecturer</strong></p>
+            <p class="affiliation">School of Computer and Information Engineering<br>
+              Changzhou Institute of Technology, China</p>
+            <p class="email"><strong>Email:</strong> <a href="mailto:zbhsyx@163.com">zbhsyx@163.com</a></p>
+          </div>
         </div>
-        <img class="portrait" src="https://avatars.githubusercontent.com/u/52562369?v=4" alt="Baohang Zhang" width="128" height="128">
+        <ul class="profile-links" aria-label="Academic profiles">
+          <li><a href="https://scholar.google.com.hk/citations?user=kKfWIUkAAAAJ&amp;hl=zh-CN">Google Scholar</a></li>
+          <li><a href="https://orcid.org/0000-0002-8612-0649">ORCID</a></li>
+          <li><a href="https://github.com/zbh0528">GitHub</a></li>
+        </ul>
       </header>
       <figure class="banban">
         <img src="assets/banban-sakura-stage.svg" alt="BanBan under soft animated sakura rain" width="190" height="154">
@@ -92,9 +110,12 @@
           <p lang="zh-CN">虽然他去了鼠星，但我很想他。</p>
         </figcaption>
       </figure>
-      <section aria-labelledby="about-heading">
-        <h2 id="about-heading">About</h2>
+      <section aria-labelledby="research-heading">
+        <h2 id="research-heading">Research Interests</h2>
         <p>My research focuses on <strong>evolutionary computation</strong>, <strong>surrogate modeling</strong>, and <strong>energy system optimization</strong>. I study offshore wind farm layout and electrical cable routing, wake-aware yaw control, and evolutionary feature selection, with an emphasis on costly evaluations and coupled design variables.</p>
+      </section>
+      <section class="biography" aria-labelledby="biography-heading">
+        <h2 id="biography-heading">Biography</h2>
         <p>I received my <strong>Ph.D. in Engineering (March 2026)</strong> and <strong>M.S. in Artificial Intelligence (March 2023)</strong> from the <strong>University of Toyama, Japan</strong>. I am currently a <strong>Lecturer</strong> with the <strong>School of Computer and Information Engineering, Changzhou Institute of Technology, China</strong>.</p>
       </section>
       <section id="journal-papers" aria-labelledby="journal-heading">
