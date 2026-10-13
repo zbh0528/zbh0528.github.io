@@ -48,11 +48,26 @@
     .publications li { padding-left: 0.1em; margin-bottom: 18px; }
     .publications p { margin: 0; }
     .publications a { white-space: nowrap; }
+    .snapshot { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0 0 10px; gap: 12px; }
+    .snapshot > div { display: flex; flex-direction: column; justify-content: space-between; border-left: 1px solid #ddd; padding-left: 12px; }
+    .snapshot dt { color: #555; font-size: 13px; }
+    .snapshot dd { margin: 4px 0 0; color: #224b8d; font-size: 24px; font-weight: 600; }
+    .snapshot-note, .work-meta, .repo-meta { color: #555; font-size: 13px; }
+    .if-details { margin: 10px 0; font-size: 13px; }
+    .if-details summary { color: #224b8d; cursor: pointer; margin-bottom: 8px; }
+    .table-wrap { overflow-x: auto; }
+    .if-table { width: 100%; border-collapse: collapse; text-align: left; min-width: 580px; }
+    .if-table caption { text-align: left; margin-bottom: 8px; color: #555; }
+    .if-table th, .if-table td { padding: 7px 8px; border-bottom: 1px solid #ddd; vertical-align: top; }
+    .if-table th { background: #fafafa; }
+    .selected-work { padding-left: 22px; list-style: square; margin: 0; }
+    .selected-work li { margin-bottom: 14px; }
     .projects { padding-left: 1.2em; margin: 0; }
     .projects li { margin-bottom: 12px; }
     footer { border-top: 1px solid #ddd; padding-top: 12px; color: #666; font-size: 12px; }
     @media (max-width: 760px) {
       .layout { display: block; }
+      .snapshot { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .site-nav { border-right: 0; border-bottom: 1px solid #ddd; padding: 12px 18px; }
       .nav-inner { position: static; }
       nav { flex-direction: row; flex-wrap: wrap; gap: 8px 20px; }
@@ -80,6 +95,7 @@
     }
   </style>
   <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script type="module" src="assets/profile.mjs"></script>
 </head>
 <body>
   <a class="skip-link" href="#content">Skip to content</a>
@@ -88,8 +104,10 @@
       <div class="nav-inner">
         <nav aria-label="Main navigation">
           <a href="#home">Home</a>
+          <a href="#snapshot">Overview</a>
           <a href="#research">Research Interests</a>
           <a href="#biography">Biography</a>
+          <a href="#selected-work">Selected Work</a>
           <a href="#journal-papers">Journal Papers</a>
           <a href="#conference-papers">Conference Papers</a>
           <a href="#open-source">Open Source</a>
@@ -127,6 +145,29 @@
           <p lang="zh-CN">虽然他去了鼠星，但我很想他。</p>
         </figcaption>
       </figure>
+      <section id="snapshot" aria-labelledby="snapshot-heading">
+        <h2 id="snapshot-heading">Research Snapshot</h2>
+        <dl class="snapshot">
+          <div><dt>Journal papers</dt><dd id="snapshot-journals">11</dd></div>
+          <div><dt>Conference papers</dt><dd id="snapshot-conferences">17</dd></div>
+          <div><dt>First / second-author journal papers</dt><dd id="snapshot-primary">5</dd></div>
+          <div><dt>Cumulative journal IF</dt><dd id="snapshot-if">47.0</dd></div>
+        </dl>
+        <p class="snapshot-note"><span id="authorship-note">4 first-author and 1 second-author journal papers</span> · <span id="if-coverage">10 assigned IF values · 1 not reported</span></p>
+        <details class="if-details">
+          <summary>IF calculation and sources</summary>
+          <p>Each journal paper uses the JCR edition released in its publication year; for example, a 2026 paper uses the 2025 IF released in 2026. Conference papers are excluded. Journal papers include the in-press record. Records without a reported IF are shown separately and excluded from the sum.</p>
+          <p id="metrics-status" role="status">IF sources verified: 2026-10-13.</p>
+          <div class="table-wrap" tabindex="0" aria-label="Scrollable IF table">
+            <table class="if-table">
+              <caption>Publication-year journal IF breakdown</caption>
+              <thead><tr><th>Journal</th><th>Paper year</th><th>IF year</th><th>IF</th><th>Source</th></tr></thead>
+              <tbody id="if-table-body"></tbody>
+            </table>
+          </div>
+        </details>
+        <button id="refresh-metrics" class="print-link" type="button">Refresh metrics</button>
+      </section>
       <section id="research" aria-labelledby="research-heading">
         <h2 id="research-heading">Research Interests</h2>
         <p>My research focuses on evolutionary computation and optimization for energy systems.</p>
@@ -140,6 +181,19 @@
       <section id="biography" class="biography" aria-labelledby="biography-heading">
         <h2 id="biography-heading">Biography</h2>
         <p>I received my <strong>Ph.D. in Engineering (March 2026)</strong> and <strong>M.S. in Artificial Intelligence (March 2023)</strong> from the <strong>University of Toyama, Japan</strong>. I am currently a <strong>Lecturer</strong> with the <strong>School of Computer and Information Engineering, Changzhou Institute of Technology, China</strong>.</p>
+      </section>
+      <section id="selected-work" aria-labelledby="selected-heading">
+        <h2 id="selected-heading">Selected Work</h2>
+        <ul class="selected-work">
+          <li><strong>Surrogate-assisted wind farm optimization.</strong> Incremental surrogate-assisted differential evolution for offshore wind farm layout design.<br>
+            <span class="work-meta">First author · IEEE TSMC: Systems, 2026 (in press) · <a href="#journal-papers">Publication details</a></span></li>
+          <li><strong>Integrated layout and cable routing.</strong> Geometry-guided genetic search with an open MATLAB benchmark covering eight offshore wind farms and ten algorithms.<br>
+            <span class="work-meta">First author · Applied Energy, 2026 · <a href="https://www.sciencedirect.com/science/article/pii/S0306261926005477">Paper</a> · <a href="https://github.com/zbh0528/WFLO-GGA">Code &amp; benchmark</a></span></li>
+          <li><strong>Evolutionary feature selection.</strong> Information-gain-based multi-objective evolutionary search.<br>
+            <span class="work-meta">First author · Information Sciences, 2024 · <a href="https://www.sciencedirect.com/science/article/pii/S0020025524008156">Paper</a></span></li>
+          <li><strong>Best Paper Award, EITCE 2025.</strong> Coauthor of “Revolutionizing Wind Energy: A Compact Evolutionary Algorithm for Layout Optimization.”<br>
+            <span class="work-meta"><a href="https://toyamaailab.github.io/publications.html">Award record</a> · <a href="https://dl.acm.org/doi/pdf/10.1145/3766671.3766786">Paper</a></span></li>
+        </ul>
       </section>
       <section id="journal-papers" aria-labelledby="journal-heading">
         <h2 id="journal-heading">Journal Papers</h2>
@@ -183,9 +237,14 @@
         <h2 id="source-heading">Open Source</h2>
         <ul class="projects">
           <li><a href="https://github.com/zbh0528/WFLO-GGA"><strong>WFLO-GGA</strong></a><br>
-            Geometry-guided optimization for integrated offshore wind farm layout and cable routing.</li>
+            An evaluation platform for integrated offshore wind farm layout and cable routing: eight benchmark sites and ten optimization algorithms.<br>
+            <span class="repo-meta" data-repo="WFLO-GGA"></span></li>
           <li><a href="https://github.com/zbh0528/Mass--and-momentum-conserving-analytical-wake-model"><strong>Analytical Wake Model</strong></a><br>
-            Mass- and momentum-conserving analytical wake modeling for wind farm analysis and optimization.</li>
+            An implementation of a published analytical wake model, provided for research and technical discussion.<br>
+            <span class="repo-meta" data-repo="Mass--and-momentum-conserving-analytical-wake-model"></span></li>
+          <li><a href="https://github.com/zbh0528/research-codex-skills"><strong>Research Codex Skills</strong></a><br>
+            Reusable workflows for scientific writing, reviewer responses, and research communication.<br>
+            <span class="repo-meta" data-repo="research-codex-skills"></span></li>
         </ul>
       </section>
       <footer>Baohang Zhang · Updated <time datetime="2026-10-13">October 13, 2026</time> · <a href="#home">Back to top</a></footer>
