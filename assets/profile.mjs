@@ -72,18 +72,4 @@ if (typeof document !== "undefined") {
   }
   document.getElementById("refresh-metrics").addEventListener("click", refreshMetrics);
   refreshMetrics();
-  // ponytail: one request covers the first 100 public repositories; paginate if this profile exceeds 100.
-  fetch("https://api.github.com/users/zbh0528/repos?per_page=100").then(response => {
-    if (!response.ok) throw new Error("Repository metadata unavailable");
-    return response.json();
-  }).then(repos => {
-    if (!Array.isArray(repos)) throw new Error("Invalid repository metadata");
-    document.querySelectorAll("[data-repo]").forEach(element => {
-      const repo = repos.find(r => r.name === element.dataset.repo);
-      if (!repo || typeof repo.pushed_at !== "string") return;
-      const date = new Date(repo.pushed_at);
-      if (Number.isNaN(date.valueOf())) return;
-      element.textContent = (typeof repo.language === "string" ? repo.language + " · " : "") + "Updated " + date.toISOString().slice(0, 10);
-    });
-  }).catch(() => {});
 }
