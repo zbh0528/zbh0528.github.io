@@ -1,0 +1,96 @@
+{
+  "policy": "jcr_release_year_matches_publication_year",
+  "verified_on": "2026-10-13",
+  "records": [
+    {
+      "journal": "IEEE Transactions on Systems, Man, and Cybernetics: Systems",
+      "data_year": 2025,
+      "release_year": 2026,
+      "value": 8.4,
+      "status": "verified",
+      "source": "https://open.ieee.org/wp-content/uploads/IEEE-Title-List-September-2026.pdf",
+      "source_label": "IEEE"
+    },
+    {
+      "journal": "Energy",
+      "data_year": 2025,
+      "release_year": 2026,
+      "value": 10.1,
+      "status": "verified",
+      "source": "https://www.iit.comillas.edu/publicacion/info_revista/en/219/energy",
+      "source_label": "Comillas"
+    },
+    {
+      "journal": "Applied Energy",
+      "data_year": 2025,
+      "release_year": 2026,
+      "value": 12.2,
+      "status": "verified",
+      "source": "https://www.iit.comillas.edu/publicacion/info_revista/es/226/Applied_Energy",
+      "source_label": "Comillas"
+    },
+    {
+      "journal": "IEEE Access",
+      "data_year": 2025,
+      "release_year": 2026,
+      "value": 4.2,
+      "status": "verified",
+      "source": "https://open.ieee.org/wp-content/uploads/IEEE-Title-List-September-2026.pdf",
+      "source_label": "IEEE"
+    },
+    {
+      "journal": "International Journal of Computational Intelligence Systems",
+      "data_year": 2025,
+      "release_year": 2026,
+      "value": 4,
+      "status": "verified",
+      "source": "https://link.springer.com/journal/44196",
+      "source_label": "Springer"
+    },
+    {
+      "journal": "The Journal of Supercomputing",
+      "data_year": 2024,
+      "release_year": 2025,
+      "value": 2.7,
+      "status": "verified",
+      "source": "https://topj.lib.whu.edu.cn/show.asp?cat=zk&id=3548",
+      "source_label": "WHU Library"
+    },
+    {
+      "journal": "IEEJ Transactions on Electrical and Electronic Engineering",
+      "data_year": 2024,
+      "release_year": 2025,
+      "value": 1.1,
+      "status": "verified",
+      "source": "https://topj.lib.whu.edu.cn/show.asp?cat=sci&id=6332",
+      "source_label": "WHU Library"
+    },
+    {
+      "journal": "Information Sciences",
+      "data_year": 2023,
+      "release_year": 2024,
+      "value": null,
+      "status": "not_reported",
+      "source": "https://journalcitationreports.zendesk.com/hc/en-gb/article_attachments/47808461969553",
+      "source_label": "Clarivate"
+    },
+    {
+      "journal": "International Journal of Computational Intelligence Systems",
+      "data_year": 2022,
+      "release_year": 2023,
+      "value": 2.9,
+      "status": "verified",
+      "source": "https://www.library.sk/arl-sav/en/detail-sav_un_epca-127830-International-Journal-of-Computational-Intelligence-Systems/?iset=3&qt=mg",
+      "source_label": "SAS Library"
+    },
+    {
+      "journal": "IEICE Transactions on Information and Systems",
+      "data_year": 2022,
+      "release_year": 2023,
+      "value": 0.7,
+      "status": "verified",
+      "source": "https://vrip.ucm.cl/wp-content/uploads/2023/07/Guia_de_publicacion_WoS_2022_para_invesigadoras_e_investigadores_UCM.pdf",
+      "source_label": "UCM Library"
+    }
+  ]
+}
