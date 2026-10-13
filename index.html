@@ -19,7 +19,12 @@
     .nav-inner { position: sticky; top: 24px; }
     nav { display: flex; flex-direction: column; gap: 12px; }
     nav a { font-size: 17px; }
-    .updated { margin: 40px 0 0; color: #666; font-size: 12px; }
+    .updated { margin: 32px 0 0; color: #666; font-size: 12px; }
+    .visitor-stats { margin: 12px 0 16px; color: #444; font-size: 14px; line-height: 1.8; }
+    .visitor-stats p { margin: 0; }
+    .print-link { padding: 0; border: 0; background: none; color: #224b8d; font: inherit; font-size: 14px; cursor: pointer; }
+    .print-link:hover { text-decoration: underline; }
+    .print-link:focus-visible { outline: 2px solid #224b8d; outline-offset: 4px; }
     main { min-width: 0; padding: 20px 28px 36px; overflow-wrap: anywhere; }
     h1 { margin: 0 0 20px; padding-bottom: 7px; border-bottom: 1px solid #bbb; color: #527bbd; font-size: 29px; line-height: 1.2; }
     .profile-row { display: flex; gap: 24px; align-items: center; }
@@ -37,6 +42,8 @@
     h2 { margin: 0 0 10px; padding-bottom: 4px; border-bottom: 1px solid #bbb; color: #527bbd; font-size: 20px; line-height: 1.25; font-weight: 600; }
     p { margin: 0 0 12px; }
     .biography strong { font-weight: normal; }
+    .research-directions { list-style: square; margin: 0; padding-left: 24px; }
+    .research-directions li { margin: 6px 0; }
     .publications { padding-left: 2.2em; margin: 0; }
     .publications li { padding-left: 0.1em; margin-bottom: 18px; }
     .publications p { margin: 0; }
@@ -51,6 +58,8 @@
       nav { flex-direction: row; flex-wrap: wrap; gap: 8px 20px; }
       nav a { font-size: 15px; }
       .updated { display: none; }
+      .visitor-stats { display: flex; flex-wrap: wrap; gap: 6px 16px; margin: 10px 0 4px; font-size: 12px; }
+      .print-link { font-size: 12px; }
       main { padding: 20px 18px 30px; }
       h1 { font-size: 27px; }
       .profile-row { gap: 18px; align-items: flex-start; }
@@ -70,6 +79,7 @@
       a { color: inherit; }
     }
   </style>
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#content">Skip to content</a>
@@ -78,11 +88,18 @@
       <div class="nav-inner">
         <nav aria-label="Main navigation">
           <a href="#home">Home</a>
+          <a href="#research">Research Interests</a>
+          <a href="#biography">Biography</a>
           <a href="#journal-papers">Journal Papers</a>
           <a href="#conference-papers">Conference Papers</a>
           <a href="#open-source">Open Source</a>
         </nav>
         <p class="updated">Updated: <time datetime="2026-10-13">2026-10-13</time></p>
+        <div class="visitor-stats" aria-label="Site visits">
+          <p><span id="busuanzi_container_site_pv" style="display:none">Page views: <span id="busuanzi_value_site_pv"></span></span></p>
+          <p><span id="busuanzi_container_site_uv" style="display:none">Visitors: <span id="busuanzi_value_site_uv"></span></span></p>
+        </div>
+        <button class="print-link" type="button" onclick="window.print()">Print / Save PDF</button>
       </div>
     </aside>
     <main id="content">
@@ -110,11 +127,17 @@
           <p lang="zh-CN">虽然他去了鼠星，但我很想他。</p>
         </figcaption>
       </figure>
-      <section aria-labelledby="research-heading">
+      <section id="research" aria-labelledby="research-heading">
         <h2 id="research-heading">Research Interests</h2>
-        <p>My research focuses on <strong>evolutionary computation</strong>, <strong>surrogate modeling</strong>, and <strong>energy system optimization</strong>. I study offshore wind farm layout and electrical cable routing, wake-aware yaw control, and evolutionary feature selection, with an emphasis on costly evaluations and coupled design variables.</p>
+        <p>My research focuses on evolutionary computation and optimization for energy systems.</p>
+        <ul class="research-directions">
+          <li>Evolutionary computation and surrogate modeling for costly evaluations and coupled design variables.</li>
+          <li>Integrated offshore wind farm layout and electrical cable routing optimization.</li>
+          <li>Wake-aware yaw control.</li>
+          <li>Evolutionary feature selection.</li>
+        </ul>
       </section>
-      <section class="biography" aria-labelledby="biography-heading">
+      <section id="biography" class="biography" aria-labelledby="biography-heading">
         <h2 id="biography-heading">Biography</h2>
         <p>I received my <strong>Ph.D. in Engineering (March 2026)</strong> and <strong>M.S. in Artificial Intelligence (March 2023)</strong> from the <strong>University of Toyama, Japan</strong>. I am currently a <strong>Lecturer</strong> with the <strong>School of Computer and Information Engineering, Changzhou Institute of Technology, China</strong>.</p>
       </section>
@@ -165,7 +188,7 @@
             Mass- and momentum-conserving analytical wake modeling for wind farm analysis and optimization.</li>
         </ul>
       </section>
-      <footer>Baohang Zhang · Updated <time datetime="2026-10-13">October 13, 2026</time></footer>
+      <footer>Baohang Zhang · Updated <time datetime="2026-10-13">October 13, 2026</time> · <a href="#home">Back to top</a></footer>
     </main>
   </div>
 </body>
