@@ -62,7 +62,7 @@ if (typeof document !== "undefined") {
           const cell = document.createElement("td"); cell.textContent = value; row.append(cell);
         }
         const cell = document.createElement("td");
-        if (metric) { const link = document.createElement("a"); link.href = metric.source; link.textContent = metric.source_label; cell.append(link); }
+        if (metric) { const link = document.createElement("a"); link.href = metric.source; link.target = "_blank"; link.rel = "noopener noreferrer"; link.textContent = metric.source_label; cell.append(link); }
         else cell.textContent = "—";
         row.append(cell); body.append(row);
       }
