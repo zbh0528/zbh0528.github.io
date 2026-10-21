@@ -92,14 +92,14 @@
     }
   </style>
   <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-  <script type="module" src="assets/profile.mjs"></script>
+  <script type="module" src="assets/profile.mjs?v=20261021-2"></script>
 </head>
 <body>
   <a class="skip-link" href="#content" data-zh="跳转到正文">Skip to content</a>
   <div class="layout">
     <aside class="site-nav">
       <div class="nav-inner">
-        <div class="language-picker" hidden>
+        <div class="language-picker">
           <div class="language-caption">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18M5 7h14M5 17h14"/></svg>
             <span data-zh="语言">Language</span>
@@ -248,5 +248,30 @@
       <footer>Baohang Zhang · <span data-zh="更新于 ">Updated </span><time datetime="2026-10-21" data-zh="2026年10月21日">October 21, 2026</time> · <a href="#home" data-zh="返回顶部">Back to top</a></footer>
     </main>
   </div>
+  <script>
+    (() => {
+      const translations = Array.from(document.querySelectorAll("[data-zh]")).map(el =>
+        ({ el, en: el.textContent, zh: el.getAttribute("data-zh") }));
+      const attributes = ["aria-label", "alt", "content"].flatMap(attr =>
+        Array.from(document.querySelectorAll("[data-zh-" + attr + "]")).map(el =>
+          ({ el, attr, en: el.getAttribute(attr), zh: el.getAttribute("data-zh-" + attr) })));
+      const buttons = document.querySelectorAll("[data-language]");
+      function setLanguage(language, persist = false) {
+        if (!["zh", "en"].includes(language)) return;
+        document.documentElement.lang = language === "zh" ? "zh-CN" : "en";
+        for (const item of translations) item.el.textContent = item[language];
+        for (const item of attributes) item.el.setAttribute(item.attr, item[language]);
+        for (const button of buttons) button.setAttribute("aria-pressed", String(button.dataset.language === language));
+        document.dispatchEvent(new Event("homepage-language-change"));
+        if (persist) {
+          try { localStorage.setItem("homepage-language", language); } catch { /* Switching works without browser storage. */ }
+        }
+      }
+      let preferred;
+      try { preferred = localStorage.getItem("homepage-language"); } catch { /* Browser storage may be unavailable. */ }
+      setLanguage(["zh", "en"].includes(preferred) ? preferred : navigator.language?.toLowerCase().startsWith("zh") ? "zh" : "en");
+      for (const button of buttons) button.addEventListener("click", () => setLanguage(button.dataset.language, true));
+    })();
+  </script>
 </body>
 </html>

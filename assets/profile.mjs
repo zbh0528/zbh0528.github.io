@@ -37,29 +37,10 @@ if (typeof document !== "undefined") {
   const readPapers = id => Array.from(document.querySelectorAll(id + " li")).map(li =>
     parseCitation(li.textContent, li.querySelector("strong em").textContent));
   const text = (id, value) => { document.getElementById(id).textContent = value; };
-  const translations = Array.from(document.querySelectorAll("[data-zh]")).map(el =>
-    ({ el, en: el.textContent, zh: el.getAttribute("data-zh") }));
-  const attributes = ["aria-label", "alt", "content"].flatMap(attr =>
-    Array.from(document.querySelectorAll("[data-zh-" + attr + "]")).map(el =>
-      ({ el, attr, en: el.getAttribute(attr), zh: el.getAttribute("data-zh-" + attr) })));
-  const languageButtons = document.querySelectorAll("[data-language]");
-  let language = "en", snapshot, verifiedOn, metricsFailed = false;
-
-  function setLanguage(next, persist = false) {
-    if (!["zh", "en"].includes(next)) return;
-    language = next;
-    document.documentElement.lang = language === "zh" ? "zh-CN" : "en";
-    for (const item of translations) item.el.textContent = item[language];
-    for (const item of attributes) item.el.setAttribute(item.attr, item[language]);
-    for (const button of languageButtons) button.setAttribute("aria-pressed", String(button.dataset.language === language));
-    renderMetrics();
-    if (persist) {
-      try { localStorage.setItem("homepage-language", language); } catch { /* Language switching also works without browser storage. */ }
-    }
-  }
+  let snapshot, verifiedOn, metricsFailed = false;
 
   function renderMetrics() {
-    const zh = language === "zh", stats = snapshot;
+    const zh = document.documentElement.lang === "zh-CN", stats = snapshot;
     if (stats) {
       text("snapshot-journals", stats.journals);
       text("snapshot-conferences", stats.conferences);
@@ -105,11 +86,7 @@ if (typeof document !== "undefined") {
     } catch { metricsFailed = true; }
     finally { button.disabled = false; renderMetrics(); }
   }
-  let preferred;
-  try { preferred = localStorage.getItem("homepage-language"); } catch { /* Browser storage may be unavailable. */ }
-  setLanguage(["zh", "en"].includes(preferred) ? preferred : navigator.language?.toLowerCase().startsWith("zh") ? "zh" : "en");
-  for (const button of languageButtons) button.addEventListener("click", () => setLanguage(button.dataset.language, true));
-  document.querySelector(".language-picker").hidden = false;
+  document.addEventListener("homepage-language-change", renderMetrics);
   document.getElementById("refresh-metrics").addEventListener("click", refreshMetrics);
   refreshMetrics();
 }

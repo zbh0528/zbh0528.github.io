@@ -23,7 +23,7 @@ async (page) => {
   await buttons("en").focus();
   await page.keyboard.press("Enter");
   check(await buttons("en").getAttribute("aria-pressed") === "true", "Keyboard switching");
-  for (const width of [320, 390, 768, 1280]) {
+  for (const width of [320, 360, 375, 390, 414, 430, 768, 1280]) {
     await page.setViewportSize({ width, height: 900 });
     for (const lang of ["en", "zh"]) {
       await buttons(lang).click();
@@ -49,6 +49,11 @@ async (page) => {
     check(await isolated.locator("html").getAttribute("lang") === "en", "Browser language fallback");
     await isolated.getByRole("button", { name: "中文", exact: true }).click();
     check(await isolated.locator("html").getAttribute("lang") === "zh-CN", "Switch works when storage is blocked");
+    await isolated.route("**/assets/profile.mjs*", route => route.abort());
+    await isolated.reload({ waitUntil: "domcontentloaded" });
+    check(await isolated.getByRole("button", { name: "中文", exact: true }).isVisible(), "Buttons remain visible when the external module fails");
+    await isolated.getByRole("button", { name: "中文", exact: true }).click();
+    check(await isolated.locator("#about-heading").textContent() === "关于我", "Switch works when the external module fails");
   } finally { await context.close(); }
   await page.locator(".if-details > summary").click();
   await buttons("zh").click();
