@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Baohang Zhang | Changzhou Institute of Technology</title>
-  <meta name="description" content="Baohang Zhang, Lecturer at Changzhou Institute of Technology. Research in evolutionary computation, surrogate modeling, and energy system optimization.">
+  <title data-zh="Baohang Zhang | 常州工学院">Baohang Zhang | Changzhou Institute of Technology</title>
+  <meta name="description" content="Baohang Zhang, Lecturer at Changzhou Institute of Technology. Research in evolutionary computation, surrogate modeling, and energy system optimization." data-zh-content="Baohang Zhang，常州工学院讲师。研究方向包括进化计算、代理建模与能源系统优化。">
   <style>
     * { box-sizing: border-box; }
     html { color-scheme: light; scroll-padding-top: 20px; }
@@ -24,6 +24,16 @@
     .visitor-stats p { margin: 0 0 6px; }
     button { padding: 0; border: 0; background: none; color: #315b94; font: inherit; cursor: pointer; }
     button:disabled { cursor: wait; }
+    .language-picker { margin-bottom: 28px; }
+    .language-caption { display: flex; align-items: center; gap: 6px; margin-bottom: 9px; color: #687b94; font-size: 12px; letter-spacing: .04em; }
+    .language-caption svg { width: 14px; height: 14px; }
+    .language-switch { position: relative; isolation: isolate; display: grid; grid-template-columns: 1fr 1fr; padding: 4px; border: 1px solid #d8e2ef; border-radius: 13px; background: linear-gradient(135deg, #eef3fa, #e8eff7); box-shadow: inset 0 1px 2px #315b9408; }
+    .language-switch::before { content: ""; position: absolute; z-index: -1; top: 4px; bottom: 4px; left: 4px; width: calc(50% - 4px); border: 1px solid #fff; border-radius: 9px; background: #fff; box-shadow: 0 2px 6px #2447751a; transition: transform .24s cubic-bezier(.2, .8, .2, 1); }
+    html[lang="en"] .language-switch::before { transform: translateX(100%); }
+    .language-switch button { min-height: 40px; border-radius: 9px; color: #687b94; font-size: 13px; font-weight: 600; letter-spacing: .02em; transition: color .2s; }
+    .language-switch button:hover { color: #315b94; text-decoration: none; }
+    .language-switch button[aria-pressed="true"] { color: #244e84; }
+    html[lang="zh-CN"] .biography, html[lang="zh-CN"] #research, html[lang="zh-CN"] .projects { line-height: 1.8; }
     main { min-width: 0; padding: 24px 30px 36px; overflow-wrap: anywhere; }
     h1 { margin: 0 0 20px; padding-bottom: 8px; border-bottom: 1px solid #ddd; font-size: 26px; line-height: 1.25; }
     h2 { margin: 0 0 14px; padding-bottom: 5px; border-bottom: 1px solid #ddd; font-size: 20px; line-height: 1.25; }
@@ -58,13 +68,21 @@
     @media (max-width: 760px) {
       .layout { display: block; }
       .site-nav { border-right: 0; border-bottom: 1px solid #ddd; padding: 14px 18px; }
-      .nav-inner { position: static; }
-      nav { flex-direction: row; flex-wrap: wrap; gap: 8px 20px; }
-      .site-tools { margin-top: 10px; }
+      .nav-inner { position: static; display: flex; flex-wrap: wrap; gap: 14px 20px; align-items: center; }
+      .language-picker { margin: 0; }
+      .language-caption { display: none; }
+      .language-switch { width: 132px; }
+      nav { order: 2; flex-basis: 100%; flex-direction: row; flex-wrap: wrap; justify-content: space-between; gap: 8px 16px; }
+      .site-tools { margin: 0 0 0 auto; }
+      .site-tools > summary { margin-bottom: 0; }
+      .site-tools[open] > summary { margin-bottom: 12px; }
       main { padding: 22px 18px 30px; }
       .profile-row { gap: 16px; align-items: flex-start; }
       .portrait { width: 90px; height: 90px; }
       .publications { padding-left: 1.8em; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .language-switch::before, .language-switch button { transition: none; }
     }
     @media print {
       .layout { display: block; max-width: none; }
@@ -77,23 +95,33 @@
   <script type="module" src="assets/profile.mjs"></script>
 </head>
 <body>
-  <a class="skip-link" href="#content">Skip to content</a>
+  <a class="skip-link" href="#content" data-zh="跳转到正文">Skip to content</a>
   <div class="layout">
     <aside class="site-nav">
       <div class="nav-inner">
-        <nav aria-label="Main navigation">
-          <a href="#home">Home</a>
-          <a href="#about">About</a>
-          <a href="#publications">Publications</a>
-          <a href="#open-source">Resources</a>
+        <div class="language-picker" hidden>
+          <div class="language-caption">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18M5 7h14M5 17h14"/></svg>
+            <span data-zh="语言">Language</span>
+          </div>
+          <div class="language-switch" role="group" aria-label="Select language" data-zh-aria-label="选择语言">
+            <button type="button" data-language="zh" lang="zh-CN" aria-pressed="false">中文</button>
+            <button type="button" data-language="en" lang="en" aria-pressed="true">EN</button>
+          </div>
+        </div>
+        <nav aria-label="Main navigation" data-zh-aria-label="主导航">
+          <a href="#home" data-zh="首页">Home</a>
+          <a href="#about" data-zh="关于我">About</a>
+          <a href="#publications" data-zh="学术论文">Publications</a>
+          <a href="#open-source" data-zh="开源资源">Resources</a>
         </nav>
         <details class="site-tools">
-          <summary>Page tools</summary>
-          <div class="visitor-stats" aria-label="Site visits">
-            <p><span id="busuanzi_container_site_pv" style="display:none">Page views: <span id="busuanzi_value_site_pv"></span></span></p>
-            <p><span id="busuanzi_container_site_uv" style="display:none">Visitors: <span id="busuanzi_value_site_uv"></span></span></p>
+          <summary data-zh="页面工具">Page tools</summary>
+          <div class="visitor-stats" aria-label="Site visits" data-zh-aria-label="访问统计">
+            <p><span id="busuanzi_container_site_pv" style="display:none"><span data-zh="浏览量：">Page views: </span><span id="busuanzi_value_site_pv"></span></span></p>
+            <p><span id="busuanzi_container_site_uv" style="display:none"><span data-zh="访客数：">Visitors: </span><span id="busuanzi_value_site_uv"></span></span></p>
           </div>
-          <button class="print-link" type="button" onclick="window.print()">Print / Save PDF</button>
+          <button class="print-link" type="button" onclick="window.print()" data-zh="打印 / 保存 PDF">Print / Save PDF</button>
         </details>
       </div>
     </aside>
@@ -103,72 +131,73 @@
         <div class="profile-row">
           <img class="portrait" src="https://avatars.githubusercontent.com/u/52562369?v=4" alt="Baohang Zhang" width="132" height="132">
           <div>
-            <p class="role"><strong>Lecturer</strong></p>
-            <p class="affiliation">School of Computer and Information Engineering<br>
-              Changzhou Institute of Technology, China</p>
-            <p class="email"><strong>Email:</strong> <a href="mailto:zbhsyx@163.com">zbhsyx@163.com</a></p>
+            <p class="role"><strong data-zh="讲师">Lecturer</strong></p>
+            <p class="affiliation"><span data-zh="计算机信息工程学院">School of Computer and Information Engineering</span><br>
+              <span data-zh="中国 · 常州工学院">Changzhou Institute of Technology, China</span></p>
+            <p class="email"><strong data-zh="邮箱：">Email:</strong> <a href="mailto:zbhsyx@163.com">zbhsyx@163.com</a></p>
           </div>
         </div>
-        <ul class="profile-links" aria-label="Academic profiles">
-          <li><a href="https://scholar.google.com.hk/citations?user=kKfWIUkAAAAJ&amp;hl=zh-CN" target="_blank" rel="noopener noreferrer">Google Scholar</a></li>
+        <ul class="profile-links" aria-label="Academic profiles" data-zh-aria-label="学术主页">
+          <li><a href="https://scholar.google.com.hk/citations?user=kKfWIUkAAAAJ&amp;hl=zh-CN" target="_blank" rel="noopener noreferrer" data-zh="谷歌学术">Google Scholar</a></li>
+          <li><a href="https://www.researchgate.net/profile/Baohang-Zhang" target="_blank" rel="noopener noreferrer">ResearchGate</a></li>
           <li><a href="https://orcid.org/0000-0002-8612-0649" target="_blank" rel="noopener noreferrer">ORCID</a></li>
           <li><a href="https://github.com/zbh0528" target="_blank" rel="noopener noreferrer">GitHub</a></li>
         </ul>
       </header>
       <figure class="banban">
-        <img src="assets/banban-sakura-stage.svg" alt="BanBan under soft animated sakura rain" width="190" height="154">
+        <img src="assets/banban-sakura-stage.svg" alt="BanBan under soft animated sakura rain" data-zh-alt="樱花轻落中的斑斑" width="190" height="154">
         <figcaption>
-          <p><strong>斑斑</strong> keeps the research loop moving.</p>
+          <p lang="en"><strong lang="zh-CN">斑斑</strong> keeps the research loop moving.</p>
           <p lang="zh-CN">虽然他去了鼠星，但我很想他。</p>
         </figcaption>
       </figure>
       <section id="about" aria-labelledby="about-heading">
-        <h2 id="about-heading">About</h2>
+        <h2 id="about-heading" data-zh="关于我">About</h2>
         <div id="biography" class="biography">
-        <p>I received my <strong>Ph.D. in Engineering (March 2026)</strong> and <strong>M.S. in Artificial Intelligence (March 2023)</strong> from the <strong>University of Toyama, Japan</strong>. I am currently a <strong>Lecturer</strong> with the <strong>School of Computer and Information Engineering, Changzhou Institute of Technology, China</strong>.</p>
+        <p data-zh="我于2026年3月和2023年3月在日本富山大学分别获得工学博士学位和人工智能专业硕士学位，现任常州工学院计算机信息工程学院讲师。">I received my Ph.D. in Engineering (March 2026) and M.S. in Artificial Intelligence (March 2023) from the University of Toyama, Japan. I am currently a Lecturer with the School of Computer and Information Engineering, Changzhou Institute of Technology, China.</p>
         </div>
         <div id="research">
-        <p>My research focuses on evolutionary computation and optimization for energy systems.</p>
+        <p data-zh="我的研究聚焦于进化计算与能源系统优化。">My research focuses on evolutionary computation and optimization for energy systems.</p>
         <ul class="research-directions">
-          <li>Evolutionary computation and surrogate modeling for costly evaluations and coupled design variables.</li>
-          <li>Integrated offshore wind farm layout and electrical cable routing optimization.</li>
-          <li>Wake-aware yaw control.</li>
-          <li>Evolutionary feature selection.</li>
+          <li data-zh="面向高成本评估与耦合设计变量的进化计算及代理建模。">Evolutionary computation and surrogate modeling for costly evaluations and coupled design variables.</li>
+          <li data-zh="海上风电场布局与电缆布线一体化优化。">Integrated offshore wind farm layout and electrical cable routing optimization.</li>
+          <li data-zh="考虑尾流效应的偏航控制。">Wake-aware yaw control.</li>
+          <li data-zh="进化特征选择。">Evolutionary feature selection.</li>
         </ul>
         </div>
       </section>
       <section id="publications" aria-labelledby="publications-heading">
-        <h2 id="publications-heading">Publications</h2>
-        <p id="snapshot" class="publication-summary"><span id="snapshot-journals">11</span> journal papers · <span id="snapshot-conferences">17</span> conference papers · <span id="snapshot-primary">5</span> first / second-author journal papers · cumulative IF <span id="snapshot-if">47.0</span></p>
+        <h2 id="publications-heading" data-zh="学术论文">Publications</h2>
+        <p id="snapshot" class="publication-summary"><span id="snapshot-journals">11</span><span data-zh=" 篇期刊论文 · "> journal papers · </span><span id="snapshot-conferences">17</span><span data-zh=" 篇会议论文 · "> conference papers · </span><span id="snapshot-primary">5</span><span data-zh=" 篇第一 / 第二作者期刊论文 · 累计 IF "> first / second-author journal papers · cumulative IF </span><span id="snapshot-if">47.0</span></p>
         <details class="if-details">
-          <summary>Publication details and selected work</summary>
-          <p><span id="authorship-note">4 first-author and 1 second-author journal papers</span> · <span id="if-coverage">10 assigned IF values · 1 not reported</span></p>
-          <p>Each journal paper uses the JCR edition released in its publication year; for example, a 2026 paper uses the 2025 IF released in 2026. Conference papers are excluded. Journal papers include the in-press record. Records without a reported IF are shown separately and excluded from the sum.</p>
-          <p id="metrics-status" role="status">IF sources verified: 2026-10-13.</p>
-          <div class="table-wrap" tabindex="0" aria-label="Scrollable IF table">
+          <summary data-zh="论文统计与代表成果">Publication details and selected work</summary>
+          <p><span id="authorship-note" data-zh="第一作者期刊论文4篇，第二作者期刊论文1篇">4 first-author and 1 second-author journal papers</span> · <span id="if-coverage" data-zh="10项已匹配影响因子 · 1项未报告">10 assigned IF values · 1 not reported</span></p>
+          <p data-zh="每篇期刊论文采用其发表年份发布的 JCR 版本。例如，2026年发表的论文采用2026年发布的2025年度影响因子。统计不含会议论文，期刊论文包含已录用待刊记录。未报告影响因子的记录单独列示，不计入总和。">Each journal paper uses the JCR edition released in its publication year; for example, a 2026 paper uses the 2025 IF released in 2026. Conference papers are excluded. Journal papers include the in-press record. Records without a reported IF are shown separately and excluded from the sum.</p>
+          <p id="metrics-status" role="status" data-zh="影响因子来源核验日期：2026-10-13。">IF sources verified: 2026-10-13.</p>
+          <div class="table-wrap" tabindex="0" aria-label="Scrollable IF table" data-zh-aria-label="可横向滚动的影响因子表格">
             <table class="if-table">
-              <caption>Publication-year journal IF breakdown</caption>
-              <thead><tr><th>Journal</th><th>Paper year</th><th>IF year</th><th>IF</th><th>Source</th></tr></thead>
+              <caption data-zh="按论文发表年份统计的期刊影响因子明细">Publication-year journal IF breakdown</caption>
+              <thead><tr><th data-zh="期刊">Journal</th><th data-zh="发表年份">Paper year</th><th data-zh="IF 年度">IF year</th><th>IF</th><th data-zh="来源">Source</th></tr></thead>
               <tbody id="if-table-body"></tbody>
             </table>
           </div>
-          <h3 id="selected-work">Selected Work</h3>
+          <h3 id="selected-work" data-zh="代表成果">Selected Work</h3>
         <ul class="selected-work">
-          <li><strong>Surrogate-assisted wind farm optimization.</strong> Incremental surrogate-assisted differential evolution for offshore wind farm layout design.<br>
-            <span class="work-meta">First author · IEEE TSMC: Systems, 2026 (in press) · <a href="#journal-papers">Publication details</a></span></li>
-          <li><strong>Integrated layout and cable routing.</strong> Geometry-guided genetic search with an open MATLAB benchmark covering eight offshore wind farms and ten algorithms.<br>
-            <span class="work-meta">First author · Applied Energy, 2026 · <a href="https://www.sciencedirect.com/science/article/pii/S0306261926005477" target="_blank" rel="noopener noreferrer">Paper</a> · <a href="https://github.com/zbh0528/WFLO-GGA" target="_blank" rel="noopener noreferrer">Code &amp; benchmark</a></span></li>
-          <li><strong>Evolutionary feature selection.</strong> Information-gain-based multi-objective evolutionary search.<br>
-            <span class="work-meta">First author · Information Sciences, 2024 · <a href="https://www.sciencedirect.com/science/article/pii/S0020025524008156" target="_blank" rel="noopener noreferrer">Paper</a></span></li>
-          <li><strong>Best Paper Award, EITCE 2025.</strong> Coauthor of “Revolutionizing Wind Energy: A Compact Evolutionary Algorithm for Layout Optimization.”<br>
-            <span class="work-meta"><a href="https://toyamaailab.github.io/publications.html" target="_blank" rel="noopener noreferrer">Award record</a> · <a href="https://dl.acm.org/doi/pdf/10.1145/3766671.3766786" target="_blank" rel="noopener noreferrer">Paper</a></span></li>
+          <li><strong data-zh="代理辅助风电场优化。">Surrogate-assisted wind farm optimization.</strong> <span data-zh="采用增量式代理辅助差分进化进行海上风电场布局设计。">Incremental surrogate-assisted differential evolution for offshore wind farm layout design.</span><br>
+            <span class="work-meta"><span data-zh="第一作者 · IEEE TSMC: Systems, 2026（待刊） · ">First author · IEEE TSMC: Systems, 2026 (in press) · </span><a href="#journal-papers" data-zh="论文详情">Publication details</a></span></li>
+          <li><strong data-zh="布局与电缆布线一体化优化。">Integrated layout and cable routing.</strong> <span data-zh="采用几何引导遗传搜索，并开放包含8个海上风电场与10种算法的 MATLAB 基准平台。">Geometry-guided genetic search with an open MATLAB benchmark covering eight offshore wind farms and ten algorithms.</span><br>
+            <span class="work-meta"><span data-zh="第一作者 · Applied Energy, 2026 · ">First author · Applied Energy, 2026 · </span><a href="https://www.sciencedirect.com/science/article/pii/S0306261926005477" target="_blank" rel="noopener noreferrer" data-zh="论文">Paper</a> · <a href="https://github.com/zbh0528/WFLO-GGA" target="_blank" rel="noopener noreferrer" data-zh="代码与基准">Code &amp; benchmark</a></span></li>
+          <li><strong data-zh="进化特征选择。">Evolutionary feature selection.</strong> <span data-zh="基于信息增益的多目标进化搜索。">Information-gain-based multi-objective evolutionary search.</span><br>
+            <span class="work-meta"><span data-zh="第一作者 · Information Sciences, 2024 · ">First author · Information Sciences, 2024 · </span><a href="https://www.sciencedirect.com/science/article/pii/S0020025524008156" target="_blank" rel="noopener noreferrer" data-zh="论文">Paper</a></span></li>
+          <li><strong data-zh="EITCE 2025 最佳论文奖。">Best Paper Award, EITCE 2025.</strong> <span data-zh="共同作者论文：“Revolutionizing Wind Energy: A Compact Evolutionary Algorithm for Layout Optimization.”">Coauthor of “Revolutionizing Wind Energy: A Compact Evolutionary Algorithm for Layout Optimization.”</span><br>
+            <span class="work-meta"><a href="https://toyamaailab.github.io/publications.html" target="_blank" rel="noopener noreferrer" data-zh="获奖记录">Award record</a> · <a href="https://dl.acm.org/doi/pdf/10.1145/3766671.3766786" target="_blank" rel="noopener noreferrer" data-zh="论文">Paper</a></span></li>
         </ul>
-          <button id="refresh-metrics" class="print-link" type="button">Refresh metrics</button>
+          <button id="refresh-metrics" class="print-link" type="button" data-zh="刷新统计">Refresh metrics</button>
         </details>
-        <p id="corresponding-note"><sup>*</sup> Corresponding author(s). Conference-paper markings are shown where explicitly identified.</p>
+        <p id="corresponding-note"><sup>*</sup> <span data-zh="通讯作者。会议论文仅在已明确确认时标注通讯作者。">Corresponding author(s). Conference-paper markings are shown where explicitly identified.</span></p>
       <section id="journal-papers" aria-labelledby="journal-heading">
-        <h3 id="journal-heading">Journal Papers</h3>
-<ol class="publications" start="11">
+        <h3 id="journal-heading" data-zh="期刊论文">Journal Papers</h3>
+<ol class="publications" start="11" lang="en">
   <li value="11"><p><strong>Baohang Zhang</strong>, Yixin Shao, Zhe Xu, Zhenyu Lei, Xin Luo, Jiujun Cheng<sup title="Corresponding author">*</sup>, and Shangce Gao<sup title="Corresponding author">*</sup>, "An Incremental Surrogate-Assisted Differential Evolution for Offshore Wind Farm Layout Optimization," <strong><em>IEEE Transactions on Systems, Man, and Cybernetics: Systems</em></strong>, 2026. DOI: 10.1109/TSMC.2026.3742716.</p></li>
   <li value="10"><p>Ziqian Wang, Lei Ding<sup title="Corresponding author">*</sup>, Xugang Wang, and <strong>Baohang Zhang</strong>, "A balance-aware geometric multi-objective evolutionary algorithm for offshore wind farm layout optimization with capacity dependent cable cost evaluation," <strong><em>Energy</em></strong>, vol. 360, Article 141798, September 2026. DOI: 10.1016/j.energy.2026.141798, <a href="https://www.sciencedirect.com/science/article/pii/S0360544226019055" target="_blank" rel="noopener noreferrer">[PDF]</a></p></li>
   <li value="9"><p><strong>Baohang Zhang</strong>, Yixin Shao, Zhenyu Lei, Chao Zhang, Yirui Wang, and Shangce Gao<sup title="Corresponding author">*</sup>, "A geometry-guided genetic algorithm for integrated offshore wind farm layout and electrical cable routing optimization," <strong><em>Applied Energy</em></strong>, vol. 415, Article 127895, July 2026. DOI: 10.1016/j.apenergy.2026.127895, <a href="https://www.sciencedirect.com/science/article/pii/S0306261926005477" target="_blank" rel="noopener noreferrer">[PDF]</a></p></li>
@@ -183,8 +212,8 @@
 </ol>
       </section>
       <section id="conference-papers" aria-labelledby="conference-heading">
-        <h3 id="conference-heading">Conference Papers</h3>
-<ol class="publications" start="17">
+        <h3 id="conference-heading" data-zh="会议论文">Conference Papers</h3>
+<ol class="publications" start="17" lang="en">
   <li value="17"><p>Yixin Shao, <strong>Baohang Zhang</strong>, Wenzhu Gu, Zhenyu Lei, and Shangce Gao<sup title="Corresponding author">*</sup>, "A Topology-Driven Multi-Objective Evolutionary Algorithm for Offshore Wind Farm Layout Optimization," in <strong><em>2026 16th International Conference on Power, Energy, and Electrical Engineering (CPEEE)</em></strong>, pp. 494-498, March 2026. DOI: 10.1109/CPEEE69412.2026.11521465, <a href="https://ieeexplore.ieee.org/document/11521465/" target="_blank" rel="noopener noreferrer">[PDF]</a></p></li>
   <li value="16"><p><strong>Baohang Zhang</strong>, Yixin Shao, Tao Zheng, Runqun Xiong, Jiake Wang, Xiangmei Li, and Shangce Gao, "A Geometric Mutation-Based Genetic Algorithm for Irregular Large-Scale Offshore Wind Farm Layout Optimization," in <strong><em>2025 Thirteenth International Conference on Advanced Cloud and Big Data (CBD)</em></strong>, pp. 294-299, November 2025. DOI: 10.1109/CBD69312.2025.00059, <a href="https://ieeexplore.ieee.org/document/11366704/" target="_blank" rel="noopener noreferrer">[PDF]</a></p></li>
   <li value="15"><p>Tao Zheng, Zhiwei Yu, Kefan Ni, <strong>Baohang Zhang</strong>, Zhenyu Lei, and Shangce Gao<sup title="Corresponding author">*</sup>, "Revolutionizing Wind Energy: A Compact Evolutionary Algorithm for Layout Optimization," in <strong><em>Proceedings of the 9th International Conference on Electronic Information Technology and Computer Engineering (EITCE 2025)</em></strong>, pp. 667-672, 2025. DOI: 10.1145/3766671.3766786, <a href="https://dl.acm.org/doi/pdf/10.1145/3766671.3766786" target="_blank" rel="noopener noreferrer">[PDF]</a></p></li>
@@ -206,17 +235,17 @@
       </section>
       </section>
       <section id="open-source" aria-labelledby="source-heading">
-        <h2 id="source-heading">Resources</h2>
+        <h2 id="source-heading" data-zh="开源资源">Resources</h2>
         <ul class="projects">
           <li><a href="https://github.com/zbh0528/WFLO-GGA" target="_blank" rel="noopener noreferrer"><strong>WFLO-GGA</strong></a> —
-            An evaluation platform for integrated offshore wind farm layout and cable routing: eight benchmark sites and ten optimization algorithms.</li>
-          <li><a href="https://github.com/zbh0528/Mass--and-momentum-conserving-analytical-wake-model" target="_blank" rel="noopener noreferrer"><strong>Analytical Wake Model</strong></a> —
-            An implementation of a published analytical wake model, provided for research and technical discussion.</li>
+            <span data-zh="海上风电场布局与电缆布线一体化优化评估平台，包含8个基准场址和10种优化算法。">An evaluation platform for integrated offshore wind farm layout and cable routing: eight benchmark sites and ten optimization algorithms.</span></li>
+          <li><a href="https://github.com/zbh0528/Mass--and-momentum-conserving-analytical-wake-model" target="_blank" rel="noopener noreferrer"><strong data-zh="解析尾流模型">Analytical Wake Model</strong></a> —
+            <span data-zh="已发表解析尾流模型的实现，用于科研与技术交流。">An implementation of a published analytical wake model, provided for research and technical discussion.</span></li>
           <li><a href="https://github.com/zbh0528/research-codex-skills" target="_blank" rel="noopener noreferrer"><strong>Research Codex Skills</strong></a> —
-            Reusable workflows for scientific writing, reviewer responses, and research communication.</li>
+            <span data-zh="可复用的科研写作、审稿回复与学术交流工作流。">Reusable workflows for scientific writing, reviewer responses, and research communication.</span></li>
         </ul>
       </section>
-      <footer>Baohang Zhang · Updated <time datetime="2026-10-15">October 15, 2026</time> · <a href="#home">Back to top</a></footer>
+      <footer>Baohang Zhang · <span data-zh="更新于 ">Updated </span><time datetime="2026-10-21" data-zh="2026年10月21日">October 21, 2026</time> · <a href="#home" data-zh="返回顶部">Back to top</a></footer>
     </main>
   </div>
 </body>
