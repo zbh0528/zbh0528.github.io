@@ -52,8 +52,7 @@ if (typeof document !== "undefined") {
         (stats.pending ? " · " + stats.pending + "项待核验" : "") :
         stats.covered + " assigned IF values · " + stats.notReported + " not reported" +
         (stats.pending ? " · " + stats.pending + " awaiting verification" : ""));
-      text("metrics-status", zh ? "影响因子来源核验日期：" + verifiedOn + "。总值已根据论文列表重新计算。" :
-        "IF sources verified: " + verifiedOn + ". Totals recalculated from the publication list.");
+      text("metrics-status", zh ? "统计更新：" + verifiedOn : "Statistics updated: " + verifiedOn);
       const body = document.getElementById("if-table-body");
       body.replaceChildren();
       for (const {paper, metric} of stats.rows) {
@@ -68,8 +67,7 @@ if (typeof document !== "undefined") {
         row.append(cell); body.append(row);
       }
     }
-    if (metricsFailed) text("metrics-status", zh ? "影响因子数据刷新失败，当前显示最近核验的数值。" :
-      "IF data could not refresh. Last verified values are shown.");
+    if (metricsFailed) text("metrics-status", zh ? "统计暂时无法刷新。" : "Statistics could not refresh.");
   }
 
   async function refreshMetrics() {
