@@ -3,7 +3,7 @@ async (page) => {
   const check = (condition, message) => { if (!condition) throw new Error(message); };
   const baseURL = new URL("/", page.url()).href;
   const buttons = lang => page.locator('[data-language="' + lang + '"]');
-  const ready = () => page.waitForFunction(() => document.querySelectorAll("#if-table-body tr").length === 11);
+  const ready = () => page.waitForFunction(() => document.querySelectorAll("#if-table-body tr").length === 12);
   await ready();
   const citations = await page.locator(".publications").allTextContents();
   const links = await page.locator("a").evaluateAll(nodes => nodes.map(a => [a.getAttribute("href"), a.target, a.rel]));
@@ -13,7 +13,7 @@ async (page) => {
     check(await buttons(lang).getAttribute("aria-pressed") === "true", "Selected button state");
     check(await page.locator("#about-heading").textContent() === (lang === "zh" ? "关于我" : "About"), "Translated heading");
     check((await page.locator("#metrics-status").textContent()).includes(lang === "zh" ? "核验日期" : "sources verified"), "Dynamic metrics language");
-    check(await page.locator("#snapshot-if").textContent() === "47.0", "Unchanged IF total");
+    check(await page.locator("#snapshot-if").textContent() === "50.9", "Unchanged IF total");
     check(JSON.stringify(await page.locator(".publications").allTextContents()) === JSON.stringify(citations), "Unchanged citations");
     check(JSON.stringify(await page.locator("a").evaluateAll(nodes => nodes.map(a => [a.getAttribute("href"), a.target, a.rel]))) === JSON.stringify(links), "Unchanged links");
   }
@@ -40,7 +40,7 @@ async (page) => {
   await page.unroute("**/assets/journal-metrics.json");
   await page.locator("#refresh-metrics").click();
   await page.waitForFunction(() => document.querySelector("#metrics-status").textContent.includes("sources verified"));
-  check(await page.locator("#if-table-body tr").count() === 11, "Metrics refresh recovers");
+  check(await page.locator("#if-table-body tr").count() === 12, "Metrics refresh recovers");
   const context = await page.context().browser().newContext({ locale: "en-US" });
   try {
     await context.addInitScript(() => Object.defineProperty(window, "localStorage", { get() { throw new DOMException("Blocked", "SecurityError"); } }));

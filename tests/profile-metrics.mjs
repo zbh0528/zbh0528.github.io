@@ -13,10 +13,10 @@ function entries(id) {
 }
 const journals = entries("journal-papers"), conferences = entries("conference-papers");
 const result = calculateSnapshot(journals, conferences, data);
-assert.deepEqual([result.journals, result.conferences, result.first, result.second], [11, 17, 4, 1]);
-assert.equal(result.total, 47);
-assert.deepEqual([result.covered, result.notReported, result.pending], [10, 1, 0]);
-assert.equal(calculateSnapshot([...journals, journals[0]], conferences, data).total, 55.4);
+assert.deepEqual([result.journals, result.conferences, result.first, result.second], [12, 17, 4, 2]);
+assert.equal(result.total, 50.9);
+assert.deepEqual([result.covered, result.notReported, result.pending], [11, 1, 0]);
+assert.equal(calculateSnapshot([...journals, journals[0]], conferences, data).total, 54.8);
 assert.equal(calculateSnapshot([...journals, {journal:"Unverified journal", year:2026, authorPosition:1}], conferences, data).pending, 1);
 assert.equal(parseCitation('Someone, and Baohang Zhang, "Title," Venue 2025. DOI: 10.1/2024', "Venue").year, 2025);
 assert.equal(parseCitation('Baohang Zhang, "Title," Venue. DOI: 10.1/2024', "Venue").year, null);

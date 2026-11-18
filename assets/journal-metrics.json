@@ -1,7 +1,16 @@
 {
   "policy": "jcr_release_year_matches_publication_year",
-  "verified_on": "2026-10-13",
+  "verified_on": "2026-11-18",
   "records": [
+    {
+      "journal": "Energies",
+      "data_year": 2025,
+      "release_year": 2026,
+      "value": 3.9,
+      "status": "verified",
+      "source": "https://www.mdpi.com/journal/energies/history",
+      "source_label": "MDPI"
+    },
     {
       "journal": "IEEE Transactions on Systems, Man, and Cybernetics: Systems",
       "data_year": 2025,
